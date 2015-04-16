@@ -59,7 +59,7 @@ public class RefundTest {
    public void setup() {
       client = Client
             .services(TEST_SERVICES)
-            .credentials("ws_831543@Company.TestCompany", ">N?Xiw/)zuY#LC-}i-!8R9pmv")
+            .credentials(username, password)
             .build();
    }
    
