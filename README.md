@@ -1,0 +1,1 @@
+Java client to consume Adyen's Payment Service API
