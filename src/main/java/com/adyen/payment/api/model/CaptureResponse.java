@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  */
 @SuppressWarnings("serial")
-public class CaptureResponse implements Serializable {
+public class CaptureResponse extends Error implements Serializable {
    private String pspReference;
    private String response;
    
@@ -73,6 +73,21 @@ public class CaptureResponse implements Serializable {
       if (response != null) {
          builder.append("response=");
          builder.append(response);
+         builder.append(", ");
+      }
+      builder.append("status=");
+      builder.append(status);
+      builder.append(", errorCode=");
+      builder.append(errorCode);
+      builder.append(", ");
+      if (message != null) {
+         builder.append("message=");
+         builder.append(message);
+         builder.append(", ");
+      }
+      if (errorType != null) {
+         builder.append("errorType=");
+         builder.append(errorType);
       }
       builder.append("]");
       return builder.toString();

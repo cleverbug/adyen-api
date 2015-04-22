@@ -25,6 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
@@ -95,6 +96,24 @@ public class Authorise {
                   PaymentResponse retval = new PaymentResponse();
                   StatusLine status = response.getStatusLine();
                   HttpEntity entity = response.getEntity();
+                  if(entity == null) {
+                     throw new ClientProtocolException("blank: authorisation response");
+                  }
+                  /*switch(status.getStatusCode()) {
+                  case HttpStatus.SC_OK:
+                     break;
+                  case HttpStatus.SC_BAD_REQUEST:
+                     break;
+                  case HttpStatus.SC_UNAUTHORIZED:
+                     break;
+                  case HttpStatus.SC_FORBIDDEN:
+                     break;
+                  case HttpStatus.SC_UNPROCESSABLE_ENTITY:
+                     break;
+                  case HttpStatus.SC_INTERNAL_SERVER_ERROR:
+                     break;
+                  default:
+                  }
                   if(status.getStatusCode() != 200) {
                      String content = null;
                      if(entity != null) {
@@ -107,10 +126,7 @@ public class Authorise {
                      String reason = StringUtils.isNotBlank(content) ? status.getReasonPhrase() + " [" + content + "]"
                            : status.getReasonPhrase();
                      throw new HttpResponseException(status.getStatusCode(), reason);
-                  }
-                  if(entity == null) {
-                     throw new ClientProtocolException("blank: authorisation response");
-                  }
+                  }*/
                   retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), PaymentResponse.class);
                   return retval;
                }

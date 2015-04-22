@@ -23,48 +23,67 @@ import java.io.Serializable;
  *
  */
 @SuppressWarnings("serial")
-public class CancelOrRefundResponse extends Error implements Serializable {
-   private String pspReference;
-   private String response;
+public class Error implements Serializable {
+   protected int status;
+   protected int errorCode;
+   protected String message;
+   protected String errorType;
    
-   public CancelOrRefundResponse() {
-   }
-
    /**
-    * @return the pspReference
+    * @return the status
     */
-   public String getPspReference() {
-      return pspReference;
+   public int getStatus() {
+      return status;
    }
-
    /**
-    * @param pspReference the pspReference to set
+    * @param status the status to set
     */
-   public void setPspReference(String pspReference) {
-      this.pspReference = pspReference;
+   public void setStatus(int status) {
+      this.status = status;
    }
-
    /**
-    * @return the response
+    * @return the errorCode
     */
-   public String getResponse() {
-      return response;
+   public int getErrorCode() {
+      return errorCode;
    }
-
    /**
-    * @param response the response to set
+    * @param errorCode the errorCode to set
     */
-   public void setResponse(String response) {
-      this.response = response;
+   public void setErrorCode(int errorCode) {
+      this.errorCode = errorCode;
    }
-
+   /**
+    * @return the message
+    */
+   public String getMessage() {
+      return message;
+   }
+   /**
+    * @param message the message to set
+    */
+   public void setMessage(String message) {
+      this.message = message;
+   }
+   /**
+    * @return the errorType
+    */
+   public String getErrorType() {
+      return errorType;
+   }
+   /**
+    * @param errorType the errorType to set
+    */
+   public void setErrorType(String errorType) {
+      this.errorType = errorType;
+   }
    /* (non-Javadoc)
     * @see java.lang.Object#toString()
     */
    @Override
    public String toString() {
       StringBuilder builder = new StringBuilder();
-      builder.append("CancelOrRefundResponse [status=");
+      builder.append("Error [status=");
       builder.append(status);
       builder.append(", errorCode=");
       builder.append(errorCode);
@@ -77,16 +96,6 @@ public class CancelOrRefundResponse extends Error implements Serializable {
       if (errorType != null) {
          builder.append("errorType=");
          builder.append(errorType);
-         builder.append(", ");
-      }
-      if (pspReference != null) {
-         builder.append("pspReference=");
-         builder.append(pspReference);
-         builder.append(", ");
-      }
-      if (response != null) {
-         builder.append("response=");
-         builder.append(response);
       }
       builder.append("]");
       return builder.toString();

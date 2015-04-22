@@ -27,7 +27,7 @@ import java.util.Map;
  *
  */
 @SuppressWarnings("serial")
-public class PaymentResponse implements Serializable {
+public class PaymentResponse extends Error implements Serializable {
    private String pspReference;
    private ResultCode resultCode;
    private String authCode;
@@ -192,6 +192,21 @@ public class PaymentResponse implements Serializable {
       if (md != null) {
          builder.append("md=");
          builder.append(md);
+         builder.append(", ");
+      }
+      builder.append("status=");
+      builder.append(status);
+      builder.append(", errorCode=");
+      builder.append(errorCode);
+      builder.append(", ");
+      if (message != null) {
+         builder.append("message=");
+         builder.append(message);
+         builder.append(", ");
+      }
+      if (errorType != null) {
+         builder.append("errorType=");
+         builder.append(errorType);
       }
       builder.append("]");
       return builder.toString();
