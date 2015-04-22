@@ -8,7 +8,7 @@
 Adyen Payment System, **APS**, lies at the heart of its payment platform and it's the service a merchant integrates with for
 payment processing.
 
-**adyen-java-client** aims to be a cohesive and opiniated way for consuming APS' JSON messaging based services.
+**adyen-java-client** aims to be a cohesive and opinionated way for consuming APS' JSON messaging based services.
 
 ##Usage
 
