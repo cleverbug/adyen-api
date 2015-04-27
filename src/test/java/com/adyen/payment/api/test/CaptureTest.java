@@ -33,10 +33,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.adyen.payment.api.APUtil.ReferenceType;
 import com.adyen.payment.api.Client;
 import com.adyen.payment.api.model.Amount;
-import com.adyen.payment.api.model.CaptureRequest;
-import com.adyen.payment.api.model.CaptureRequestBuilder;
-import com.adyen.payment.api.model.CaptureResponse;
 import com.adyen.payment.api.model.CardBuilder;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationRequestBuilder;
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentRequestBuilder;
 import com.adyen.payment.api.model.PaymentResponse;
@@ -80,13 +80,13 @@ public class CaptureTest {
       PaymentResponse paymentResponse = client.authorise(paymentRequest);
       assertTrue(paymentResponse != null);
       System.out.println(paymentResponse);
-      CaptureRequest captureRequest = CaptureRequestBuilder
+      ModificationRequest captureRequest = ModificationRequestBuilder
             .merchantAccount(merchantAccount)
-            .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
             .originalReference(paymentResponse.getPspReference())
             .reference(reference(ReferenceType.UUID))
+            .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
             .build();
-      CaptureResponse captureResponse = client.capture(captureRequest);
+      ModificationResponse captureResponse = client.capture(captureRequest);
       assertTrue(captureResponse != null);
       System.out.println(captureResponse);
    }

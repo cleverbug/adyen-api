@@ -22,8 +22,8 @@ import org.apache.commons.lang3.StringUtils;
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  *
  */
-public class CancelOrRefundRequestBuilder {
-   private CancelOrRefundRequestBuilder() {
+public class ModificationRequestBuilder {
+   private ModificationRequestBuilder() {
    }
    
    public static IOriginalReference merchantAccount(String account) {
@@ -35,17 +35,20 @@ public class CancelOrRefundRequestBuilder {
    }
    
    public interface IBuilder {
+      IBuilder additionalData(String key, String value);
+      IBuilder authorisationCode(String code);
       IBuilder reference(String reference);
+      IBuilder modificationAmount(Amount amount);
       
-      CancelOrRefundRequest build();
+      ModificationRequest build();
    }
    
    private static class Builder implements IOriginalReference, IBuilder {
-      private CancelOrRefundRequest request;
+      private ModificationRequest request;
       
       Builder(String merchantAccount) {
          if(StringUtils.isNotBlank(merchantAccount)) {
-            request = new CancelOrRefundRequest();
+            request = new ModificationRequest();
             request.setMerchantAccount(merchantAccount);
          } else {
             // warn throw new IllegalArgumentException("blank: merchantAccount");
@@ -69,7 +72,7 @@ public class CancelOrRefundRequestBuilder {
        * @see com.adyen.payment.api.model.CaptureRequestBuilder.IBuilder#build()
        */
       @Override
-      public CancelOrRefundRequest build() {
+      public ModificationRequest build() {
          return request;
       }
 
@@ -80,6 +83,45 @@ public class CancelOrRefundRequestBuilder {
       public IBuilder originalReference(String reference) {
          if(StringUtils.isNotBlank(reference)) {
             request.setOriginalReference(reference);
+         } else {
+            // warn
+         }
+         return this;
+      }
+
+      /* (non-Javadoc)
+       * @see com.adyen.payment.api.model.ModificationRequestBuilder.IBuilder#modificationAmount(com.adyen.payment.api.model.Amount)
+       */
+      @Override
+      public IBuilder modificationAmount(Amount amount) {
+         if(amount != null) {
+            request.setModificationAmount(amount);
+         } else {
+            // warn
+         }
+         return this;
+      }
+
+      /* (non-Javadoc)
+       * @see com.adyen.payment.api.model.ModificationRequestBuilder.IBuilder#authorisationCode(java.lang.String)
+       */
+      @Override
+      public IBuilder authorisationCode(String code) {
+         if(StringUtils.isNotBlank(code)) {
+            request.setAuthorisationCode(code);
+         } else {
+            // warn
+         }
+         return this;
+      }
+
+      /* (non-Javadoc)
+       * @see com.adyen.payment.api.model.ModificationRequestBuilder.IBuilder#additionalData(java.lang.String, java.lang.String)
+       */
+      @Override
+      public IBuilder additionalData(String key, String value) {
+         if(StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
+            request.getAdditionalData().put(key, value);
          } else {
             // warn
          }

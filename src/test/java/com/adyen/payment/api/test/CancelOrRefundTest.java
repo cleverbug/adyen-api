@@ -33,10 +33,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.adyen.payment.api.APUtil.ReferenceType;
 import com.adyen.payment.api.Client;
 import com.adyen.payment.api.model.Amount;
-import com.adyen.payment.api.model.CancelOrRefundRequest;
-import com.adyen.payment.api.model.CancelOrRefundRequestBuilder;
-import com.adyen.payment.api.model.CancelOrRefundResponse;
 import com.adyen.payment.api.model.CardBuilder;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationRequestBuilder;
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentRequestBuilder;
 import com.adyen.payment.api.model.PaymentResponse;
@@ -80,12 +80,14 @@ public class CancelOrRefundTest {
       PaymentResponse paymentResponse = client.authorise(paymentRequest);
       assertTrue(paymentResponse != null);
       System.out.println(paymentResponse);
-      CancelOrRefundRequest cancelOrRefundRequest = CancelOrRefundRequestBuilder
+      ModificationRequest cancelOrRefundRequest = ModificationRequestBuilder
             .merchantAccount(merchantAccount)
             .originalReference(paymentResponse.getPspReference())
             .reference(reference(ReferenceType.UUID))
+            .authorisationCode(paymentResponse.getAuthCode())
+            .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
             .build();
-      CancelOrRefundResponse cancelOrRefundResponse = client.cancelOrRefund(cancelOrRefundRequest);
+      ModificationResponse cancelOrRefundResponse = client.cancelOrRefund(cancelOrRefundRequest);
       assertTrue(cancelOrRefundResponse != null);
       System.out.println(cancelOrRefundResponse);
    }

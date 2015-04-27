@@ -16,17 +16,12 @@
  */
 package com.adyen.payment.api;
 
+import com.adyen.payment.api.error.APSAccessException;
 import com.adyen.payment.api.error.APSConfigurationException;
-import com.adyen.payment.api.model.CancelOrRefundRequest;
-import com.adyen.payment.api.model.CancelOrRefundResponse;
-import com.adyen.payment.api.model.CancelRequest;
-import com.adyen.payment.api.model.CancelResponse;
-import com.adyen.payment.api.model.CaptureRequest;
-import com.adyen.payment.api.model.CaptureResponse;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentResponse;
-import com.adyen.payment.api.model.RefundRequest;
-import com.adyen.payment.api.model.RefundResponse;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -68,7 +63,7 @@ public interface IClient {
     * @throws APSConfigurationException
     * @throws APSAccessException
     */
-   CaptureResponse capture(CaptureRequest request);
+   ModificationResponse capture(ModificationRequest request);
    /**
     * 
     * @param request
@@ -77,7 +72,7 @@ public interface IClient {
     * @throws APSConfigurationException
     * @throws APSAccessException
     */
-   CancelResponse cancel(CancelRequest request);
+   ModificationResponse cancel(ModificationRequest request);
    /**
     * 
     * @param request
@@ -86,7 +81,7 @@ public interface IClient {
     * @throws APSConfigurationException
     * @throws APSAccessException
     */
-   RefundResponse refund(RefundRequest request);
+   ModificationResponse refund(ModificationRequest request);
    /**
     * 
     * @param request
@@ -95,5 +90,5 @@ public interface IClient {
     * @throws APSConfigurationException
     * @throws APSAccessException
     */
-   CancelOrRefundResponse cancelOrRefund(CancelOrRefundRequest request);
+   ModificationResponse cancelOrRefund(ModificationRequest request);
 }

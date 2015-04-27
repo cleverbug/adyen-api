@@ -21,42 +21,47 @@ import static org.apache.http.client.fluent.Request.Post;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adyen.payment.api.APService;
 import com.adyen.payment.api.ClientConfig;
 import com.adyen.payment.api.error.APSAccessException;
 import com.adyen.payment.api.error.APSConfigurationException;
-import com.adyen.payment.api.model.CancelOrRefundRequest;
-import com.adyen.payment.api.model.CancelOrRefundResponse;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationResponse;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  *
  */
 public class CancelOrRefund {
+   private static final Logger LOG = LoggerFactory.getLogger(CancelOrRefund.class);
    private static final ObjectMapper MAPPER = JsonFactory.create();
    
-   private static Request createRequest(final ClientConfig config, final CancelOrRefundRequest request) {
+   private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("config: {}, request: {}", config, request);
+      }
       Request retval = null;
       String url;
       // create a Post
       try {
          url = config.getServices().get(APService.CANCEL_OR_REFUND).toString();
       } catch(Exception e) {
+         LOG.error("cancelOrRefund: missing parameter: url");
          throw new APSConfigurationException("cancelOrRefund: missing parameter: url");
       }
       if(StringUtils.isNotBlank(url)) {
@@ -74,13 +79,20 @@ public class CancelOrRefund {
          // add content
          retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
       } else {
+         LOG.error("cancelOrRefund: missing parameter: url");
          throw new APSConfigurationException("cancelOrRefund: missing parameter: url");
+      }
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("retval: {}", retval);
       }
       return retval;
    }
    
-   public static CancelOrRefundResponse execute(final ClientConfig config, final CancelOrRefundRequest request) {
-      CancelOrRefundResponse retval = null;
+   public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("config: {}, request: {}", config, request);
+      }
+      ModificationResponse retval = null;
       // create the request
       Request req = createRequest(config, request);
       // create an Executor
@@ -90,49 +102,44 @@ public class CancelOrRefund {
       // execute and handle
       try {
          retval = exec.execute(req).handleResponse(
-            new ResponseHandler<CancelOrRefundResponse>() {
-               public CancelOrRefundResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-                  CancelOrRefundResponse retval = new CancelOrRefundResponse();
+            new ResponseHandler<ModificationResponse>() {
+               public ModificationResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                  ModificationResponse retval = null;
                   StatusLine status = response.getStatusLine();
                   HttpEntity entity = response.getEntity();
                   if(entity == null) {
+                     LOG.error("blank: cancelOrRefund response");
                      throw new ClientProtocolException("blank: cancelOrRefund response");
                   }
-                  /*switch(status.getStatusCode()) {
+                  switch(status.getStatusCode()) {
                   case HttpStatus.SC_OK:
-                     break;
                   case HttpStatus.SC_BAD_REQUEST:
-                     break;
                   case HttpStatus.SC_UNAUTHORIZED:
-                     break;
                   case HttpStatus.SC_FORBIDDEN:
-                     break;
                   case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-                     break;
-                  case HttpStatus.SC_INTERNAL_SERVER_ERROR:
+                     retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), ModificationResponse.class);
                      break;
                   default:
+                     retval = new ModificationResponse();
+                     retval.setStatus(status.getStatusCode());
+                     retval.setMessage("Unexpected error: " + status.getStatusCode());
                   }
-                  if(status.getStatusCode() != 200) {
-                     String content = null;
-                     if(entity != null) {
-                        try {
-                           content = IOUtils.toString(new InputStreamReader(entity.getContent()));
-                        } catch(Exception e) {
-                           ;
-                        }
-                     }
-                     String reason = StringUtils.isNotBlank(content) ? status.getReasonPhrase() + " [" + content + "]"
-                           : status.getReasonPhrase();
-                     throw new HttpResponseException(status.getStatusCode(), reason);
-                  }*/
-                  retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), CancelOrRefundResponse.class);
+                  if(status.getStatusCode() != HttpStatus.SC_OK) {
+                     LOG.warn("unable to process request: {}", status.getStatusCode());
+                  }
+                  if(LOG.isDebugEnabled()) {
+                     LOG.debug("retval: {}", retval);
+                  }
                   return retval;
                }
             }
          );
       } catch(Exception e) {
+         LOG.error("cancelOrRefund", e);
          throw new APSAccessException("cancelOrRefund", e);
+      }
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("retval: {}", retval);
       }
       return retval;
    }

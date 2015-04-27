@@ -34,12 +34,12 @@ import com.adyen.payment.api.APUtil.ReferenceType;
 import com.adyen.payment.api.Client;
 import com.adyen.payment.api.model.Amount;
 import com.adyen.payment.api.model.CardBuilder;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationRequestBuilder;
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentRequestBuilder;
 import com.adyen.payment.api.model.PaymentResponse;
-import com.adyen.payment.api.model.RefundRequest;
-import com.adyen.payment.api.model.RefundRequestBuilder;
-import com.adyen.payment.api.model.RefundResponse;
 import com.adyen.payment.api.model.ShopperInteraction;
 
 /**
@@ -75,18 +75,18 @@ public class RefundTest {
             .amount(new Amount(Currency.getInstance("EUR"), 1000L))
             .card(CardBuilder.number("4111111111111111").cvc("737").expiry(2016, 6).holder("Johnny Tester Visa").build())
             .reference(reference(ReferenceType.UUID))
-            .shopper("willian.oki@gmail.com", "127.0.0.1", "Test/DAPI/Capture/Willian Oki", ShopperInteraction.Ecommerce)
+            .shopper("willian.oki@gmail.com", "127.0.0.1", "Test/DAPI/Refund/Willian Oki", ShopperInteraction.Ecommerce)
             .build();
       PaymentResponse paymentResponse = client.authorise(paymentRequest);
       assertTrue(paymentResponse != null);
       System.out.println(paymentResponse);
-      RefundRequest refundRequest = RefundRequestBuilder
+      ModificationRequest refundRequest = ModificationRequestBuilder
             .merchantAccount(merchantAccount)
-            .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
             .originalReference(paymentResponse.getPspReference())
             .reference(reference(ReferenceType.UUID))
+            .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
             .build();
-      RefundResponse refundResponse = client.refund(refundRequest);
+      ModificationResponse refundResponse = client.refund(refundRequest);
       assertTrue(refundResponse != null);
       System.out.println(refundResponse);
    }

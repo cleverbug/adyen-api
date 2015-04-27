@@ -33,9 +33,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.adyen.payment.api.APUtil.ReferenceType;
 import com.adyen.payment.api.Client;
 import com.adyen.payment.api.model.Amount;
-import com.adyen.payment.api.model.CancelRequest;
-import com.adyen.payment.api.model.CancelRequestBuilder;
-import com.adyen.payment.api.model.CancelResponse;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationRequestBuilder;
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.CardBuilder;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentRequestBuilder;
@@ -80,13 +80,13 @@ public class CancelTest {
       PaymentResponse paymentResponse = client.authorise(paymentRequest);
       assertTrue(paymentResponse != null);
       System.out.println(paymentResponse);
-      CancelRequest cancelRequest = CancelRequestBuilder
+      ModificationRequest modificationRequest = ModificationRequestBuilder
             .merchantAccount(merchantAccount)
             .originalReference(paymentResponse.getPspReference())
             .reference(reference(ReferenceType.UUID))
             .build();
-      CancelResponse cancelResponse = client.cancel(cancelRequest);
-      assertTrue(cancelResponse != null);
-      System.out.println(cancelResponse);
+      ModificationResponse modificationResponse = client.cancel(modificationRequest);
+      assertTrue(modificationResponse != null);
+      System.out.println(modificationResponse);
    }
 }

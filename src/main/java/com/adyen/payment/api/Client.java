@@ -26,16 +26,10 @@ import com.adyen.payment.api.action.Cancel;
 import com.adyen.payment.api.action.CancelOrRefund;
 import com.adyen.payment.api.action.Capture;
 import com.adyen.payment.api.action.Refund;
-import com.adyen.payment.api.model.CancelOrRefundRequest;
-import com.adyen.payment.api.model.CancelOrRefundResponse;
-import com.adyen.payment.api.model.CancelRequest;
-import com.adyen.payment.api.model.CancelResponse;
-import com.adyen.payment.api.model.CaptureRequest;
-import com.adyen.payment.api.model.CaptureResponse;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentResponse;
-import com.adyen.payment.api.model.RefundRequest;
-import com.adyen.payment.api.model.RefundResponse;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -175,10 +169,10 @@ public class Client implements IClient {
    }
 
    /* (non-Javadoc)
-    * @see com.adyen.payment.api.IClient#capture(com.adyen.payment.api.model.CaptureRequest)
+    * @see com.adyen.payment.api.IClient#capture(com.adyen.payment.api.model.ModificationRequest)
     */
    @Override
-   public CaptureResponse capture(CaptureRequest request) {
+   public ModificationResponse capture(ModificationRequest request) {
       if(request != null) {
          return Capture.execute(config, request);
       } else {
@@ -187,10 +181,10 @@ public class Client implements IClient {
    }
 
    /* (non-Javadoc)
-    * @see com.adyen.payment.api.IClient#cancel(com.adyen.payment.api.model.CancelRequest)
+    * @see com.adyen.payment.api.IClient#cancel(com.adyen.payment.api.model.ModificationRequest)
     */
    @Override
-   public CancelResponse cancel(CancelRequest request) {
+   public ModificationResponse cancel(ModificationRequest request) {
       if(request != null) {
          return Cancel.execute(config, request);
       } else {
@@ -199,10 +193,10 @@ public class Client implements IClient {
    }
 
    /* (non-Javadoc)
-    * @see com.adyen.payment.api.IClient#refund(com.adyen.payment.api.model.RefundRequest)
+    * @see com.adyen.payment.api.IClient#refund(com.adyen.payment.api.model.ModificationRequest)
     */
    @Override
-   public RefundResponse refund(RefundRequest request) {
+   public ModificationResponse refund(ModificationRequest request) {
       if(request != null) {
          return Refund.execute(config, request);
       } else {
@@ -211,10 +205,10 @@ public class Client implements IClient {
    }
 
    /* (non-Javadoc)
-    * @see com.adyen.payment.api.IClient#cancelOrRefund(com.adyen.payment.api.model.CancelOrRefundRequest)
+    * @see com.adyen.payment.api.IClient#cancelOrRefund(com.adyen.payment.api.model.ModificationRequest)
     */
    @Override
-   public CancelOrRefundResponse cancelOrRefund(CancelOrRefundRequest request) {
+   public ModificationResponse cancelOrRefund(ModificationRequest request) {
       if(request != null) {
          return CancelOrRefund.execute(config, request);
       } else {

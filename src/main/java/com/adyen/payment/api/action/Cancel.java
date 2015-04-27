@@ -21,42 +21,47 @@ import static org.apache.http.client.fluent.Request.Post;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.adyen.payment.api.APService;
 import com.adyen.payment.api.ClientConfig;
 import com.adyen.payment.api.error.APSAccessException;
 import com.adyen.payment.api.error.APSConfigurationException;
-import com.adyen.payment.api.model.CancelRequest;
-import com.adyen.payment.api.model.CancelResponse;
+import com.adyen.payment.api.model.ModificationRequest;
+import com.adyen.payment.api.model.ModificationResponse;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  *
  */
 public class Cancel {
+   private static final Logger LOG = LoggerFactory.getLogger(Cancel.class);
    private static final ObjectMapper MAPPER = JsonFactory.create();
    
-   private static Request createRequest(final ClientConfig config, final CancelRequest request) {
+   private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("config: {}, request: {}", config, request);
+      }
       Request retval = null;
       String url;
       // create a Post
       try {
          url = config.getServices().get(APService.CANCEL).toString();
       } catch(Exception e) {
+         LOG.error("cancel: missing parameter: url");
          throw new APSConfigurationException("cancel: missing parameter: url");
       }
       if(StringUtils.isNotBlank(url)) {
@@ -74,13 +79,20 @@ public class Cancel {
          // add content
          retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
       } else {
+         LOG.error("cancel: missing parameter: url");
          throw new APSConfigurationException("cancel: missing parameter: url");
+      }
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("retval: {}", retval);
       }
       return retval;
    }
    
-   public static CancelResponse execute(final ClientConfig config, final CancelRequest request) {
-      CancelResponse retval = null;
+   public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("config: {}, request: {}", config, request);
+      }
+      ModificationResponse retval = null;
       // create the request
       Request req = createRequest(config, request);
       // create an Executor
@@ -90,49 +102,44 @@ public class Cancel {
       // execute and handle
       try {
          retval = exec.execute(req).handleResponse(
-            new ResponseHandler<CancelResponse>() {
-               public CancelResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-                  CancelResponse retval = new CancelResponse();
+            new ResponseHandler<ModificationResponse>() {
+               public ModificationResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                  ModificationResponse retval = null;
                   StatusLine status = response.getStatusLine();
                   HttpEntity entity = response.getEntity();
                   if(entity == null) {
+                     LOG.error("blank: cancel response");
                      throw new ClientProtocolException("blank: cancel response");
                   }
-                  /*switch(status.getStatusCode()) {
+                  switch(status.getStatusCode()) {
                   case HttpStatus.SC_OK:
-                     break;
                   case HttpStatus.SC_BAD_REQUEST:
-                     break;
                   case HttpStatus.SC_UNAUTHORIZED:
-                     break;
                   case HttpStatus.SC_FORBIDDEN:
-                     break;
                   case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-                     break;
-                  case HttpStatus.SC_INTERNAL_SERVER_ERROR:
+                     retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), ModificationResponse.class);
                      break;
                   default:
+                     retval = new ModificationResponse();
+                     retval.setStatus(status.getStatusCode());
+                     retval.setMessage("Unexpected error: " + status.getStatusCode());
                   }
-                  if(status.getStatusCode() != 200) {
-                     String content = null;
-                     if(entity != null) {
-                        try {
-                           content = IOUtils.toString(new InputStreamReader(entity.getContent()));
-                        } catch(Exception e) {
-                           ;
-                        }
-                     }
-                     String reason = StringUtils.isNotBlank(content) ? status.getReasonPhrase() + " [" + content + "]"
-                           : status.getReasonPhrase();
-                     throw new HttpResponseException(status.getStatusCode(), reason);
-                  }*/
-                  retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), CancelResponse.class);
+                  if(status.getStatusCode() != HttpStatus.SC_OK) {
+                     LOG.warn("unable to process request: {}", status.getStatusCode());
+                  }
+                  if(LOG.isDebugEnabled()) {
+                     LOG.debug("retval: {}", retval);
+                  }
                   return retval;
                }
             }
          );
       } catch(Exception e) {
+         LOG.error("cancel", e);
          throw new APSAccessException("cancel", e);
+      }
+      if(LOG.isDebugEnabled()) {
+         LOG.debug("retval: {}", retval);
       }
       return retval;
    }
