@@ -42,40 +42,40 @@ aps.merchant.password=&$#bar))>
 
 ###Capture
 ```java
-   CaptureRequest captureRequest = CaptureRequestBuilder
+   ModificationRequest captureRequest = ModificationRequestBuilder
       .merchantAccount(merchantAccount)
       .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
       .originalReference(paymentResponse.getPspReference())
       .reference(reference(ReferenceType.UUID))
       .build();
-   CaptureResponse captureResponse = client.capture(captureRequest);
+   ModificationResponse captureResponse = client.capture(captureRequest);
 ```
 
 ###Cancel/Refund
 ```java
-   CancelRequest cancelRequest = CancelRequestBuilder
+   ModificationRequest cancelRequest = ModificationRequestBuilder
       .merchantAccount(merchantAccount)
       .originalReference(paymentResponse.getPspReference())
       .reference(reference(ReferenceType.UUID))
       .build();
-   CancelResponse cancelResponse = client.cancel(cancelRequest);
+   ModificationResponse cancelResponse = client.cancel(cancelRequest);
 ```
 ```java
-   RefundRequest refundRequest = RefundRequestBuilder
+   ModificationRequest refundRequest = ModificationRequestBuilder
       .merchantAccount(merchantAccount)
       .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
       .originalReference(paymentResponse.getPspReference())
       .reference(reference(ReferenceType.UUID))
       .build();
-   RefundResponse refundResponse = client.refund(refundRequest);
+   ModificationResponse refundResponse = client.refund(refundRequest);
 ```
 ```java
-   CancelOrRefundRequest cancelOrRefundRequest = CancelOrRefundRequestBuilder
+   ModificationRequest cancelOrRefundRequest = ModificationRequestBuilder
        .merchantAccount(merchantAccount)
        .originalReference(paymentResponse.getPspReference())
        .reference(reference(ReferenceType.UUID))
        .build();
-   CancelOrRefundResponse cancelOrRefundResponse = client.cancelOrRefund(cancelOrRefundRequest);
+   ModificationResponse cancelOrRefundResponse = client.cancelOrRefund(cancelOrRefundRequest);
 ```
 
 ###Other

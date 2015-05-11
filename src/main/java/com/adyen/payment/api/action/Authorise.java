@@ -104,6 +104,9 @@ public class Authorise {
 			LOG.error("authorisation", e);
 			throw new APSAccessException("authorization", e);
 		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("retval: {}", retval);
+		}
 		return retval;
 	}
 }

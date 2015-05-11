@@ -34,6 +34,7 @@ import org.boon.json.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentResponse;
 
 /**
@@ -75,6 +76,25 @@ public class ActionUtil {
 					PaymentResponse.class);
 		} else {
 			retval = new PaymentResponse();
+			retval.setStatus(httpOutcome.statusCode);
+			retval.setMessage(httpOutcome.message);
+		}
+		if (httpOutcome.statusCode != HttpStatus.SC_OK) {
+			LOG.warn("unable to process request: {}",
+					httpOutcome.statusCode);
+		}
+		return retval;
+	}
+	
+	public static ModificationResponse handleModificationResponse(final HttpResponse response)
+			throws ClientProtocolException, IOException {
+		ModificationResponse retval = null;
+		HttpOutcome httpOutcome = handleHttpResponse(response);
+		if(httpOutcome.content != null) {
+			retval = MAPPER.fromJson(httpOutcome.content,
+					ModificationResponse.class);
+		} else {
+			retval = new ModificationResponse();
 			retval.setStatus(httpOutcome.statusCode);
 			retval.setMessage(httpOutcome.message);
 		}

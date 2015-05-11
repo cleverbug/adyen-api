@@ -16,23 +16,14 @@
  */
 package com.adyen.payment.api.action;
 
-import static org.apache.http.client.fluent.Request.Post;
-
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +41,6 @@ import com.adyen.payment.api.model.ModificationResponse;
 public class CancelOrRefund {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(CancelOrRefund.class);
-	private static final ObjectMapper MAPPER = JsonFactory.create();
 
 	private static Request createRequest(final ClientConfig config,
 			final ModificationRequest request) {
@@ -69,20 +59,8 @@ public class CancelOrRefund {
 					"cancelOrRefund: missing parameter: url");
 		}
 		if (StringUtils.isNotBlank(url)) {
-			retval = Post(url);
-			// configure conn timeout
-			if (config.getConnectionTimeout() > 0) {
-				retval.connectTimeout(config.getConnectionTimeout());
-			}
-			// configure socket timeout
-			if (config.getSocketTimeout() > 0) {
-				retval.socketTimeout(config.getSocketTimeout());
-			}
-			// add json
-			retval.addHeader("Accept", "application/json");
-			// add content
-			retval.bodyString(MAPPER.toJson(request),
-					ContentType.APPLICATION_JSON);
+			retval = ActionUtil.createPost(url, config.getConnectionTimeout(), 
+					config.getSocketTimeout(), config.getProxyUser(), request);
 		} else {
 			LOG.error("cancelOrRefund: missing parameter: url");
 			throw new APSConfigurationException(
@@ -113,38 +91,11 @@ public class CancelOrRefund {
 						public ModificationResponse handleResponse(
 								HttpResponse response)
 								throws ClientProtocolException, IOException {
-							ModificationResponse retval = null;
-							StatusLine status = response.getStatusLine();
-							HttpEntity entity = response.getEntity();
-							if (entity == null) {
-								LOG.error("blank: cancelOrRefund response");
-								throw new ClientProtocolException(
-										"blank: cancelOrRefund response");
-							}
-							switch (status.getStatusCode()) {
-							case HttpStatus.SC_OK:
-							case HttpStatus.SC_BAD_REQUEST:
-							case HttpStatus.SC_UNAUTHORIZED:
-							case HttpStatus.SC_FORBIDDEN:
-							case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-								retval = MAPPER.fromJson(new InputStreamReader(
-										entity.getContent()),
-										ModificationResponse.class);
-								break;
-							default:
-								retval = new ModificationResponse();
-								retval.setStatus(status.getStatusCode());
-								retval.setMessage("Unexpected error: "
-										+ status.getStatusCode());
-							}
-							if (status.getStatusCode() != HttpStatus.SC_OK) {
-								LOG.warn("unable to process request: {}",
-										status.getStatusCode());
-							}
+							ModificationResponse modres = ActionUtil.handleModificationResponse(response);
 							if (LOG.isDebugEnabled()) {
-								LOG.debug("retval: {}", retval);
+								LOG.debug("modres: {}", modres);
 							}
-							return retval;
+							return modres;
 						}
 					});
 		} catch (Exception e) {
