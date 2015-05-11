@@ -48,99 +48,110 @@ import com.adyen.payment.api.model.ModificationResponse;
  *
  */
 public class Refund {
-   private static final Logger LOG = LoggerFactory.getLogger(Refund.class);
-   private static final ObjectMapper MAPPER = JsonFactory.create();
-   
-   private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("config: {}, request: {}", config, request);
-      }
-      Request retval = null;
-      String url;
-      // create a Post
-      try {
-         url = config.getServices().get(APService.REFUND).toString();
-      } catch(Exception e) {
-         LOG.error("refund: missing parameter: url");
-         throw new APSConfigurationException("refund: missing parameter: url");
-      }
-      if(StringUtils.isNotBlank(url)) {
-         retval = Post(url);
-         // configure conn timeout
-         if(config.getConnectionTimeout() > 0) {
-            retval.connectTimeout(config.getConnectionTimeout());
-         }
-         // configure socket timeout
-         if(config.getSocketTimeout() > 0) {
-            retval.socketTimeout(config.getSocketTimeout());
-         }
-         // add json
-         retval.addHeader("Accept", "application/json");
-         // add content
-         retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
-      } else {
-         LOG.error("refund: missing parameter: url");
-         throw new APSConfigurationException("refund: missing parameter: url");
-      }
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("retval: {}", retval);
-      }
-      return retval;
-   }
-   
-   public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("config: {}, request: {}", config, request);
-      }
-      ModificationResponse retval = null;
-      // create the request
-      Request req = createRequest(config, request);
-      // create an Executor
-      Executor exec = Executor.newInstance();
-      // add auth
-      exec.auth(config.getUsername(), config.getPassword());
-      // execute and handle
-      try {
-         retval = exec.execute(req).handleResponse(
-            new ResponseHandler<ModificationResponse>() {
-               public ModificationResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-                  ModificationResponse retval = null;
-                  StatusLine status = response.getStatusLine();
-                  HttpEntity entity = response.getEntity();
-                  if(entity == null) {
-                     LOG.error("blank: refund response");
-                     throw new ClientProtocolException("blank: refund response");
-                  }
-                  switch(status.getStatusCode()) {
-                  case HttpStatus.SC_OK:
-                  case HttpStatus.SC_BAD_REQUEST:
-                  case HttpStatus.SC_UNAUTHORIZED:
-                  case HttpStatus.SC_FORBIDDEN:
-                  case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-                     retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), ModificationResponse.class);
-                     break;
-                  default:
-                     retval = new ModificationResponse();
-                     retval.setStatus(status.getStatusCode());
-                     retval.setMessage("Unexpected error: " + status.getStatusCode());
-                  }
-                  if(status.getStatusCode() != HttpStatus.SC_OK) {
-                     LOG.warn("unable to process request: {}", status.getStatusCode());
-                  }
-                  if(LOG.isDebugEnabled()) {
-                     LOG.debug("retval: {}", retval);
-                  }
-                  return retval;
-               }
-            }
-         );
-      } catch(Exception e) {
-         LOG.error("refund", e);
-         throw new APSAccessException("refund", e);
-      }
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("retval: {}", retval);
-      }
-      return retval;
-   }
+	private static final Logger LOG = LoggerFactory.getLogger(Refund.class);
+	private static final ObjectMapper MAPPER = JsonFactory.create();
+
+	private static Request createRequest(final ClientConfig config,
+			final ModificationRequest request) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("config: {}, request: {}", config, request);
+		}
+		Request retval = null;
+		String url;
+		// create a Post
+		try {
+			url = config.getServices().get(APService.REFUND).toString();
+		} catch (Exception e) {
+			LOG.error("refund: missing parameter: url");
+			throw new APSConfigurationException(
+					"refund: missing parameter: url");
+		}
+		if (StringUtils.isNotBlank(url)) {
+			retval = Post(url);
+			// configure conn timeout
+			if (config.getConnectionTimeout() > 0) {
+				retval.connectTimeout(config.getConnectionTimeout());
+			}
+			// configure socket timeout
+			if (config.getSocketTimeout() > 0) {
+				retval.socketTimeout(config.getSocketTimeout());
+			}
+			// add json
+			retval.addHeader("Accept", "application/json");
+			// add content
+			retval.bodyString(MAPPER.toJson(request),
+					ContentType.APPLICATION_JSON);
+		} else {
+			LOG.error("refund: missing parameter: url");
+			throw new APSConfigurationException(
+					"refund: missing parameter: url");
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("retval: {}", retval);
+		}
+		return retval;
+	}
+
+	public static ModificationResponse execute(final ClientConfig config,
+			final ModificationRequest request) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("config: {}, request: {}", config, request);
+		}
+		ModificationResponse retval = null;
+		// create the request
+		Request req = createRequest(config, request);
+		// create an Executor
+		Executor exec = Executor.newInstance();
+		// add auth
+		exec.auth(config.getUsername(), config.getPassword());
+		// execute and handle
+		try {
+			retval = exec.execute(req).handleResponse(
+					new ResponseHandler<ModificationResponse>() {
+						public ModificationResponse handleResponse(
+								HttpResponse response)
+								throws ClientProtocolException, IOException {
+							ModificationResponse retval = null;
+							StatusLine status = response.getStatusLine();
+							HttpEntity entity = response.getEntity();
+							if (entity == null) {
+								LOG.error("blank: refund response");
+								throw new ClientProtocolException(
+										"blank: refund response");
+							}
+							switch (status.getStatusCode()) {
+							case HttpStatus.SC_OK:
+							case HttpStatus.SC_BAD_REQUEST:
+							case HttpStatus.SC_UNAUTHORIZED:
+							case HttpStatus.SC_FORBIDDEN:
+							case HttpStatus.SC_UNPROCESSABLE_ENTITY:
+								retval = MAPPER.fromJson(new InputStreamReader(
+										entity.getContent()),
+										ModificationResponse.class);
+								break;
+							default:
+								retval = new ModificationResponse();
+								retval.setStatus(status.getStatusCode());
+								retval.setMessage("Unexpected error: "
+										+ status.getStatusCode());
+							}
+							if (status.getStatusCode() != HttpStatus.SC_OK) {
+								LOG.warn("unable to process request: {}",
+										status.getStatusCode());
+							}
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("retval: {}", retval);
+							}
+							return retval;
+						}
+					});
+		} catch (Exception e) {
+			LOG.error("refund", e);
+			throw new APSAccessException("refund", e);
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("retval: {}", retval);
+		}
+		return retval;
+	}
 }

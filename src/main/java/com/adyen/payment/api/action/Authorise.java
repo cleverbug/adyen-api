@@ -16,23 +16,14 @@
  */
 package com.adyen.payment.api.action;
 
-import static org.apache.http.client.fluent.Request.Post;
-
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.entity.ContentType;
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,97 +39,71 @@ import com.adyen.payment.api.model.PaymentResponse;
  *
  */
 public class Authorise {
-   private static final Logger LOG = LoggerFactory.getLogger(Authorise.class);
-   private static final ObjectMapper MAPPER = JsonFactory.create();
-   
-   private static Request createRequest(final ClientConfig config, final PaymentRequest request, boolean secure) {
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
-      }
-      Request retval = null;
-      String url;
-      // create a Post
-      try {
-         url = secure ? config.getServices().get(APService.AUTHORISATION_3D).toString()
-            : config.getServices().get(APService.AUTHORISATION).toString();
-      } catch(Exception e) {
-         LOG.error("authorisation: missing parameter: url");
-         throw new APSConfigurationException("authorisation: missing parameter: url");
-      }
-      if(StringUtils.isNotBlank(url)) {
-         retval = Post(url);
-         // configure conn timeout
-         if(config.getConnectionTimeout() > 0) {
-            retval.connectTimeout(config.getConnectionTimeout());
-         }
-         // configure socket timeout
-         if(config.getSocketTimeout() > 0) {
-            retval.socketTimeout(config.getSocketTimeout());
-         }
-         // add json
-         retval.addHeader("Accept", "application/json");
-         // add content
-         retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
-      } else {
-         LOG.error("authorisation: missing parameter: url");
-         throw new APSConfigurationException("authorisation: missing parameter: url");
-      }
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("retval: {}", retval);
-      }
-      return retval;
-   }
-   
-   public static PaymentResponse execute(final ClientConfig config, final PaymentRequest request, boolean secure) {
-      if(LOG.isDebugEnabled()) {
-         LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
-      }
-      PaymentResponse retval = null;
-      // create the request
-      Request req = createRequest(config, request, secure);
-      // create an Executor
-      Executor exec = Executor.newInstance();
-      // add auth
-      exec.auth(config.getUsername(), config.getPassword());
-      // execute and handle
-      try {
-         retval = exec.execute(req).handleResponse(
-            new ResponseHandler<PaymentResponse>() {
-               public PaymentResponse handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-                  PaymentResponse retval = null;
-                  StatusLine status = response.getStatusLine();
-                  HttpEntity entity = response.getEntity();
-                  if(entity == null) {
-                     LOG.error("blank: authorisation response");
-                     throw new ClientProtocolException("blank: authorisation response");
-                  }
-                  switch(status.getStatusCode()) {
-                  case HttpStatus.SC_OK:
-                  case HttpStatus.SC_BAD_REQUEST:
-                  case HttpStatus.SC_UNAUTHORIZED:
-                  case HttpStatus.SC_FORBIDDEN:
-                  case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-                     retval = MAPPER.fromJson(new InputStreamReader(entity.getContent()), PaymentResponse.class);
-                     break;
-                  default:
-                     retval = new PaymentResponse();
-                     retval.setStatus(status.getStatusCode());
-                     retval.setMessage("Unexpected error: " + status.getStatusCode());
-                  }
-                  if(status.getStatusCode() != HttpStatus.SC_OK) {
-                     LOG.warn("unable to process request: {}", status.getStatusCode());
-                  }
-                  if(LOG.isDebugEnabled()) {
-                     LOG.debug("retval: {}", retval);
-                  }
-                  return retval;
-               }
-            }
-         );
-      } catch(Exception e) {
-         LOG.error("authorisation", e);
-         throw new APSAccessException("authorization", e);
-      }
-      return retval;
-   }
+	private static final Logger LOG = LoggerFactory.getLogger(Authorise.class);
+
+	private static Request createRequest(final ClientConfig config,
+			final PaymentRequest request, boolean secure) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("config: {}, request: {}, secure: {}", config, request,
+					secure);
+		}
+		Request retval = null;
+		String url;
+		// create a Post
+		try {
+			url = secure ? config.getServices().get(APService.AUTHORISATION_3D)
+					.toString() : config.getServices()
+					.get(APService.AUTHORISATION).toString();
+		} catch (Exception e) {
+			LOG.error("authorisation: missing parameter: url");
+			throw new APSConfigurationException(
+					"authorisation: missing parameter: url");
+		}
+		if (StringUtils.isNotBlank(url)) {
+			retval = ActionUtil.createPost(url, config.getConnectionTimeout(), 
+					config.getSocketTimeout(), config.getProxyUser(), request);
+		} else {
+			LOG.error("authorisation: missing parameter: url");
+			throw new APSConfigurationException(
+					"authorisation: missing parameter: url");
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("retval: {}", retval);
+		}
+		return retval;
+	}
+
+	public static PaymentResponse execute(final ClientConfig config,
+			final PaymentRequest request, boolean secure) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("config: {}, request: {}, secure: {}", config, request,
+					secure);
+		}
+		PaymentResponse retval = null;
+		// create the request
+		Request req = createRequest(config, request, secure);
+		// create an Executor
+		Executor exec = Executor.newInstance();
+		// add auth
+		exec.auth(config.getUsername(), config.getPassword());
+		// execute and handle
+		try {
+			retval = exec.execute(req).handleResponse(
+					new ResponseHandler<PaymentResponse>() {
+						public PaymentResponse handleResponse(
+								HttpResponse response)
+								throws ClientProtocolException, IOException {
+							PaymentResponse payres = ActionUtil.handlePaymentResponse(response);
+							if (LOG.isDebugEnabled()) {
+								LOG.debug("payres: {}", payres);
+							}
+							return payres;
+						}
+					});
+		} catch (Exception e) {
+			LOG.error("authorisation", e);
+			throw new APSAccessException("authorization", e);
+		}
+		return retval;
+	}
 }

@@ -24,62 +24,66 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class BrowserInfo implements Serializable {
-   private String userAgent;
-   private String acceptHeader;
-   
-   public BrowserInfo() {
-   }
-   
-   public BrowserInfo(String userAgent, String acceptHeader) {
-      this.userAgent = userAgent;
-      this.acceptHeader = acceptHeader;
-   }
+	private String userAgent;
+	private String acceptHeader;
 
-   /**
-    * @return the userAgent
-    */
-   public String getUserAgent() {
-      return userAgent;
-   }
+	public BrowserInfo() {
+	}
 
-   /**
-    * @param userAgent the userAgent to set
-    */
-   public void setUserAgent(String userAgent) {
-      this.userAgent = userAgent;
-   }
+	public BrowserInfo(String userAgent, String acceptHeader) {
+		this.userAgent = userAgent;
+		this.acceptHeader = acceptHeader;
+	}
 
-   /**
-    * @return the acceptHeader
-    */
-   public String getAcceptHeader() {
-      return acceptHeader;
-   }
+	/**
+	 * @return the userAgent
+	 */
+	public String getUserAgent() {
+		return userAgent;
+	}
 
-   /**
-    * @param acceptHeader the acceptHeader to set
-    */
-   public void setAcceptHeader(String acceptHeader) {
-      this.acceptHeader = acceptHeader;
-   }
+	/**
+	 * @param userAgent
+	 *            the userAgent to set
+	 */
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
+	}
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString() {
-      StringBuilder builder = new StringBuilder();
-      builder.append("BrowserInfo [");
-      if (userAgent != null) {
-         builder.append("userAgent=");
-         builder.append(userAgent);
-         builder.append(", ");
-      }
-      if (acceptHeader != null) {
-         builder.append("acceptHeader=");
-         builder.append(acceptHeader);
-      }
-      builder.append("]");
-      return builder.toString();
-   }
+	/**
+	 * @return the acceptHeader
+	 */
+	public String getAcceptHeader() {
+		return acceptHeader;
+	}
+
+	/**
+	 * @param acceptHeader
+	 *            the acceptHeader to set
+	 */
+	public void setAcceptHeader(String acceptHeader) {
+		this.acceptHeader = acceptHeader;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("BrowserInfo [");
+		if (userAgent != null) {
+			builder.append("userAgent=");
+			builder.append(userAgent);
+			builder.append(", ");
+		}
+		if (acceptHeader != null) {
+			builder.append("acceptHeader=");
+			builder.append(acceptHeader);
+		}
+		builder.append("]");
+		return builder.toString();
+	}
 }

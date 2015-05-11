@@ -28,106 +28,112 @@ import java.util.Map;
  */
 @SuppressWarnings("serial")
 public class ModificationResponse extends Error implements Serializable {
-   private Map<String, String> additionalData = new HashMap<String, String>();
-   private String pspReference;
-   private String response;
-   
-   public ModificationResponse() {
-   }
+	private Map<String, String> additionalData = new HashMap<String, String>();
+	private String pspReference;
+	private String response;
 
-   /**
-    * @return the pspReference
-    */
-   public String getPspReference() {
-      return pspReference;
-   }
+	public ModificationResponse() {
+	}
 
-   /**
-    * @param pspReference the pspReference to set
-    */
-   public void setPspReference(String pspReference) {
-      this.pspReference = pspReference;
-   }
+	/**
+	 * @return the pspReference
+	 */
+	public String getPspReference() {
+		return pspReference;
+	}
 
-   /**
-    * @return the response
-    */
-   public String getResponse() {
-      return response;
-   }
+	/**
+	 * @param pspReference
+	 *            the pspReference to set
+	 */
+	public void setPspReference(String pspReference) {
+		this.pspReference = pspReference;
+	}
 
-   /**
-    * @param response the response to set
-    */
-   public void setResponse(String response) {
-      this.response = response;
-   }
+	/**
+	 * @return the response
+	 */
+	public String getResponse() {
+		return response;
+	}
 
-   /**
-    * @return the additionalData
-    */
-   public Map<String, String> getAdditionalData() {
-      return additionalData;
-   }
+	/**
+	 * @param response
+	 *            the response to set
+	 */
+	public void setResponse(String response) {
+		this.response = response;
+	}
 
-   /**
-    * @param additionalData the additionalData to set
-    */
-   public void setAdditionalData(Map<String, String> additionalData) {
-      this.additionalData = additionalData;
-   }
+	/**
+	 * @return the additionalData
+	 */
+	public Map<String, String> getAdditionalData() {
+		return additionalData;
+	}
 
-   private String toString(Collection<?> collection, int maxLen) {
-      StringBuilder builder = new StringBuilder();
-      builder.append("[");
-      int i = 0;
-      for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
-         if (i > 0)
-            builder.append(", ");
-         builder.append(iterator.next());
-      }
-      builder.append("]");
-      return builder.toString();
-   }
+	/**
+	 * @param additionalData
+	 *            the additionalData to set
+	 */
+	public void setAdditionalData(Map<String, String> additionalData) {
+		this.additionalData = additionalData;
+	}
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString() {
-      final int maxLen = 10;
-      StringBuilder builder = new StringBuilder();
-      builder.append("ModificationResponse [");
-      if (additionalData != null) {
-         builder.append("additionalData=");
-         builder.append(toString(additionalData.entrySet(), maxLen));
-         builder.append(", ");
-      }
-      if (pspReference != null) {
-         builder.append("pspReference=");
-         builder.append(pspReference);
-         builder.append(", ");
-      }
-      if (response != null) {
-         builder.append("response=");
-         builder.append(response);
-         builder.append(", ");
-      }
-      builder.append("status=");
-      builder.append(status);
-      builder.append(", errorCode=");
-      builder.append(errorCode);
-      builder.append(", ");
-      if (message != null) {
-         builder.append("message=");
-         builder.append(message);
-         builder.append(", ");
-      }
-      if (errorType != null) {
-         builder.append("errorType=");
-         builder.append(errorType);
-      }
-      builder.append("]");
-      return builder.toString();
-   }
+	private String toString(Collection<?> collection, int maxLen) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		int i = 0;
+		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext()
+				&& i < maxLen; i++) {
+			if (i > 0)
+				builder.append(", ");
+			builder.append(iterator.next());
+		}
+		builder.append("]");
+		return builder.toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		final int maxLen = 10;
+		StringBuilder builder = new StringBuilder();
+		builder.append("ModificationResponse [");
+		if (additionalData != null) {
+			builder.append("additionalData=");
+			builder.append(toString(additionalData.entrySet(), maxLen));
+			builder.append(", ");
+		}
+		if (pspReference != null) {
+			builder.append("pspReference=");
+			builder.append(pspReference);
+			builder.append(", ");
+		}
+		if (response != null) {
+			builder.append("response=");
+			builder.append(response);
+			builder.append(", ");
+		}
+		builder.append("status=");
+		builder.append(status);
+		builder.append(", errorCode=");
+		builder.append(errorCode);
+		builder.append(", ");
+		if (message != null) {
+			builder.append("message=");
+			builder.append(message);
+			builder.append(", ");
+		}
+		if (errorType != null) {
+			builder.append("errorType=");
+			builder.append(errorType);
+		}
+		builder.append("]");
+		return builder.toString();
+	}
 }

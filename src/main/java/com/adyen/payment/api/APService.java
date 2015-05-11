@@ -21,10 +21,5 @@ package com.adyen.payment.api;
  *
  */
 public enum APService {
-   AUTHORISATION,
-   AUTHORISATION_3D,
-   CAPTURE,
-   REFUND,
-   CANCEL,
-   CANCEL_OR_REFUND;
+	AUTHORISATION, AUTHORISATION_3D, CAPTURE, REFUND, CANCEL, CANCEL_OR_REFUND;
 }

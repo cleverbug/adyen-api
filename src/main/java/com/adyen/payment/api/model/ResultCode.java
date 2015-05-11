@@ -21,9 +21,5 @@ package com.adyen.payment.api.model;
  *
  */
 public enum ResultCode {
-   Authorised,
-   Refused,
-   Error,
-   Received,
-   RedirectShopper;
+	Authorised, Refused, Error, Received, RedirectShopper;
 }

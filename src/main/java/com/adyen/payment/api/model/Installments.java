@@ -24,38 +24,41 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class Installments implements Serializable {
-   private int value;
-   
-   public Installments() {
-   }
-   
-   public Installments(int value) {
-      this.value = value;
-   }
+	private int value;
 
-   /**
-    * @return the value
-    */
-   public int getValue() {
-      return value;
-   }
+	public Installments() {
+	}
 
-   /**
-    * @param value the value to set
-    */
-   public void setValue(int value) {
-      this.value = value;
-   }
+	public Installments(int value) {
+		this.value = value;
+	}
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString() {
-      StringBuilder builder = new StringBuilder();
-      builder.append("Installments [value=");
-      builder.append(value);
-      builder.append("]");
-      return builder.toString();
-   }
+	/**
+	 * @return the value
+	 */
+	public int getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value
+	 *            the value to set
+	 */
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Installments [value=");
+		builder.append(value);
+		builder.append("]");
+		return builder.toString();
+	}
 }

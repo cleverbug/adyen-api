@@ -27,61 +27,65 @@ import org.boon.json.annotations.JsonInclude;
  */
 @SuppressWarnings("serial")
 public class Amount implements Serializable {
-   private Currency currency;
-   @JsonInclude
-   private long value;
-   
-   public Amount() {
-   }
-   
-   public Amount(Currency currency, long value) {
-      this.currency = currency;
-      this.value = value;
-   }
+	private Currency currency;
+	@JsonInclude
+	private long value;
 
-   /**
-    * @return the currency
-    */
-   public Currency getCurrency() {
-      return currency;
-   }
+	public Amount() {
+	}
 
-   /**
-    * @param currency the currency to set
-    */
-   public void setCurrency(Currency currency) {
-      this.currency = currency;
-   }
+	public Amount(Currency currency, long value) {
+		this.currency = currency;
+		this.value = value;
+	}
 
-   /**
-    * @return the value
-    */
-   public long getValue() {
-      return value;
-   }
+	/**
+	 * @return the currency
+	 */
+	public Currency getCurrency() {
+		return currency;
+	}
 
-   /**
-    * @param value the value to set
-    */
-   public void setValue(long value) {
-      this.value = value;
-   }
+	/**
+	 * @param currency
+	 *            the currency to set
+	 */
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString() {
-      StringBuilder builder = new StringBuilder();
-      builder.append("Amount [");
-      if (currency != null) {
-         builder.append("currency=");
-         builder.append(currency);
-         builder.append(", ");
-      }
-      builder.append("value=");
-      builder.append(value);
-      builder.append("]");
-      return builder.toString();
-   }
+	/**
+	 * @return the value
+	 */
+	public long getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value
+	 *            the value to set
+	 */
+	public void setValue(long value) {
+		this.value = value;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Amount [");
+		if (currency != null) {
+			builder.append("currency=");
+			builder.append(currency);
+			builder.append(", ");
+		}
+		builder.append("value=");
+		builder.append(value);
+		builder.append("]");
+		return builder.toString();
+	}
 }

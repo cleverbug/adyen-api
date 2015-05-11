@@ -28,67 +28,73 @@ import com.adyen.payment.api.model.PaymentResponse;
  *
  */
 public interface IClient {
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   PaymentResponse authorise(final PaymentRequest request);
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   PaymentResponse authorise3ds(final PaymentRequest request);
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   PaymentResponse verifyBin(final PaymentRequest request);
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   ModificationResponse capture(ModificationRequest request);
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   ModificationResponse cancel(ModificationRequest request);
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   ModificationResponse refund(ModificationRequest request);
-   /**
-    * 
-    * @param request
-    * @return
-    * @throws IllegalArgumentException
-    * @throws APSConfigurationException
-    * @throws APSAccessException
-    */
-   ModificationResponse cancelOrRefund(ModificationRequest request);
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	PaymentResponse authorise(final PaymentRequest request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	PaymentResponse authorise3ds(final PaymentRequest request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	PaymentResponse verifyBin(final PaymentRequest request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	ModificationResponse capture(ModificationRequest request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	ModificationResponse cancel(ModificationRequest request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	ModificationResponse refund(ModificationRequest request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws APSConfigurationException
+	 * @throws APSAccessException
+	 */
+	ModificationResponse cancelOrRefund(ModificationRequest request);
 }

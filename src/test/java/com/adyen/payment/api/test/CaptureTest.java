@@ -47,47 +47,50 @@ import com.adyen.payment.api.model.ShopperInteraction;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes=TestApp.class)
+@SpringApplicationConfiguration(classes = TestApp.class)
 public class CaptureTest {
-   @Value("${aps.merchant.account}") String merchantAccount;
-   @Value("${aps.merchant.username}") String username;
-   @Value("${aps.merchant.password}") String password;
-   
-   Client client;
-   
-   @Before
-   public void setup() {
-      client = Client
-            .services(TEST_SERVICES)
-            .credentials(username, password)
-            .build();
-   }
-   
-   @After
-   public void tearDown() {
-      client = null;
-   }
-   
-   @Test
-   public void testCapture() {
-      PaymentRequest paymentRequest = PaymentRequestBuilder
-            .merchantAccount(merchantAccount)
-            .amount(new Amount(Currency.getInstance("EUR"), 1000L))
-            .card(CardBuilder.number("4111111111111111").cvc("737").expiry(2016, 6).holder("Johnny Tester Visa").build())
-            .reference(reference(ReferenceType.UUID))
-            .shopper("willian.oki@gmail.com", "127.0.0.1", "Test/DAPI/Capture/Willian Oki", ShopperInteraction.Ecommerce)
-            .build();
-      PaymentResponse paymentResponse = client.authorise(paymentRequest);
-      assertTrue(paymentResponse != null);
-      System.out.println(paymentResponse);
-      ModificationRequest captureRequest = ModificationRequestBuilder
-            .merchantAccount(merchantAccount)
-            .originalReference(paymentResponse.getPspReference())
-            .reference(reference(ReferenceType.UUID))
-            .modificationAmount(new Amount(Currency.getInstance("EUR"), 1000L))
-            .build();
-      ModificationResponse captureResponse = client.capture(captureRequest);
-      assertTrue(captureResponse != null);
-      System.out.println(captureResponse);
-   }
+	@Value("${aps.merchant.account}")
+	String merchantAccount;
+	@Value("${aps.merchant.username}")
+	String username;
+	@Value("${aps.merchant.password}")
+	String password;
+
+	Client client;
+
+	@Before
+	public void setup() {
+		client = Client.services(TEST_SERVICES).credentials(username, password)
+				.build();
+	}
+
+	@After
+	public void tearDown() {
+		client = null;
+	}
+
+	@Test
+	public void testCapture() {
+		PaymentRequest paymentRequest = PaymentRequestBuilder
+				.merchantAccount(merchantAccount)
+				.amount(new Amount(Currency.getInstance("EUR"), 1000L))
+				.card(CardBuilder.number("4111111111111111").cvc("737")
+						.expiry(2016, 6).holder("Johnny Tester Visa").build())
+				.reference(reference(ReferenceType.UUID))
+				.shopper("willian.oki@gmail.com", "127.0.0.1",
+						"Test/DAPI/Capture/Willian Oki",
+						ShopperInteraction.Ecommerce).build();
+		PaymentResponse paymentResponse = client.authorise(paymentRequest);
+		assertTrue(paymentResponse != null);
+		System.out.println(paymentResponse);
+		ModificationRequest captureRequest = ModificationRequestBuilder
+				.merchantAccount(merchantAccount)
+				.originalReference(paymentResponse.getPspReference())
+				.reference(reference(ReferenceType.UUID))
+				.modificationAmount(
+						new Amount(Currency.getInstance("EUR"), 1000L)).build();
+		ModificationResponse captureResponse = client.capture(captureRequest);
+		assertTrue(captureResponse != null);
+		System.out.println(captureResponse);
+	}
 }

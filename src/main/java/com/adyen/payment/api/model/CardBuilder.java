@@ -25,87 +25,100 @@ import org.apache.commons.lang3.StringUtils;
  *
  */
 public class CardBuilder {
-   private CardBuilder() {
-   }
-   
-   public static ICvc number(String number) {
-      return new Builder(number);
-   }
-   
-   public interface ICvc {
-      IExpiry cvc(String cvc);
-   }
-   
-   public interface IExpiry {
-      IHolder expiry(int year, int month);
-   }
-   
-   public interface IHolder {
-      IBuilder holder(String holder);
-   }
-   
-   public interface IBuilder {
-      Card build();
-   }
-   
-   private static class Builder implements IBuilder, ICvc, IExpiry, IHolder {
-      private Card card;
-      
-      Builder(String number) {
-         if(StringUtils.isNotBlank(number)) {
-            card = new Card();
-            card.setNumber(number);
-         } else {
-            throw new IllegalArgumentException("blank: number");
-         }
-      }
+	private CardBuilder() {
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.CardBuilder.IHolder#holder(java.lang.String)
-       */
-      @Override
-      public IBuilder holder(String holder) {
-         if(StringUtils.isNotBlank(holder)) {
-            card.setHolderName(holder);
-         } else {
-            throw new IllegalArgumentException("blank: holder");
-         }
-         return this;
-      }
+	public static ICvc number(String number) {
+		return new Builder(number);
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.CardBuilder.IExpiry#expiry(int, int)
-       */
-      @Override
-      public IHolder expiry(int year, int month) {
-         if(year >= Calendar.getInstance().get(Calendar.YEAR) && month > 0 && month < 13) {
-            card.setExpiryMonth(month);
-            card.setExpiryYear(year);
-         } else {
-            throw new IllegalArgumentException("invalid: expiry month/year: " + month + "/" + year);
-         }
-         return this;
-      }
+	public interface ICvc {
+		IExpiry cvc(String cvc);
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.CardBuilder.ICvc#cvc(java.lang.String)
-       */
-      @Override
-      public IExpiry cvc(String cvc) {
-         if(StringUtils.isNotBlank(cvc)) {
-            card.setCvc(cvc);
-         } else {
-            throw new IllegalArgumentException("blank: cvc");
-         }
-         return this;
-      }
+	public interface IExpiry {
+		IHolder expiry(int year, int month);
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.CardBuilder.IBuilder#build()
-       */
-      @Override
-      public Card build() {
-         return card;
-      }
-   }
+	public interface IHolder {
+		IBuilder holder(String holder);
+	}
+
+	public interface IBuilder {
+		Card build();
+	}
+
+	private static class Builder implements IBuilder, ICvc, IExpiry, IHolder {
+		private Card card;
+
+		Builder(String number) {
+			if (StringUtils.isNotBlank(number)) {
+				card = new Card();
+				card.setNumber(number);
+			} else {
+				throw new IllegalArgumentException("blank: number");
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.adyen.payment.api.model.CardBuilder.IHolder#holder(java.lang.
+		 * String)
+		 */
+		@Override
+		public IBuilder holder(String holder) {
+			if (StringUtils.isNotBlank(holder)) {
+				card.setHolderName(holder);
+			} else {
+				throw new IllegalArgumentException("blank: holder");
+			}
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.adyen.payment.api.model.CardBuilder.IExpiry#expiry(int, int)
+		 */
+		@Override
+		public IHolder expiry(int year, int month) {
+			if (year >= Calendar.getInstance().get(Calendar.YEAR) && month > 0
+					&& month < 13) {
+				card.setExpiryMonth(month);
+				card.setExpiryYear(year);
+			} else {
+				throw new IllegalArgumentException(
+						"invalid: expiry month/year: " + month + "/" + year);
+			}
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.adyen.payment.api.model.CardBuilder.ICvc#cvc(java.lang.String)
+		 */
+		@Override
+		public IExpiry cvc(String cvc) {
+			if (StringUtils.isNotBlank(cvc)) {
+				card.setCvc(cvc);
+			} else {
+				throw new IllegalArgumentException("blank: cvc");
+			}
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.adyen.payment.api.model.CardBuilder.IBuilder#build()
+		 */
+		@Override
+		public Card build() {
+			return card;
+		}
+	}
 }

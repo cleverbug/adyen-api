@@ -24,171 +24,181 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class Card implements Serializable {
-   private int expiryMonth;
-   private int expiryYear;
-   private String holderName;
-   private String number;
-   private String cvc;
-   private String issueNumber;
-   private String startMonth;
-   private String startYear;
-   
-   public Card() {
-   }
+	private int expiryMonth;
+	private int expiryYear;
+	private String holderName;
+	private String number;
+	private String cvc;
+	private String issueNumber;
+	private String startMonth;
+	private String startYear;
 
-   /**
-    * @return the expiryMonth
-    */
-   public int getExpiryMonth() {
-      return expiryMonth;
-   }
+	public Card() {
+	}
 
-   /**
-    * @param expiryMonth the expiryMonth to set
-    */
-   public void setExpiryMonth(int expiryMonth) {
-      this.expiryMonth = expiryMonth;
-   }
+	/**
+	 * @return the expiryMonth
+	 */
+	public int getExpiryMonth() {
+		return expiryMonth;
+	}
 
-   /**
-    * @return the expiryYear
-    */
-   public int getExpiryYear() {
-      return expiryYear;
-   }
+	/**
+	 * @param expiryMonth
+	 *            the expiryMonth to set
+	 */
+	public void setExpiryMonth(int expiryMonth) {
+		this.expiryMonth = expiryMonth;
+	}
 
-   /**
-    * @param expiryYear the expiryYear to set
-    */
-   public void setExpiryYear(int expiryYear) {
-      this.expiryYear = expiryYear;
-   }
+	/**
+	 * @return the expiryYear
+	 */
+	public int getExpiryYear() {
+		return expiryYear;
+	}
 
-   /**
-    * @return the holderName
-    */
-   public String getHolderName() {
-      return holderName;
-   }
+	/**
+	 * @param expiryYear
+	 *            the expiryYear to set
+	 */
+	public void setExpiryYear(int expiryYear) {
+		this.expiryYear = expiryYear;
+	}
 
-   /**
-    * @param holderName the holderName to set
-    */
-   public void setHolderName(String holderName) {
-      this.holderName = holderName;
-   }
+	/**
+	 * @return the holderName
+	 */
+	public String getHolderName() {
+		return holderName;
+	}
 
-   /**
-    * @return the number
-    */
-   public String getNumber() {
-      return number;
-   }
+	/**
+	 * @param holderName
+	 *            the holderName to set
+	 */
+	public void setHolderName(String holderName) {
+		this.holderName = holderName;
+	}
 
-   /**
-    * @param number the number to set
-    */
-   public void setNumber(String number) {
-      this.number = number;
-   }
+	/**
+	 * @return the number
+	 */
+	public String getNumber() {
+		return number;
+	}
 
-   /**
-    * @return the cvc
-    */
-   public String getCvc() {
-      return cvc;
-   }
+	/**
+	 * @param number
+	 *            the number to set
+	 */
+	public void setNumber(String number) {
+		this.number = number;
+	}
 
-   /**
-    * @param cvc the cvc to set
-    */
-   public void setCvc(String cvc) {
-      this.cvc = cvc;
-   }
+	/**
+	 * @return the cvc
+	 */
+	public String getCvc() {
+		return cvc;
+	}
 
-   /**
-    * @return the issueNumber
-    */
-   public String getIssueNumber() {
-      return issueNumber;
-   }
+	/**
+	 * @param cvc
+	 *            the cvc to set
+	 */
+	public void setCvc(String cvc) {
+		this.cvc = cvc;
+	}
 
-   /**
-    * @param issueNumber the issueNumber to set
-    */
-   public void setIssueNumber(String issueNumber) {
-      this.issueNumber = issueNumber;
-   }
+	/**
+	 * @return the issueNumber
+	 */
+	public String getIssueNumber() {
+		return issueNumber;
+	}
 
-   /**
-    * @return the startMonth
-    */
-   public String getStartMonth() {
-      return startMonth;
-   }
+	/**
+	 * @param issueNumber
+	 *            the issueNumber to set
+	 */
+	public void setIssueNumber(String issueNumber) {
+		this.issueNumber = issueNumber;
+	}
 
-   /**
-    * @param startMonth the startMonth to set
-    */
-   public void setStartMonth(String startMonth) {
-      this.startMonth = startMonth;
-   }
+	/**
+	 * @return the startMonth
+	 */
+	public String getStartMonth() {
+		return startMonth;
+	}
 
-   /**
-    * @return the startYear
-    */
-   public String getStartYear() {
-      return startYear;
-   }
+	/**
+	 * @param startMonth
+	 *            the startMonth to set
+	 */
+	public void setStartMonth(String startMonth) {
+		this.startMonth = startMonth;
+	}
 
-   /**
-    * @param startYear the startYear to set
-    */
-   public void setStartYear(String startYear) {
-      this.startYear = startYear;
-   }
+	/**
+	 * @return the startYear
+	 */
+	public String getStartYear() {
+		return startYear;
+	}
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString() {
-      StringBuilder builder = new StringBuilder();
-      builder.append("Card [expiryMonth=");
-      builder.append(expiryMonth);
-      builder.append(", expiryYear=");
-      builder.append(expiryYear);
-      builder.append(", ");
-      if (holderName != null) {
-         builder.append("holderName=");
-         builder.append(holderName);
-         builder.append(", ");
-      }
-      if (number != null) {
-         builder.append("number=");
-         builder.append(number);
-         builder.append(", ");
-      }
-      if (cvc != null) {
-         builder.append("cvc=");
-         builder.append(cvc);
-         builder.append(", ");
-      }
-      if (issueNumber != null) {
-         builder.append("issueNumber=");
-         builder.append(issueNumber);
-         builder.append(", ");
-      }
-      if (startMonth != null) {
-         builder.append("startMonth=");
-         builder.append(startMonth);
-         builder.append(", ");
-      }
-      if (startYear != null) {
-         builder.append("startYear=");
-         builder.append(startYear);
-      }
-      builder.append("]");
-      return builder.toString();
-   }
+	/**
+	 * @param startYear
+	 *            the startYear to set
+	 */
+	public void setStartYear(String startYear) {
+		this.startYear = startYear;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Card [expiryMonth=");
+		builder.append(expiryMonth);
+		builder.append(", expiryYear=");
+		builder.append(expiryYear);
+		builder.append(", ");
+		if (holderName != null) {
+			builder.append("holderName=");
+			builder.append(holderName);
+			builder.append(", ");
+		}
+		if (number != null) {
+			builder.append("number=");
+			builder.append(number);
+			builder.append(", ");
+		}
+		if (cvc != null) {
+			builder.append("cvc=");
+			builder.append(cvc);
+			builder.append(", ");
+		}
+		if (issueNumber != null) {
+			builder.append("issueNumber=");
+			builder.append(issueNumber);
+			builder.append(", ");
+		}
+		if (startMonth != null) {
+			builder.append("startMonth=");
+			builder.append(startMonth);
+			builder.append(", ");
+		}
+		if (startYear != null) {
+			builder.append("startYear=");
+			builder.append(startYear);
+		}
+		builder.append("]");
+		return builder.toString();
+	}
 }

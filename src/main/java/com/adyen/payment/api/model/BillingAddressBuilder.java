@@ -25,103 +25,122 @@ import com.neovisionaries.i18n.CountryCode;
  *
  */
 public class BillingAddressBuilder {
-   private BillingAddressBuilder() {
-   }
-   
-   public static INumber street(String street) {
-      return new Builder(street);
-   }
-   
-   public interface INumber {
-      IPostalCode numberOrName(String number);
-   }
-   
-   public interface IPostalCode {
-      IState city(String city);
-   }
-   
-   public interface IState {
-      ICountry state(String state);
-   }
-   
-   public interface ICountry {
-      IBuilder country(CountryCode country);
-   }
-   
-   public interface IBuilder {
-      BillingAddress build();
-   }
-   
-   private static class Builder implements IBuilder, INumber, IPostalCode, IState, ICountry {
-      private BillingAddress address;
-      
-      Builder(String street) {
-         if(StringUtils.isNotBlank(street)) {
-            address = new BillingAddress();
-            address.setStreet(street);
-         } else {
-            throw new IllegalArgumentException("blank: street");
-         }
-      }
-      
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.CardBuilder.IBuilder#build()
-       */
-      @Override
-      public BillingAddress build() {
-         return address;
-      }
+	private BillingAddressBuilder() {
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.BillingAddressBuilder.ICountry#country(com.neovisionaries.i18n.CountryCode)
-       */
-      @Override
-      public IBuilder country(CountryCode country) {
-         if(country != null) {
-            address.setCountry(country);
-         } else {
-            throw new IllegalArgumentException("blank: country");
-         }
-         return this;
-      }
+	public static INumber street(String street) {
+		return new Builder(street);
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.BillingAddressBuilder.IState#state(java.lang.String)
-       */
-      @Override
-      public ICountry state(String state) {
-         if(StringUtils.isNotBlank(state)) {
-            address.setStateOrProvince(state);
-         } else {
-            throw new IllegalArgumentException("blank: state");
-         }
-         return this;
-      }
+	public interface INumber {
+		IPostalCode numberOrName(String number);
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.BillingAddressBuilder.IPostalCode#city(java.lang.String)
-       */
-      @Override
-      public IState city(String city) {
-         if(StringUtils.isNotBlank(city)) {
-            address.setCity(city);
-         } else {
-            throw new IllegalArgumentException("blank: city");
-         }
-         return this;
-      }
+	public interface IPostalCode {
+		IState city(String city);
+	}
 
-      /* (non-Javadoc)
-       * @see com.adyen.payment.api.model.BillingAddressBuilder.INumber#numberOrName(java.lang.String)
-       */
-      @Override
-      public IPostalCode numberOrName(String number) {
-         if(StringUtils.isNotBlank(number)) {
-            address.setHouseNumberOrName(number);
-         } else {
-            throw new IllegalArgumentException("blank: number");
-         }
-         return null;
-      }
-   }
+	public interface IState {
+		ICountry state(String state);
+	}
+
+	public interface ICountry {
+		IBuilder country(CountryCode country);
+	}
+
+	public interface IBuilder {
+		BillingAddress build();
+	}
+
+	private static class Builder implements IBuilder, INumber, IPostalCode,
+			IState, ICountry {
+		private BillingAddress address;
+
+		Builder(String street) {
+			if (StringUtils.isNotBlank(street)) {
+				address = new BillingAddress();
+				address.setStreet(street);
+			} else {
+				throw new IllegalArgumentException("blank: street");
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.adyen.payment.api.model.CardBuilder.IBuilder#build()
+		 */
+		@Override
+		public BillingAddress build() {
+			return address;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.adyen.payment.api.model.BillingAddressBuilder.ICountry#country
+		 * (com.neovisionaries.i18n.CountryCode)
+		 */
+		@Override
+		public IBuilder country(CountryCode country) {
+			if (country != null) {
+				address.setCountry(country);
+			} else {
+				throw new IllegalArgumentException("blank: country");
+			}
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.adyen.payment.api.model.BillingAddressBuilder.IState#state(java
+		 * .lang.String)
+		 */
+		@Override
+		public ICountry state(String state) {
+			if (StringUtils.isNotBlank(state)) {
+				address.setStateOrProvince(state);
+			} else {
+				throw new IllegalArgumentException("blank: state");
+			}
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.adyen.payment.api.model.BillingAddressBuilder.IPostalCode#city
+		 * (java.lang.String)
+		 */
+		@Override
+		public IState city(String city) {
+			if (StringUtils.isNotBlank(city)) {
+				address.setCity(city);
+			} else {
+				throw new IllegalArgumentException("blank: city");
+			}
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.adyen.payment.api.model.BillingAddressBuilder.INumber#numberOrName
+		 * (java.lang.String)
+		 */
+		@Override
+		public IPostalCode numberOrName(String number) {
+			if (StringUtils.isNotBlank(number)) {
+				address.setHouseNumberOrName(number);
+			} else {
+				throw new IllegalArgumentException("blank: number");
+			}
+			return null;
+		}
+	}
 }

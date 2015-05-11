@@ -21,8 +21,5 @@ package com.adyen.payment.api.model;
  *
  */
 public enum ShopperInteraction {
-   Ecommerce,
-   ContAuth,
-   POS,
-   Moto;
+	Ecommerce, ContAuth, POS, Moto;
 }

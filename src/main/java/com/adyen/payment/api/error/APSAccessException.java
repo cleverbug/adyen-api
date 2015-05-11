@@ -23,11 +23,11 @@ package com.adyen.payment.api.error;
 @SuppressWarnings("serial")
 public class APSAccessException extends NestedRuntimeException {
 
-   public APSAccessException(String msg) {
-      super(msg);
-   }
-   
-   public APSAccessException(String msg, Throwable cause) {
-      super(msg, cause);
-   }
+	public APSAccessException(String msg) {
+		super(msg);
+	}
+
+	public APSAccessException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
 }
