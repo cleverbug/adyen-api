@@ -77,6 +77,17 @@ public class PaymentRequestBuilder {
 		IBuilder additionalAmount(Amount amount);
 
 		IBuilder installments(int value);
+		
+		// shopperLocale, telephoneNumber, shopperName, firstName, lastName, dateOfBirth, shopperStatement, socialSecurityNumber
+		// deliveryDate
+		// deliveryAddress
+		// captureDelayHours
+		// deviceFingerprint
+		// mpiData
+		// recurring
+		// dccQuote
+		// selectedRecurringDetailReference
+		// sessionId
 
 		PaymentRequest build();
 	}

@@ -18,6 +18,7 @@ package com.adyen.payment.api.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -35,6 +36,9 @@ public class PaymentRequest implements Serializable {
 	private String shopperIP;
 	private String shopperEmail;
 	private String shopperReference;
+	private String shopperLocale;
+	private String telephoneNumber;
+	private Name shopperName;
 	private int fraudOffset;
 	private int mcc;
 	private String merchantOrderReference;
@@ -47,6 +51,21 @@ public class PaymentRequest implements Serializable {
 	private String paResponse;
 	private BillingAddress billingAddress;
 	private Installments installments;
+	private BankAccount bankAccount;
+	private String deliveryDate;
+	private String deliveryAddress;
+	private String shopperStatement;
+	private String socialSecurityNumber;
+	private String firstName;
+	private String lastName;
+	private int captureDelayHours;
+	private Date dateOfBirth;
+	private String deviceFingerprint;
+	private ThreeDSecureData mpiData;
+	private Recurring recurring;
+	private ForexQuote dccQuote;
+	private String selectedRecurringDetailReference;
+	private String sessionId;
 
 	public PaymentRequest() {
 	}
@@ -336,6 +355,151 @@ public class PaymentRequest implements Serializable {
 		this.additionalAmount = additionalAmount;
 	}
 
+	public BankAccount getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
+	}
+
+	public String getShopperLocale() {
+		return shopperLocale;
+	}
+
+	public void setShopperLocale(String shopperLocale) {
+		this.shopperLocale = shopperLocale;
+	}
+
+	public String getTelephoneNumber() {
+		return telephoneNumber;
+	}
+
+	public void setTelephoneNumber(String telephoneNumber) {
+		this.telephoneNumber = telephoneNumber;
+	}
+
+	public Name getShopperName() {
+		return shopperName;
+	}
+
+	public void setShopperName(Name shopperName) {
+		this.shopperName = shopperName;
+	}
+
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public String getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public String getShopperStatement() {
+		return shopperStatement;
+	}
+
+	public void setShopperStatement(String shopperStatement) {
+		this.shopperStatement = shopperStatement;
+	}
+
+	public String getSocialSecurityNumber() {
+		return socialSecurityNumber;
+	}
+
+	public void setSocialSecurityNumber(String socialSecurityNumber) {
+		this.socialSecurityNumber = socialSecurityNumber;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public int getCaptureDelayHours() {
+		return captureDelayHours;
+	}
+
+	public void setCaptureDelayHours(int captureDelayHours) {
+		this.captureDelayHours = captureDelayHours;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getDeviceFingerprint() {
+		return deviceFingerprint;
+	}
+
+	public void setDeviceFingerprint(String deviceFingerprint) {
+		this.deviceFingerprint = deviceFingerprint;
+	}
+
+	public ThreeDSecureData getMpiData() {
+		return mpiData;
+	}
+
+	public void setMpiData(ThreeDSecureData mpiData) {
+		this.mpiData = mpiData;
+	}
+
+	public Recurring getRecurring() {
+		return recurring;
+	}
+
+	public void setRecurring(Recurring recurring) {
+		this.recurring = recurring;
+	}
+
+	public ForexQuote getDccQuote() {
+		return dccQuote;
+	}
+
+	public void setDccQuote(ForexQuote dccQuote) {
+		this.dccQuote = dccQuote;
+	}
+
+	public String getSelectedRecurringDetailReference() {
+		return selectedRecurringDetailReference;
+	}
+
+	public void setSelectedRecurringDetailReference(
+			String selectedRecurringDetailReference) {
+		this.selectedRecurringDetailReference = selectedRecurringDetailReference;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
 	private String toString(Collection<?> collection, int maxLen) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("[");
@@ -350,11 +514,6 @@ public class PaymentRequest implements Serializable {
 		return builder.toString();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		final int maxLen = 10;
@@ -393,6 +552,21 @@ public class PaymentRequest implements Serializable {
 		if (shopperReference != null) {
 			builder.append("shopperReference=");
 			builder.append(shopperReference);
+			builder.append(", ");
+		}
+		if (shopperLocale != null) {
+			builder.append("shopperLocale=");
+			builder.append(shopperLocale);
+			builder.append(", ");
+		}
+		if (telephoneNumber != null) {
+			builder.append("telephoneNumber=");
+			builder.append(telephoneNumber);
+			builder.append(", ");
+		}
+		if (shopperName != null) {
+			builder.append("shopperName=");
+			builder.append(shopperName);
 			builder.append(", ");
 		}
 		builder.append("fraudOffset=");
@@ -448,6 +622,79 @@ public class PaymentRequest implements Serializable {
 		if (installments != null) {
 			builder.append("installments=");
 			builder.append(installments);
+			builder.append(", ");
+		}
+		if (bankAccount != null) {
+			builder.append("bankAccount=");
+			builder.append(bankAccount);
+			builder.append(", ");
+		}
+		if (deliveryDate != null) {
+			builder.append("deliveryDate=");
+			builder.append(deliveryDate);
+			builder.append(", ");
+		}
+		if (deliveryAddress != null) {
+			builder.append("deliveryAddress=");
+			builder.append(deliveryAddress);
+			builder.append(", ");
+		}
+		if (shopperStatement != null) {
+			builder.append("shopperStatement=");
+			builder.append(shopperStatement);
+			builder.append(", ");
+		}
+		if (socialSecurityNumber != null) {
+			builder.append("socialSecurityNumber=");
+			builder.append(socialSecurityNumber);
+			builder.append(", ");
+		}
+		if (firstName != null) {
+			builder.append("firstName=");
+			builder.append(firstName);
+			builder.append(", ");
+		}
+		if (lastName != null) {
+			builder.append("lastName=");
+			builder.append(lastName);
+			builder.append(", ");
+		}
+		builder.append("captureDelayHours=");
+		builder.append(captureDelayHours);
+		builder.append(", ");
+		if (dateOfBirth != null) {
+			builder.append("dateOfBirth=");
+			builder.append(dateOfBirth);
+			builder.append(", ");
+		}
+		if (deviceFingerprint != null) {
+			builder.append("deviceFingerprint=");
+			builder.append(deviceFingerprint);
+			builder.append(", ");
+		}
+		if (mpiData != null) {
+			builder.append("mpiData=");
+			builder.append(mpiData);
+			builder.append(", ");
+		}
+		if (recurring != null) {
+			builder.append("recurring=");
+			builder.append(recurring);
+			builder.append(", ");
+		}
+		if (dccQuote != null) {
+			builder.append("dccQuote=");
+			builder.append(dccQuote);
+			builder.append(", ");
+		}
+		if (selectedRecurringDetailReference != null) {
+			builder.append("selectedRecurringDetailReference=");
+			builder.append(selectedRecurringDetailReference);
+			builder.append(", ");
+		}
+		if (sessionId != null) {
+			builder.append("sessionId=");
+			builder.append(sessionId);
 		}
 		builder.append("]");
 		return builder.toString();
