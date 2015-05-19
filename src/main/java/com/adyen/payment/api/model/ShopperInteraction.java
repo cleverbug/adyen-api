@@ -18,8 +18,7 @@ package com.adyen.payment.api.model;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 public enum ShopperInteraction {
-	Ecommerce, ContAuth, POS, Moto;
+    Ecommerce, ContAuth, POS, Moto
 }

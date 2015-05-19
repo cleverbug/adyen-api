@@ -16,102 +16,64 @@
  */
 package com.adyen.payment.api.model;
 
+import static org.boon.Boon.toJson;
 import java.io.Serializable;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 @SuppressWarnings("serial")
 public class Error implements Serializable {
-	protected int status;
-	protected int errorCode;
-	protected String message;
-	protected String errorType;
+    protected int status;
+    protected int errorCode;
+    protected String message;
+    protected String errorType;
 
-	/**
-	 * @return the status
-	 */
-	public int getStatus() {
-		return status;
-	}
+    public Error() {
+        // noop ctor
+    }
 
-	/**
-	 * @param status
-	 *            the status to set
-	 */
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public Error(int status, int errorCode, String message, String errorType) {
+        this.status = status;
+        this.errorCode = errorCode;
+        this.message = message;
+        this.errorType = errorType;
+    }
 
-	/**
-	 * @return the errorCode
-	 */
-	public int getErrorCode() {
-		return errorCode;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	/**
-	 * @param errorCode
-	 *            the errorCode to set
-	 */
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	/**
-	 * @return the message
-	 */
-	public String getMessage() {
-		return message;
-	}
+    public int getErrorCode() {
+        return errorCode;
+    }
 
-	/**
-	 * @param message
-	 *            the message to set
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
 
-	/**
-	 * @return the errorType
-	 */
-	public String getErrorType() {
-		return errorType;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	/**
-	 * @param errorType
-	 *            the errorType to set
-	 */
-	public void setErrorType(String errorType) {
-		this.errorType = errorType;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Error [status=");
-		builder.append(status);
-		builder.append(", errorCode=");
-		builder.append(errorCode);
-		builder.append(", ");
-		if (message != null) {
-			builder.append("message=");
-			builder.append(message);
-			builder.append(", ");
-		}
-		if (errorType != null) {
-			builder.append("errorType=");
-			builder.append(errorType);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    public String getErrorType() {
+        return errorType;
+    }
+
+    public void setErrorType(String errorType) {
+        this.errorType = errorType;
+    }
+
+    @Override
+    public String toString() {
+        return toJson(this);
+    }
 }

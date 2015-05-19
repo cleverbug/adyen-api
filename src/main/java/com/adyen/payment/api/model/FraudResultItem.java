@@ -4,15 +4,15 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 package com.adyen.payment.api.model;
 
@@ -23,33 +23,43 @@ import java.io.Serializable;
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
 @SuppressWarnings("serial")
-public class BrowserInfo implements Serializable {
-    private String userAgent;
-    private String acceptHeader;
+public class FraudResultItem implements Serializable {
+    private String accountScore;
+    private String checkId;
+    private String name;
 
-    public BrowserInfo() {
+    public FraudResultItem() {
         // noop ctor
     }
 
-    public BrowserInfo(String userAgent, String acceptHeader) {
-        this.userAgent = userAgent;
-        this.acceptHeader = acceptHeader;
+    public FraudResultItem(String name, String checkId, String accountScore) {
+        this.accountScore = accountScore;
+        this.checkId = checkId;
+        this.name = name;
     }
 
-    public String getUserAgent() {
-        return userAgent;
+    public String getAccountScore() {
+        return accountScore;
     }
 
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
+    public void setAccountScore(String accountScore) {
+        this.accountScore = accountScore;
     }
 
-    public String getAcceptHeader() {
-        return acceptHeader;
+    public String getCheckId() {
+        return checkId;
     }
 
-    public void setAcceptHeader(String acceptHeader) {
-        this.acceptHeader = acceptHeader;
+    public void setCheckId(String checkId) {
+        this.checkId = checkId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

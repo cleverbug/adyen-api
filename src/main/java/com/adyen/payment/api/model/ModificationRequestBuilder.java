@@ -16,140 +16,75 @@
  */
 package com.adyen.payment.api.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
-public class ModificationRequestBuilder {
-	private ModificationRequestBuilder() {
-	}
+public final class ModificationRequestBuilder {
+    private ModificationRequestBuilder() {
+        // utility
+    }
 
-	public static IOriginalReference merchantAccount(String account) {
-		return new Builder(account);
-	}
+    public static IOriginalReference merchantAccount(String account) {
+        return new Builder(account);
+    }
 
-	public interface IOriginalReference {
-		IBuilder originalReference(String reference);
-	}
+    public interface IOriginalReference {
+        IBuilder originalReference(String reference);
+    }
 
-	public interface IBuilder {
-		IBuilder additionalData(String key, String value);
+    public interface IBuilder {
+        IBuilder additionalData(String key, String value);
 
-		IBuilder authorisationCode(String code);
+        IBuilder authorisationCode(String code);
 
-		IBuilder reference(String reference);
+        IBuilder reference(String reference);
 
-		IBuilder modificationAmount(Amount amount);
+        IBuilder modificationAmount(Amount amount);
 
-		ModificationRequest build();
-	}
+        ModificationRequest build();
+    }
 
-	private static class Builder implements IOriginalReference, IBuilder {
-		private ModificationRequest request;
+    private static final class Builder implements IOriginalReference, IBuilder {
+        private ModificationRequest request;
 
-		Builder(String merchantAccount) {
-			if (StringUtils.isNotBlank(merchantAccount)) {
-				request = new ModificationRequest();
-				request.setMerchantAccount(merchantAccount);
-			} else {
-				// warn throw new
-				// IllegalArgumentException("blank: merchantAccount");
-			}
-		}
+        Builder(String merchantAccount) {
+            request = new ModificationRequest();
+            request.setMerchantAccount(merchantAccount);
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.CaptureRequestBuilder.IBuilder#reference
-		 * (java.lang.String)
-		 */
-		@Override
-		public IBuilder reference(String reference) {
-			if (StringUtils.isNotBlank(reference)) {
-				request.setReference(reference);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder reference(String reference) {
+            request.setReference(reference);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.CaptureRequestBuilder.IBuilder#build()
-		 */
-		@Override
-		public ModificationRequest build() {
-			return request;
-		}
+        @Override
+        public ModificationRequest build() {
+            return request;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.CaptureRequestBuilder.IOriginalReference
-		 * #originalReference(java.lang.String)
-		 */
-		@Override
-		public IBuilder originalReference(String reference) {
-			if (StringUtils.isNotBlank(reference)) {
-				request.setOriginalReference(reference);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder originalReference(String reference) {
+            request.setOriginalReference(reference);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.ModificationRequestBuilder.IBuilder#
-		 * modificationAmount(com.adyen.payment.api.model.Amount)
-		 */
-		@Override
-		public IBuilder modificationAmount(Amount amount) {
-			if (amount != null) {
-				request.setModificationAmount(amount);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder modificationAmount(Amount amount) {
+            request.setModificationAmount(amount);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.ModificationRequestBuilder.IBuilder#
-		 * authorisationCode(java.lang.String)
-		 */
-		@Override
-		public IBuilder authorisationCode(String code) {
-			if (StringUtils.isNotBlank(code)) {
-				request.setAuthorisationCode(code);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder authorisationCode(String code) {
+            request.setAuthorisationCode(code);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.ModificationRequestBuilder.IBuilder#
-		 * additionalData(java.lang.String, java.lang.String)
-		 */
-		@Override
-		public IBuilder additionalData(String key, String value) {
-			if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
-				request.getAdditionalData().put(key, value);
-			} else {
-				// warn
-			}
-			return this;
-		}
-	}
+        @Override
+        public IBuilder additionalData(String key, String value) {
+            request.getAdditionalData().put(key, value);
+            return this;
+        }
+    }
 }

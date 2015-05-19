@@ -16,76 +16,47 @@
  */
 package com.adyen.payment.api.model;
 
+import static org.boon.Boon.toJson;
+import org.boon.json.annotations.JsonInclude;
 import java.io.Serializable;
 import java.util.Currency;
 
-import org.boon.json.annotations.JsonInclude;
-
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 @SuppressWarnings("serial")
 public class Amount implements Serializable {
-	private Currency currency;
-	@JsonInclude
-	private long value;
+    private Currency currency;
+    @JsonInclude
+    private long value;
 
-	public Amount() {
-	}
+    public Amount() {
+        // noop ctor
+    }
 
-	public Amount(Currency currency, long value) {
-		this.currency = currency;
-		this.value = value;
-	}
+    public Amount(Currency currency, long value) {
+        this.currency = currency;
+        this.value = value;
+    }
 
-	/**
-	 * @return the currency
-	 */
-	public Currency getCurrency() {
-		return currency;
-	}
+    public Currency getCurrency() {
+        return currency;
+    }
 
-	/**
-	 * @param currency
-	 *            the currency to set
-	 */
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
-	/**
-	 * @return the value
-	 */
-	public long getValue() {
-		return value;
-	}
+    public long getValue() {
+        return value;
+    }
 
-	/**
-	 * @param value
-	 *            the value to set
-	 */
-	public void setValue(long value) {
-		this.value = value;
-	}
+    public void setValue(long value) {
+        this.value = value;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Amount [");
-		if (currency != null) {
-			builder.append("currency=");
-			builder.append(currency);
-			builder.append(", ");
-		}
-		builder.append("value=");
-		builder.append(value);
-		builder.append("]");
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        return toJson(this);
+    }
 }

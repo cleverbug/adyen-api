@@ -18,8 +18,7 @@ package com.adyen.payment.api;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 public enum APService {
-	AUTHORISATION, AUTHORISATION_3D, CAPTURE, REFUND, CANCEL, CANCEL_OR_REFUND;
+    AUTHORISATION, AUTHORISATION_3D, CAPTURE, REFUND, CANCEL, CANCEL_OR_REFUND
 }

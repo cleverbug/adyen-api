@@ -16,93 +16,93 @@
  */
 package com.adyen.payment.api.action;
 
-import java.io.IOException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.fluent.Executor;
-import org.apache.http.client.fluent.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.adyen.payment.api.APService;
 import com.adyen.payment.api.ClientConfig;
 import com.adyen.payment.api.error.APSAccessException;
 import com.adyen.payment.api.error.APSConfigurationException;
 import com.adyen.payment.api.model.ModificationRequest;
 import com.adyen.payment.api.model.ModificationResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.fluent.Executor;
+import org.apache.http.client.fluent.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
-public class Capture {
-	private static final Logger LOG = LoggerFactory.getLogger(Capture.class);
+public final class Capture {
+    private Capture() {
+        // utility
+    }
 
-	private static Request createRequest(final ClientConfig config,
-			final ModificationRequest request) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("config: {}, request: {}", config, request);
-		}
-		Request retval = null;
-		String url;
-		// create a Post
-		try {
-			url = config.getServices().get(APService.CAPTURE).toString();
-		} catch (Exception e) {
-			LOG.error("capture: missing parameter: url");
-			throw new APSConfigurationException(
-					"capture: missing parameter: url");
-		}
-		if (StringUtils.isNotBlank(url)) {
-			retval = ActionUtil.createPost(url, config.getConnectionTimeout(), 
-					config.getSocketTimeout(), config.getProxyUser(), request);
-		} else {
-			LOG.error("capture: missing parameter: url");
-			throw new APSConfigurationException(
-					"capture: missing parameter: url");
-		}
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("retval: {}", retval);
-		}
-		return retval;
-	}
+    private static final Logger LOG = LoggerFactory.getLogger(Capture.class);
 
-	public static ModificationResponse execute(final ClientConfig config,
-			final ModificationRequest request) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("config: {}, request: {}", config, request);
-		}
-		ModificationResponse retval = null;
-		// create the request
-		Request req = createRequest(config, request);
-		// create an Executor
-		Executor exec = Executor.newInstance();
-		// add auth
-		exec.auth(config.getUsername(), config.getPassword());
-		// execute and handle
-		try {
-			retval = exec.execute(req).handleResponse(
-					new ResponseHandler<ModificationResponse>() {
-						public ModificationResponse handleResponse(
-								HttpResponse response)
-								throws ClientProtocolException, IOException {
-							ModificationResponse modres = ActionUtil.handleModificationResponse(response);
-							if (LOG.isDebugEnabled()) {
-								LOG.debug("modres: {}", modres);
-							}
-							return modres;
-						}
-					});
-		} catch (Exception e) {
-			LOG.error("capture", e);
-			throw new APSAccessException("capture", e);
-		}
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("retval: {}", retval);
-		}
-		return retval;
-	}
+    private static Request createRequest(final ClientConfig config,
+                                         final ModificationRequest request) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("config: {}, request: {}", config, request);
+        }
+        Request retval;
+        String url;
+        // create a Post
+        try {
+            url = config.getServices().get(APService.CAPTURE).toString();
+        } catch (Exception e) {
+            LOG.error("capture: missing parameter: url");
+            throw new APSConfigurationException(
+                    "capture: missing parameter: url");
+        }
+        if (StringUtils.isNotBlank(url)) {
+            retval = ActionUtil.createPost(url, config.getConnectionTimeout(),
+                    config.getSocketTimeout(), config.getProxyUser(), request);
+        } else {
+            LOG.error("capture: missing parameter: url");
+            throw new APSConfigurationException(
+                    "capture: missing parameter: url");
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("retval: {}", retval);
+        }
+        return retval;
+    }
+
+    public static ModificationResponse execute(final ClientConfig config,
+                                               final ModificationRequest request) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("config: {}, request: {}", config, request);
+        }
+        ModificationResponse retval;
+        // create the request
+        Request req = createRequest(config, request);
+        // create an Executor
+        Executor exec = Executor.newInstance();
+        // add auth
+        exec.auth(config.getUsername(), config.getPassword());
+        // execute and handle
+        try {
+            retval = exec.execute(req).handleResponse(
+                    new ResponseHandler<ModificationResponse>() {
+                        public ModificationResponse handleResponse(
+                                HttpResponse response)
+                                throws IOException {
+                            ModificationResponse modres = ActionUtil.handleModificationResponse(response);
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("modres: {}", modres);
+                            }
+                            return modres;
+                        }
+                    });
+        } catch (Exception e) {
+            LOG.error("capture", e);
+            throw new APSAccessException("capture", e);
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("retval: {}", retval);
+        }
+        return retval;
+    }
 }

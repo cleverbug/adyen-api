@@ -16,453 +16,355 @@
  */
 package com.adyen.payment.api.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
-public class PaymentRequestBuilder {
-	private PaymentRequestBuilder() {
-	}
+public final class PaymentRequestBuilder {
+    private static final DateFormat DELIVERY_DATE_FMTR = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00.000'Z'");
 
-	public static IAmount merchantAccount(String account) {
-		return new Builder(account);
-	}
+    private PaymentRequestBuilder() {
+        // utility
+    }
 
-	public interface IAmount {
-		IBuilder amount(Amount amount);
-	}
+    public static IAmount merchantAccount(String account) {
+        return new Builder(account);
+    }
 
-	public interface IBuilder {
-		IBuilder card(Card card);
+    public interface IAmount {
+        IBuilder amount(Amount amount);
+    }
 
-		IBuilder reference(String reference);
+    public interface IBuilder {
+        IBuilder additionalAmount(Amount amount);
 
-		IBuilder shopperEmail(String email);
+        IBuilder additionalDataEntry(String key, String value);
 
-		IBuilder shopperIP(String ip);
+        IBuilder additionalData(Map<String, String> fields);
 
-		IBuilder shopperRefference(String reference);
+        IBuilder bankAccount(BankAccount bankAccount);
 
-		IBuilder shopperInteraction(ShopperInteraction interaction);
+        IBuilder billingAddress(BillingAddress address);
 
-		IBuilder shopper(String email, String ip, String reference,
-				ShopperInteraction interaction);
+        IBuilder browserInfo(BrowserInfo info);
 
-		IBuilder fraudOffset(int offset);
+        IBuilder browserInfo(String userAgent, String acceptHeader);
 
-		IBuilder mcc(int mcc);
+        IBuilder captureDelayHours(int captureDelayHours);
 
-		IBuilder merchantOrderReference(String reference);
+        IBuilder card(Card card);
 
-		IBuilder selectedBrand(String brand);
+        IBuilder dccQuote(ForexQuote dccQuote);
 
-		IBuilder additionalField(String key, String value);
+        IBuilder deliveryAddress(String deliveryAddress);
 
-		IBuilder additionalFields(Map<String, String> fields);
+        IBuilder deliveryDate(Date date);
 
-		IBuilder browserInfo(String userAgent, String acceptHeader);
+        IBuilder deviceFingerprint(String deviceFingerprint);
 
-		IBuilder browserInfo(BrowserInfo info);
+        IBuilder fraudOffset(int fraudOffset);
 
-		IBuilder md(String md);
+        IBuilder installments(int value);
 
-		IBuilder paResponse(String response);
+        IBuilder mcc(int mcc);
 
-		IBuilder billingAddress(BillingAddress address);
+        IBuilder merchantOrderReference(String reference);
 
-		IBuilder additionalAmount(Amount amount);
+        IBuilder mpiData(ThreeDSecureData mpiData);
 
-		IBuilder installments(int value);
-		
-		// shopperLocale, telephoneNumber, shopperName, firstName, lastName, dateOfBirth, shopperStatement, socialSecurityNumber
-		// deliveryDate
-		// deliveryAddress
-		// captureDelayHours
-		// deviceFingerprint
-		// mpiData
-		// recurring
-		// dccQuote
-		// selectedRecurringDetailReference
-		// sessionId
+        IBuilder orderReference(String orderReference);
 
-		PaymentRequest build();
-	}
+        IBuilder recurring(Recurring recurring);
 
-	private static class Builder implements IAmount, IBuilder {
-		private PaymentRequest request;
+        IBuilder reference(String reference);
 
-		Builder(String merchantAccount) {
-			if (StringUtils.isNotBlank(merchantAccount)) {
-				request = new PaymentRequest();
-				request.setMerchantAccount(merchantAccount);
-			} else {
-				// warn throw new
-				// IllegalArgumentException("blank: merchantAccount");
-			}
-		}
+        IBuilder selectedBrand(String brand);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#card(com
-		 * .adyen.payment.api.model.Card)
-		 */
-		@Override
-		public IBuilder card(Card card) {
-			if (card != null) {
-				request.setCard(card);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder selectedRecurringDetailReference(String selectedRecurringDetailReference);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#reference
-		 * (java.lang.String)
-		 */
-		@Override
-		public IBuilder reference(String reference) {
-			if (StringUtils.isNotBlank(reference)) {
-				request.setReference(reference);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder sessionId(String sessionId);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#shopperEmail
-		 * (java.lang.String)
-		 */
-		@Override
-		public IBuilder shopperEmail(String email) {
-			if (StringUtils.isNotBlank(email)) {
-				request.setShopperEmail(email);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopperDateOfBirth(Date dateOfBirth);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#shopperIP
-		 * (java.lang.String)
-		 */
-		@Override
-		public IBuilder shopperIP(String ip) {
-			if (StringUtils.isNotBlank(ip)) {
-				request.setShopperIP(ip);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopperEmail(String email);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#
-		 * shopperRefference(java.lang.String)
-		 */
-		@Override
-		public IBuilder shopperRefference(String reference) {
-			if (StringUtils.isNotBlank(reference)) {
-				request.setShopperReference(reference);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopperIP(String ip);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#
-		 * shopperInteraction(com.adyen.payment.api.model.ShopperInteraction)
-		 */
-		@Override
-		public IBuilder shopperInteraction(ShopperInteraction interaction) {
-			if (interaction != null) {
-				request.setShopperInteraction(interaction);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopperInteraction(ShopperInteraction interaction);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#shopper
-		 * (java.lang.String, java.lang.String, java.lang.String,
-		 * com.adyen.payment.api.model.ShopperInteraction)
-		 */
-		@Override
-		public IBuilder shopper(String email, String ip, String reference,
-				ShopperInteraction interaction) {
-			shopperEmail(email);
-			shopperIP(ip);
-			shopperRefference(reference);
-			shopperInteraction(interaction);
-			return this;
-		}
+        IBuilder shopperLocale(String shopperLocale);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IAmount#amount(
-		 * com.adyen.payment.api.model.Amount)
-		 */
-		@Override
-		public IBuilder amount(Amount amount) {
-			if (amount != null) {
-				request.setAmount(amount);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopperReference(String shopperReference);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#build()
-		 */
-		@Override
-		public PaymentRequest build() {
-			return request;
-		}
+        IBuilder shopperName(Name name);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#fraudOffset
-		 * (long)
-		 */
-		@Override
-		public IBuilder fraudOffset(int offset) {
-			request.setFraudOffset(offset);
-			return this;
-		}
+        IBuilder shopperStatement(String shopperStatement);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#mcc(int)
-		 */
-		@Override
-		public IBuilder mcc(int mcc) {
-			if (mcc >= 0 && mcc <= 9999) {
-				request.setMcc(mcc);
-			} else {
-				// warn throw new
-				// IllegalArgumentException("invalid range: mcc: " + mcc);
-			}
-			return this;
-		}
+        IBuilder shopperSsn(String shopperSsn);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#
-		 * merchantOrderReference(java.lang.String)
-		 */
-		@Override
-		public IBuilder merchantOrderReference(String reference) {
-			if (StringUtils.isNotBlank(reference)) {
-				request.setMerchantOrderReference(reference);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopperTelephoneNumber(String shopperTelephoneNumber);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#selectedBrand
-		 * (java.lang.String)
-		 */
-		@Override
-		public IBuilder selectedBrand(String brand) {
-			if (StringUtils.isNotBlank(brand)) {
-				request.setSelectedBrand(brand);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder shopper(Name name, Date birth, String email, String ip, String reference, String ssn, String telephone, ShopperInteraction interaction, String locale, String statement);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#
-		 * additionalField(java.lang.String, java.lang.String)
-		 */
-		@Override
-		public IBuilder additionalField(String key, String value) {
-			if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
-				request.getAdditionalFields().put(key, value);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder md(String md);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#
-		 * additionalFields(java.util.Map)
-		 */
-		@Override
-		public IBuilder additionalFields(Map<String, String> fields) {
-			if (fields != null && fields.size() > 0) {
-				request.setAdditionalFields(fields);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        IBuilder paResponse(String paResponse);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#browserInfo
-		 * (java.lang.String, java.lang.String)
-		 */
-		@Override
-		public IBuilder browserInfo(String userAgent, String acceptHeader) {
-			if (StringUtils.isNotBlank(userAgent)
-					&& StringUtils.isNotBlank(acceptHeader)) {
-				request.setBrowserInfo(new BrowserInfo(userAgent, acceptHeader));
-			} else {
-				// warn
-			}
-			return this;
-		}
+        PaymentRequest build();
+    }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#browserInfo
-		 * (com.adyen.payment.api.model.BrowserInfo)
-		 */
-		@Override
-		public IBuilder browserInfo(BrowserInfo info) {
-			if (info != null) {
-				request.setBrowserInfo(info);
-			} else {
-				// warn
-			}
-			return this;
-		}
+    private static final class Builder implements IAmount, IBuilder {
+        private PaymentRequest request;
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#md(java
-		 * .lang.String)
-		 */
-		@Override
-		public IBuilder md(String md) {
-			if (StringUtils.isNotBlank(md)) {
-				request.setMd(md);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        Builder(String merchantAccount) {
+            request = new PaymentRequest();
+            request.setMerchantAccount(merchantAccount);
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#paResponse
-		 * (java.lang.String)
-		 */
-		@Override
-		public IBuilder paResponse(String response) {
-			if (StringUtils.isNotBlank(response)) {
-				request.setPaResponse(response);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder card(Card card) {
+            request.setCard(card);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#billingAddress
-		 * (com.adyen.payment.api.model.BillingAddress)
-		 */
-		@Override
-		public IBuilder billingAddress(BillingAddress address) {
-			if (address != null) {
-				request.setBillingAddress(address);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder shopperDateOfBirth(Date dateOfBirth) {
+            request.setDateOfBirth(dateOfBirth);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#
-		 * additionalAmount(com.adyen.payment.api.model.Amount)
-		 */
-		@Override
-		public IBuilder additionalAmount(Amount amount) {
-			if (amount != null) {
-				request.setAdditionalAmount(amount);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public IBuilder dccQuote(ForexQuote dccQuote) {
+            request.setDccQuote(dccQuote);
+            return this;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.adyen.payment.api.model.PaymentRequestBuilder.IBuilder#installments
-		 * (int)
-		 */
-		@Override
-		public IBuilder installments(int value) {
-			if (value > 0) {
-				request.setInstallments(new Installments(value));
-			} else {
-				// warn
-			}
-			return null;
-		}
-	}
+        @Override
+        public IBuilder deliveryAddress(String deliveryAddress) {
+            request.setDeliveryAddress(deliveryAddress);
+            return this;
+        }
+
+        @Override
+        public IBuilder reference(String reference) {
+            request.setReference(reference);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperEmail(String email) {
+            request.setShopperEmail(email);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperIP(String ip) {
+            request.setShopperIP(ip);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperReference(String reference) {
+            request.setShopperReference(reference);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperInteraction(ShopperInteraction interaction) {
+            request.setShopperInteraction(interaction);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperLocale(String shopperLocale) {
+            request.setShopperLocale(shopperLocale);
+            return null;
+        }
+
+        @Override
+        public IBuilder amount(Amount amount) {
+            request.setAmount(amount);
+            return this;
+        }
+
+        @Override
+        public PaymentRequest build() {
+            return request;
+        }
+
+        @Override
+        public IBuilder fraudOffset(int offset) {
+            request.setFraudOffset(offset);
+            return this;
+        }
+
+        @Override
+        public IBuilder mcc(int mcc) {
+            request.setMcc(mcc);
+            return this;
+        }
+
+        @Override
+        public IBuilder merchantOrderReference(String reference) {
+            request.setMerchantOrderReference(reference);
+            return this;
+        }
+
+        @Override
+        public IBuilder mpiData(ThreeDSecureData mpiData) {
+            request.setMpiData(mpiData);
+            return this;
+        }
+
+        @Override
+        public IBuilder orderReference(String orderReference) {
+            request.setOrderReference(orderReference);
+            return this;
+        }
+
+        @Override
+        public IBuilder recurring(Recurring recurring) {
+            request.setRecurring(recurring);
+            return this;
+        }
+
+        @Override
+        public IBuilder selectedBrand(String brand) {
+            request.setSelectedBrand(brand);
+            return this;
+        }
+
+        @Override
+        public IBuilder selectedRecurringDetailReference(String selectedRecurringDetailReference) {
+            request.setSelectedRecurringDetailReference(selectedRecurringDetailReference);
+            return this;
+        }
+
+        @Override
+        public IBuilder sessionId(String sessionId) {
+            request.setSessionId(sessionId);
+            return this;
+        }
+
+        @Override
+        public IBuilder additionalDataEntry(String key, String value) {
+            request.getAdditionalData().put(key, value);
+            return this;
+        }
+
+        @Override
+        public IBuilder additionalData(Map<String, String> fields) {
+            request.setAdditionalData(fields);
+            return this;
+        }
+
+        @Override
+        public IBuilder bankAccount(BankAccount bankAccount) {
+            request.setBankAccount(bankAccount);
+            return this;
+        }
+
+        @Override
+        public IBuilder browserInfo(String userAgent, String acceptHeader) {
+            request.setBrowserInfo(new BrowserInfo(userAgent, acceptHeader));
+            return this;
+        }
+
+        @Override
+        public IBuilder captureDelayHours(int captureDelayHours) {
+            request.setCaptureDelayHours(captureDelayHours);
+            return this;
+        }
+
+        @Override
+        public IBuilder browserInfo(BrowserInfo info) {
+            request.setBrowserInfo(info);
+            return this;
+        }
+
+        @Override
+        public IBuilder billingAddress(BillingAddress address) {
+            request.setBillingAddress(address);
+            return this;
+        }
+
+        @Override
+        public IBuilder additionalAmount(Amount amount) {
+            request.setAdditionalAmount(amount);
+            return this;
+        }
+
+        @Override
+        public IBuilder installments(int value) {
+            request.setInstallments(new Installments(value));
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperName(Name name) {
+            request.setShopperName(name);
+            return this;
+        }
+
+        @Override
+        public IBuilder deliveryDate(Date date) {
+            request.setDeliveryDate(DELIVERY_DATE_FMTR.format(date));
+            return this;
+        }
+
+        @Override
+        public IBuilder deviceFingerprint(String deviceFingerprint) {
+            request.setDeviceFingerprint(deviceFingerprint);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperStatement(String shopperStatement) {
+            request.setShopperStatement(shopperStatement);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperSsn(String shopperSsn) {
+            request.setSocialSecurityNumber(shopperSsn);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopperTelephoneNumber(String shopperTelephoneNumber) {
+            request.setTelephoneNumber(shopperTelephoneNumber);
+            return this;
+        }
+
+        @Override
+        public IBuilder shopper(Name name, Date birth, String email, String ip, String reference, String ssn, String telephone, ShopperInteraction interaction, String locale, String statement) {
+            request.setShopperName(name);
+            request.setDateOfBirth(birth);
+            request.setShopperEmail(email);
+            request.setShopperIP(ip);
+            request.setShopperReference(reference);
+            request.setSocialSecurityNumber(ssn);
+            request.setTelephoneNumber(telephone);
+            request.setShopperInteraction(interaction);
+            request.setShopperLocale(locale);
+            request.setShopperStatement(statement);
+            return this;
+        }
+
+        @Override
+        public IBuilder md(String md) {
+            request.setMd(md);
+            return this;
+        }
+
+        @Override
+        public IBuilder paResponse(String paResponse) {
+            request.setPaResponse(paResponse);
+            return this;
+        }
+    }
 }

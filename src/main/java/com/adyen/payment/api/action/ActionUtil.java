@@ -16,11 +16,8 @@
  */
 package com.adyen.payment.api.action;
 
-import static org.apache.http.client.fluent.Request.Post;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-
+import com.adyen.payment.api.model.ModificationResponse;
+import com.adyen.payment.api.model.PaymentResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,119 +25,115 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
+import static org.apache.http.client.fluent.Request.Post;
 import org.apache.http.entity.ContentType;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.adyen.payment.api.model.ModificationResponse;
-import com.adyen.payment.api.model.PaymentResponse;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
-public class ActionUtil {
-	private static final Logger LOG = LoggerFactory.getLogger(ActionUtil.class);
-	private static final ObjectMapper MAPPER = JsonFactory.create();
-	
-	public static Request createPost(String url, int connectTimeout,
-			int socketTimeout, String proxyUser, final Object request) {
-		Request retval = Post(url);
-		// configure conn timeout
-		if (connectTimeout > 0) {
-			retval.connectTimeout(connectTimeout);
-		}
-		// configure socket timeout
-		if (socketTimeout > 0) {
-			retval.socketTimeout(socketTimeout);
-		}
-		// add json
-		retval.addHeader("Content-Type", "application/json");
-		retval.addHeader("Accept", "application/json");
-		if (StringUtils.isNotBlank(proxyUser)) {
-			retval.addHeader("j_proxyuser", proxyUser);
-		}
-		// add content
-		retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
-		return retval;
-	}
-	
-	public static PaymentResponse handlePaymentResponse(final HttpResponse response)
-			throws ClientProtocolException, IOException {
-		PaymentResponse retval = null;
-		HttpOutcome httpOutcome = handleHttpResponse(response);
-		if(httpOutcome.content != null) {
-			retval = MAPPER.fromJson(httpOutcome.content,
-					PaymentResponse.class);
-		} else {
-			retval = new PaymentResponse();
-			retval.setStatus(httpOutcome.statusCode);
-			retval.setMessage(httpOutcome.message);
-		}
-		if (httpOutcome.statusCode != HttpStatus.SC_OK) {
-			LOG.warn("unable to process request: {}",
-					httpOutcome.statusCode);
-		}
-		return retval;
-	}
-	
-	public static ModificationResponse handleModificationResponse(final HttpResponse response)
-			throws ClientProtocolException, IOException {
-		ModificationResponse retval = null;
-		HttpOutcome httpOutcome = handleHttpResponse(response);
-		if(httpOutcome.content != null) {
-			retval = MAPPER.fromJson(httpOutcome.content,
-					ModificationResponse.class);
-		} else {
-			retval = new ModificationResponse();
-			retval.setStatus(httpOutcome.statusCode);
-			retval.setMessage(httpOutcome.message);
-		}
-		if (httpOutcome.statusCode != HttpStatus.SC_OK) {
-			LOG.warn("unable to process request: {}",
-					httpOutcome.statusCode);
-		}
-		return retval;
-	}
-	
-	private static HttpOutcome handleHttpResponse(HttpResponse response)
-			throws ClientProtocolException, IOException {
-		HttpOutcome retval = new HttpOutcome();
-		StatusLine status = response.getStatusLine();
-		HttpEntity entity = response.getEntity();
-		if (entity == null) {
-			LOG.error("blank: response");
-			throw new ClientProtocolException(
-					"blank: response");
-		}
-		retval.statusCode = status.getStatusCode();
-		switch (status.getStatusCode()) {
-		case HttpStatus.SC_OK:
-		case HttpStatus.SC_BAD_REQUEST:
-		case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-			retval.content = new InputStreamReader(
-					entity.getContent());
-			break;
-		case HttpStatus.SC_UNAUTHORIZED:
-			retval.message = "Unauthorized operation";
-			break;
-		case HttpStatus.SC_FORBIDDEN:
-			retval.message = "Forbidden operation";
-			break;
-		case HttpStatus.SC_NOT_FOUND:
-			retval.message = "Service not found";
-			break;
-		default:
-			retval.message = "Unexpected error";
-		}
-		return retval;
-	}
-	
-	private static class HttpOutcome {
-		private int statusCode;
-		private String message;
-		private InputStreamReader content;
-	}
+public final class ActionUtil {
+    private ActionUtil() {
+        // utility
+    }
+
+    private static final Logger LOG = LoggerFactory.getLogger(ActionUtil.class);
+    private static final ObjectMapper MAPPER = JsonFactory.create();
+
+    public static Request createPost(String url, int connectTimeout, int socketTimeout, String proxyUser, final Object request) {
+        Request retval = Post(url);
+        // configure conn timeout
+        if (connectTimeout > 0) {
+            retval.connectTimeout(connectTimeout);
+        }
+        // configure socket timeout
+        if (socketTimeout > 0) {
+            retval.socketTimeout(socketTimeout);
+        }
+        // add json
+        retval.addHeader("Content-Type", "application/json");
+        retval.addHeader("Accept", "application/json");
+        if (StringUtils.isNotBlank(proxyUser)) {
+            retval.addHeader("j_proxyuser", proxyUser);
+        }
+        // add content
+        retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
+        return retval;
+    }
+
+    public static PaymentResponse handlePaymentResponse(final HttpResponse response) throws IOException {
+        PaymentResponse retval;
+        HttpOutcome httpOutcome = handleHttpResponse(response);
+        if (httpOutcome.content != null) {
+            retval = MAPPER.fromJson(httpOutcome.content,
+                    PaymentResponse.class);
+        } else {
+            retval = new PaymentResponse();
+            retval.setStatus(httpOutcome.statusCode);
+            retval.setMessage(httpOutcome.message);
+        }
+        if (httpOutcome.statusCode != HttpStatus.SC_OK) {
+            LOG.warn("unable to process request: {}", httpOutcome.statusCode);
+        }
+        return retval;
+    }
+
+    public static ModificationResponse handleModificationResponse(final HttpResponse response) throws IOException {
+        ModificationResponse retval;
+        HttpOutcome httpOutcome = handleHttpResponse(response);
+        if (httpOutcome.content != null) {
+            retval = MAPPER.fromJson(httpOutcome.content,
+                    ModificationResponse.class);
+        } else {
+            retval = new ModificationResponse();
+            retval.setStatus(httpOutcome.statusCode);
+            retval.setMessage(httpOutcome.message);
+        }
+        if (httpOutcome.statusCode != HttpStatus.SC_OK) {
+            LOG.warn("unable to process request: {}", httpOutcome.statusCode);
+        }
+        return retval;
+    }
+
+    private static HttpOutcome handleHttpResponse(HttpResponse response) throws IOException {
+        HttpOutcome retval = new HttpOutcome();
+        StatusLine status = response.getStatusLine();
+        HttpEntity entity = response.getEntity();
+        if (entity == null) {
+            LOG.error("blank: response");
+            throw new ClientProtocolException("blank: response");
+        }
+        retval.statusCode = status.getStatusCode();
+        switch (status.getStatusCode()) {
+            case HttpStatus.SC_OK:
+            case HttpStatus.SC_BAD_REQUEST:
+            case HttpStatus.SC_UNPROCESSABLE_ENTITY:
+                retval.content = new InputStreamReader(
+                        entity.getContent());
+                break;
+            case HttpStatus.SC_UNAUTHORIZED:
+                retval.message = "Unauthorized operation";
+                break;
+            case HttpStatus.SC_FORBIDDEN:
+                retval.message = "Forbidden operation";
+                break;
+            case HttpStatus.SC_NOT_FOUND:
+                retval.message = "Service not found";
+                break;
+            default:
+                retval.message = "Unexpected error";
+        }
+        return retval;
+    }
+
+    private static class HttpOutcome {
+        private int statusCode;
+        private String message;
+        private InputStreamReader content;
+    }
 }

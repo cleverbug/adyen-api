@@ -16,172 +16,73 @@
  */
 package com.adyen.payment.api.model;
 
+import static org.boon.Boon.toJson;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 @SuppressWarnings("serial")
 public class ModificationRequest implements Serializable {
-	private Map<String, String> additionalData = new HashMap<String, String>();
-	private String authorisationCode;
-	private String merchantAccount;
-	private Amount modificationAmount;
-	private String originalReference;
-	private String reference;
+    private Map<String, String> additionalData = new HashMap<String, String>();
+    private String authorisationCode;
+    private String merchantAccount;
+    private Amount modificationAmount;
+    private String originalReference;
+    private String reference;
 
-	public ModificationRequest() {
-	}
+    public String getMerchantAccount() {
+        return merchantAccount;
+    }
 
-	/**
-	 * @return the merchantAccount
-	 */
-	public String getMerchantAccount() {
-		return merchantAccount;
-	}
+    public void setMerchantAccount(String merchantAccount) {
+        this.merchantAccount = merchantAccount;
+    }
 
-	/**
-	 * @param merchantAccount
-	 *            the merchantAccount to set
-	 */
-	public void setMerchantAccount(String merchantAccount) {
-		this.merchantAccount = merchantAccount;
-	}
+    public String getOriginalReference() {
+        return originalReference;
+    }
 
-	/**
-	 * @return the originalReference
-	 */
-	public String getOriginalReference() {
-		return originalReference;
-	}
+    public void setOriginalReference(String originalReference) {
+        this.originalReference = originalReference;
+    }
 
-	/**
-	 * @param originalReference
-	 *            the originalReference to set
-	 */
-	public void setOriginalReference(String originalReference) {
-		this.originalReference = originalReference;
-	}
+    public String getReference() {
+        return reference;
+    }
 
-	/**
-	 * @return the reference
-	 */
-	public String getReference() {
-		return reference;
-	}
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 
-	/**
-	 * @param reference
-	 *            the reference to set
-	 */
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
+    public Map<String, String> getAdditionalData() {
+        return additionalData;
+    }
 
-	/**
-	 * @return the additionalData
-	 */
-	public Map<String, String> getAdditionalData() {
-		return additionalData;
-	}
+    public void setAdditionalData(Map<String, String> additionalData) {
+        this.additionalData = additionalData;
+    }
 
-	/**
-	 * @param additionalData
-	 *            the additionalData to set
-	 */
-	public void setAdditionalData(Map<String, String> additionalData) {
-		this.additionalData = additionalData;
-	}
+    public String getAuthorisationCode() {
+        return authorisationCode;
+    }
 
-	/**
-	 * @return the authorisationCode
-	 */
-	public String getAuthorisationCode() {
-		return authorisationCode;
-	}
+    public void setAuthorisationCode(String authorisationCode) {
+        this.authorisationCode = authorisationCode;
+    }
 
-	/**
-	 * @param authorisationCode
-	 *            the authorisationCode to set
-	 */
-	public void setAuthorisationCode(String authorisationCode) {
-		this.authorisationCode = authorisationCode;
-	}
+    public Amount getModificationAmount() {
+        return modificationAmount;
+    }
 
-	/**
-	 * @return the modificationAmount
-	 */
-	public Amount getModificationAmount() {
-		return modificationAmount;
-	}
+    public void setModificationAmount(Amount modificationAmount) {
+        this.modificationAmount = modificationAmount;
+    }
 
-	/**
-	 * @param modificationAmount
-	 *            the modificationAmount to set
-	 */
-	public void setModificationAmount(Amount modificationAmount) {
-		this.modificationAmount = modificationAmount;
-	}
-
-	private String toString(Collection<?> collection, int maxLen) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		int i = 0;
-		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext()
-				&& i < maxLen; i++) {
-			if (i > 0)
-				builder.append(", ");
-			builder.append(iterator.next());
-		}
-		builder.append("]");
-		return builder.toString();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		final int maxLen = 10;
-		StringBuilder builder = new StringBuilder();
-		builder.append("ModificationRequest [");
-		if (additionalData != null) {
-			builder.append("additionalData=");
-			builder.append(toString(additionalData.entrySet(), maxLen));
-			builder.append(", ");
-		}
-		if (authorisationCode != null) {
-			builder.append("authorisationCode=");
-			builder.append(authorisationCode);
-			builder.append(", ");
-		}
-		if (merchantAccount != null) {
-			builder.append("merchantAccount=");
-			builder.append(merchantAccount);
-			builder.append(", ");
-		}
-		if (modificationAmount != null) {
-			builder.append("modificationAmount=");
-			builder.append(modificationAmount);
-			builder.append(", ");
-		}
-		if (originalReference != null) {
-			builder.append("originalReference=");
-			builder.append(originalReference);
-			builder.append(", ");
-		}
-		if (reference != null) {
-			builder.append("reference=");
-			builder.append(reference);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        return toJson(this);
+    }
 }

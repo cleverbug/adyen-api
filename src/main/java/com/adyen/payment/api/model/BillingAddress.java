@@ -16,155 +16,72 @@
  */
 package com.adyen.payment.api.model;
 
-import java.io.Serializable;
-
 import com.neovisionaries.i18n.CountryCode;
+import static org.boon.Boon.toJson;
+import java.io.Serializable;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 @SuppressWarnings("serial")
 public class BillingAddress implements Serializable {
-	private String street;
-	private String houseNumberOrName;
-	private String postalCode;
-	private String city;
-	private String stateOrProvince;
-	private CountryCode country;
+    private String street;
+    private String houseNumberOrName;
+    private String postalCode;
+    private String city;
+    private String stateOrProvince;
+    private CountryCode country;
 
-	public BillingAddress() {
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	/**
-	 * @return the street
-	 */
-	public String getStreet() {
-		return street;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-	/**
-	 * @param street
-	 *            the street to set
-	 */
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    public String getHouseNumberOrName() {
+        return houseNumberOrName;
+    }
 
-	/**
-	 * @return the houseNumberOrName
-	 */
-	public String getHouseNumberOrName() {
-		return houseNumberOrName;
-	}
+    public void setHouseNumberOrName(String houseNumberOrName) {
+        this.houseNumberOrName = houseNumberOrName;
+    }
 
-	/**
-	 * @param houseNumberOrName
-	 *            the houseNumberOrName to set
-	 */
-	public void setHouseNumberOrName(String houseNumberOrName) {
-		this.houseNumberOrName = houseNumberOrName;
-	}
+    public String getPostalCode() {
+        return postalCode;
+    }
 
-	/**
-	 * @return the postalCode
-	 */
-	public String getPostalCode() {
-		return postalCode;
-	}
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	/**
-	 * @param postalCode
-	 *            the postalCode to set
-	 */
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	/**
-	 * @param city
-	 *            the city to set
-	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public String getStateOrProvince() {
+        return stateOrProvince;
+    }
 
-	/**
-	 * @return the stateOrProvince
-	 */
-	public String getStateOrProvince() {
-		return stateOrProvince;
-	}
+    public void setStateOrProvince(String stateOrProvince) {
+        this.stateOrProvince = stateOrProvince;
+    }
 
-	/**
-	 * @param stateOrProvince
-	 *            the stateOrProvince to set
-	 */
-	public void setStateOrProvince(String stateOrProvince) {
-		this.stateOrProvince = stateOrProvince;
-	}
+    public CountryCode getCountry() {
+        return country;
+    }
 
-	/**
-	 * @return the country
-	 */
-	public CountryCode getCountry() {
-		return country;
-	}
+    public void setCountry(CountryCode country) {
+        this.country = country;
+    }
 
-	/**
-	 * @param country
-	 *            the country to set
-	 */
-	public void setCountry(CountryCode country) {
-		this.country = country;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("BillingAddress [");
-		if (street != null) {
-			builder.append("street=");
-			builder.append(street);
-			builder.append(", ");
-		}
-		if (houseNumberOrName != null) {
-			builder.append("houseNumberOrName=");
-			builder.append(houseNumberOrName);
-			builder.append(", ");
-		}
-		if (postalCode != null) {
-			builder.append("postalCode=");
-			builder.append(postalCode);
-			builder.append(", ");
-		}
-		if (city != null) {
-			builder.append("city=");
-			builder.append(city);
-			builder.append(", ");
-		}
-		if (stateOrProvince != null) {
-			builder.append("stateOrProvince=");
-			builder.append(stateOrProvince);
-			builder.append(", ");
-		}
-		if (country != null) {
-			builder.append("country=");
-			builder.append(country);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        return toJson(this);
+    }
 }

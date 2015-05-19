@@ -16,208 +16,118 @@
  */
 package com.adyen.payment.api.model;
 
+import static org.boon.Boon.toJson;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 @SuppressWarnings("serial")
 public class PaymentResponse extends Error implements Serializable {
-	private String pspReference;
-	private ResultCode resultCode;
-	private String authCode;
-	private String refusalReason;
-	private Map<String, String> additionalData = new HashMap<String, String>();
-	private String paRequest;
-	private String md;
+    private Map<String, String> additionalData = new HashMap<String, String>();
+    private String authCode;
+    private Amount dccAmount;
+    private String dccSignature;
+    private FraudResult fraudResult;
+    private String issuerUrl;
+    private String md;
+    private String paRequest;
+    private String pspReference;
+    private String refusalReason;
+    private ResultCode resultCode;
 
-	public PaymentResponse() {
-	}
+    public String getPspReference() {
+        return pspReference;
+    }
 
-	/**
-	 * @return the pspReference
-	 */
-	public String getPspReference() {
-		return pspReference;
-	}
+    public void setPspReference(String pspReference) {
+        this.pspReference = pspReference;
+    }
 
-	/**
-	 * @param pspReference
-	 *            the pspReference to set
-	 */
-	public void setPspReference(String pspReference) {
-		this.pspReference = pspReference;
-	}
+    public ResultCode getResultCode() {
+        return resultCode;
+    }
 
-	/**
-	 * @return the resultCode
-	 */
-	public ResultCode getResultCode() {
-		return resultCode;
-	}
+    public void setResultCode(ResultCode resultCode) {
+        this.resultCode = resultCode;
+    }
 
-	/**
-	 * @param resultCode
-	 *            the resultCode to set
-	 */
-	public void setResultCode(ResultCode resultCode) {
-		this.resultCode = resultCode;
-	}
+    public String getAuthCode() {
+        return authCode;
+    }
 
-	/**
-	 * @return the authCode
-	 */
-	public String getAuthCode() {
-		return authCode;
-	}
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
+    }
 
-	/**
-	 * @param authCode
-	 *            the authCode to set
-	 */
-	public void setAuthCode(String authCode) {
-		this.authCode = authCode;
-	}
+    public String getRefusalReason() {
+        return refusalReason;
+    }
 
-	/**
-	 * @return the refusalReason
-	 */
-	public String getRefusalReason() {
-		return refusalReason;
-	}
+    public void setRefusalReason(String refusalReason) {
+        this.refusalReason = refusalReason;
+    }
 
-	/**
-	 * @param refusalReason
-	 *            the refusalReason to set
-	 */
-	public void setRefusalReason(String refusalReason) {
-		this.refusalReason = refusalReason;
-	}
+    public Map<String, String> getAdditionalData() {
+        return additionalData;
+    }
 
-	/**
-	 * @return the additionalData
-	 */
-	public Map<String, String> getAdditionalData() {
-		return additionalData;
-	}
+    public void setAdditionalData(Map<String, String> additionalData) {
+        this.additionalData = additionalData;
+    }
 
-	/**
-	 * @param additionalData
-	 *            the additionalData to set
-	 */
-	public void setAdditionalData(Map<String, String> additionalData) {
-		this.additionalData = additionalData;
-	}
+    public String getPaRequest() {
+        return paRequest;
+    }
 
-	/**
-	 * @return the paRequest
-	 */
-	public String getPaRequest() {
-		return paRequest;
-	}
+    public void setPaRequest(String paRequest) {
+        this.paRequest = paRequest;
+    }
 
-	/**
-	 * @param paRequest
-	 *            the paRequest to set
-	 */
-	public void setPaRequest(String paRequest) {
-		this.paRequest = paRequest;
-	}
+    public String getMd() {
+        return md;
+    }
 
-	/**
-	 * @return the md
-	 */
-	public String getMd() {
-		return md;
-	}
+    public void setMd(String md) {
+        this.md = md;
+    }
 
-	/**
-	 * @param md
-	 *            the md to set
-	 */
-	public void setMd(String md) {
-		this.md = md;
-	}
+    public Amount getDccAmount() {
+        return dccAmount;
+    }
 
-	private String toString(Collection<?> collection, int maxLen) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("[");
-		int i = 0;
-		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext()
-				&& i < maxLen; i++) {
-			if (i > 0)
-				builder.append(", ");
-			builder.append(iterator.next());
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    public void setDccAmount(Amount dccAmount) {
+        this.dccAmount = dccAmount;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		final int maxLen = 10;
-		StringBuilder builder = new StringBuilder();
-		builder.append("PaymentResponse [");
-		if (pspReference != null) {
-			builder.append("pspReference=");
-			builder.append(pspReference);
-			builder.append(", ");
-		}
-		if (resultCode != null) {
-			builder.append("resultCode=");
-			builder.append(resultCode);
-			builder.append(", ");
-		}
-		if (authCode != null) {
-			builder.append("authCode=");
-			builder.append(authCode);
-			builder.append(", ");
-		}
-		if (refusalReason != null) {
-			builder.append("refusalReason=");
-			builder.append(refusalReason);
-			builder.append(", ");
-		}
-		if (additionalData != null) {
-			builder.append("additionalData=");
-			builder.append(toString(additionalData.entrySet(), maxLen));
-			builder.append(", ");
-		}
-		if (paRequest != null) {
-			builder.append("paRequest=");
-			builder.append(paRequest);
-			builder.append(", ");
-		}
-		if (md != null) {
-			builder.append("md=");
-			builder.append(md);
-			builder.append(", ");
-		}
-		builder.append("status=");
-		builder.append(status);
-		builder.append(", errorCode=");
-		builder.append(errorCode);
-		builder.append(", ");
-		if (message != null) {
-			builder.append("message=");
-			builder.append(message);
-			builder.append(", ");
-		}
-		if (errorType != null) {
-			builder.append("errorType=");
-			builder.append(errorType);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    public String getDccSignature() {
+        return dccSignature;
+    }
+
+    public void setDccSignature(String dccSignature) {
+        this.dccSignature = dccSignature;
+    }
+
+    public FraudResult getFraudResult() {
+        return fraudResult;
+    }
+
+    public void setFraudResult(FraudResult fraudResult) {
+        this.fraudResult = fraudResult;
+    }
+
+    public String getIssuerUrl() {
+        return issuerUrl;
+    }
+
+    public void setIssuerUrl(String issuerUrl) {
+        this.issuerUrl = issuerUrl;
+    }
+
+    @Override
+    public String toString() {
+        return toJson(this);
+    }
 }

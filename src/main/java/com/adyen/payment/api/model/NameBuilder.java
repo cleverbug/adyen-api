@@ -16,81 +16,59 @@
  */
 package com.adyen.payment.api.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
-public class NameBuilder {
-	private NameBuilder() {
-	}
+public final class NameBuilder {
+    private NameBuilder() {
+        // utility
+    }
 
-	public static ILastName firstName(String firstName) {
-		return new Builder(firstName);
-	}
+    public static ILastName first(String first) {
+        return new Builder(first);
+    }
 
-	public interface ILastName {
-		IBuilder lastName(String lastName);
-	}
+    public interface ILastName {
+        IBuilder last(String last);
+    }
 
-	public interface IBuilder {
-		IBuilder gender(GenderType gender);
-		IBuilder infix(String infix);
-		
-		Name build();
-	}
+    public interface IBuilder {
+        IBuilder gender(GenderType gender);
 
-	private static class Builder implements IBuilder, ILastName {
-		private Name name;
+        IBuilder infix(String infix);
 
-		Builder(String firstName) {
-			if (StringUtils.isNotBlank(firstName)) {
-				name = new Name();
-				name.setFirstName(firstName);
-			} else {
-				throw new IllegalArgumentException("blank: firstName");
-			}
-		}
+        Name build();
+    }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see com.adyen.payment.api.model.CardBuilder.IBuilder#build()
-		 */
-		@Override
-		public Name build() {
-			return name;
-		}
+    private static final class Builder implements IBuilder, ILastName {
+        private Name name;
 
-		@Override
-		public IBuilder lastName(String lastName) {
-			if(StringUtils.isNotBlank(lastName)) {
-				name.setLastName(lastName);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        Builder(String first) {
+            name = new Name();
+            name.setFirstName(first);
+        }
 
-		@Override
-		public IBuilder gender(GenderType gender) {
-			if(gender != null) {
-				name.setGender(gender);
-			} else {
-				// warn
-			}
-			return this;
-		}
+        @Override
+        public Name build() {
+            return name;
+        }
 
-		@Override
-		public IBuilder infix(String infix) {
-			if(StringUtils.isNotBlank(infix)) {
-				name.setInfix(infix);
-			} else {
-				// warn
-			}
-			return this;
-		}
-	}
+        @Override
+        public IBuilder last(String last) {
+            name.setLastName(last);
+            return this;
+        }
+
+        @Override
+        public IBuilder gender(GenderType gender) {
+            name.setGender(gender);
+            return this;
+        }
+
+        @Override
+        public IBuilder infix(String infix) {
+            name.setInfix(infix);
+            return this;
+        }
+    }
 }

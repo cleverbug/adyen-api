@@ -16,189 +16,89 @@
  */
 package com.adyen.payment.api.model;
 
+import static org.boon.Boon.toJson;
 import java.io.Serializable;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
- *
  */
 @SuppressWarnings("serial")
 public class Card implements Serializable {
-	private int expiryMonth;
-	private int expiryYear;
-	private String holderName;
-	private String number;
-	private String cvc;
-	private String issueNumber;
-	private String startMonth;
-	private String startYear;
+    private int expiryMonth;
+    private int expiryYear;
+    private String holderName;
+    private String number;
+    private String cvc;
+    private String issueNumber;
+    private String startMonth;
+    private String startYear;
 
-	public Card() {
-	}
+    public int getExpiryMonth() {
+        return expiryMonth;
+    }
 
-	/**
-	 * @return the expiryMonth
-	 */
-	public int getExpiryMonth() {
-		return expiryMonth;
-	}
+    public void setExpiryMonth(int expiryMonth) {
+        this.expiryMonth = expiryMonth;
+    }
 
-	/**
-	 * @param expiryMonth
-	 *            the expiryMonth to set
-	 */
-	public void setExpiryMonth(int expiryMonth) {
-		this.expiryMonth = expiryMonth;
-	}
+    public int getExpiryYear() {
+        return expiryYear;
+    }
 
-	/**
-	 * @return the expiryYear
-	 */
-	public int getExpiryYear() {
-		return expiryYear;
-	}
+    public void setExpiryYear(int expiryYear) {
+        this.expiryYear = expiryYear;
+    }
 
-	/**
-	 * @param expiryYear
-	 *            the expiryYear to set
-	 */
-	public void setExpiryYear(int expiryYear) {
-		this.expiryYear = expiryYear;
-	}
+    public String getHolderName() {
+        return holderName;
+    }
 
-	/**
-	 * @return the holderName
-	 */
-	public String getHolderName() {
-		return holderName;
-	}
+    public void setHolderName(String holderName) {
+        this.holderName = holderName;
+    }
 
-	/**
-	 * @param holderName
-	 *            the holderName to set
-	 */
-	public void setHolderName(String holderName) {
-		this.holderName = holderName;
-	}
+    public String getNumber() {
+        return number;
+    }
 
-	/**
-	 * @return the number
-	 */
-	public String getNumber() {
-		return number;
-	}
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
-	/**
-	 * @param number
-	 *            the number to set
-	 */
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    public String getCvc() {
+        return cvc;
+    }
 
-	/**
-	 * @return the cvc
-	 */
-	public String getCvc() {
-		return cvc;
-	}
+    public void setCvc(String cvc) {
+        this.cvc = cvc;
+    }
 
-	/**
-	 * @param cvc
-	 *            the cvc to set
-	 */
-	public void setCvc(String cvc) {
-		this.cvc = cvc;
-	}
+    public String getIssueNumber() {
+        return issueNumber;
+    }
 
-	/**
-	 * @return the issueNumber
-	 */
-	public String getIssueNumber() {
-		return issueNumber;
-	}
+    public void setIssueNumber(String issueNumber) {
+        this.issueNumber = issueNumber;
+    }
 
-	/**
-	 * @param issueNumber
-	 *            the issueNumber to set
-	 */
-	public void setIssueNumber(String issueNumber) {
-		this.issueNumber = issueNumber;
-	}
+    public String getStartMonth() {
+        return startMonth;
+    }
 
-	/**
-	 * @return the startMonth
-	 */
-	public String getStartMonth() {
-		return startMonth;
-	}
+    public void setStartMonth(String startMonth) {
+        this.startMonth = startMonth;
+    }
 
-	/**
-	 * @param startMonth
-	 *            the startMonth to set
-	 */
-	public void setStartMonth(String startMonth) {
-		this.startMonth = startMonth;
-	}
+    public String getStartYear() {
+        return startYear;
+    }
 
-	/**
-	 * @return the startYear
-	 */
-	public String getStartYear() {
-		return startYear;
-	}
+    public void setStartYear(String startYear) {
+        this.startYear = startYear;
+    }
 
-	/**
-	 * @param startYear
-	 *            the startYear to set
-	 */
-	public void setStartYear(String startYear) {
-		this.startYear = startYear;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Card [expiryMonth=");
-		builder.append(expiryMonth);
-		builder.append(", expiryYear=");
-		builder.append(expiryYear);
-		builder.append(", ");
-		if (holderName != null) {
-			builder.append("holderName=");
-			builder.append(holderName);
-			builder.append(", ");
-		}
-		if (number != null) {
-			builder.append("number=");
-			builder.append(number);
-			builder.append(", ");
-		}
-		if (cvc != null) {
-			builder.append("cvc=");
-			builder.append(cvc);
-			builder.append(", ");
-		}
-		if (issueNumber != null) {
-			builder.append("issueNumber=");
-			builder.append(issueNumber);
-			builder.append(", ");
-		}
-		if (startMonth != null) {
-			builder.append("startMonth=");
-			builder.append(startMonth);
-			builder.append(", ");
-		}
-		if (startYear != null) {
-			builder.append("startYear=");
-			builder.append(startYear);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        return toJson(this);
+    }
 }
