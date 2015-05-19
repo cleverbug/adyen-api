@@ -16,12 +16,9 @@
  */
 package com.adyen.payment.api.test;
 
-import static com.adyen.payment.api.APUtil.TEST_SERVICES;
-import static com.adyen.payment.api.APUtil.reference;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Currency;
-
+import com.adyen.payment.api.APUtil.ReferenceType;
+import com.adyen.payment.api.Client;
+import com.adyen.payment.api.model.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,17 +27,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.adyen.payment.api.APUtil.ReferenceType;
-import com.adyen.payment.api.Client;
-import com.adyen.payment.api.model.Amount;
-import com.adyen.payment.api.model.CardBuilder;
-import com.adyen.payment.api.model.ModificationRequest;
-import com.adyen.payment.api.model.ModificationRequestBuilder;
-import com.adyen.payment.api.model.ModificationResponse;
-import com.adyen.payment.api.model.PaymentRequest;
-import com.adyen.payment.api.model.PaymentRequestBuilder;
-import com.adyen.payment.api.model.PaymentResponse;
-import com.adyen.payment.api.model.ShopperInteraction;
+import java.util.Currency;
+
+import static com.adyen.payment.api.APUtil.TEST_SERVICES;
+import static com.adyen.payment.api.APUtil.reference;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -77,7 +68,7 @@ public class RefundTest {
 				.card(CardBuilder.number("4111111111111111").cvc("737")
 						.expiry(2016, 6).holder("Johnny Tester Visa").build())
 				.reference(reference(ReferenceType.UUID))
-				.shopper("willian.oki@gmail.com", "127.0.0.1",
+				.shopper(NameBuilder.firstName("Willian").lastName("Oki").build(), "willian.oki@gmail.com", "127.0.0.1",
 						"Test/DAPI/Refund/Willian Oki",
 						ShopperInteraction.Ecommerce).build();
 		PaymentResponse paymentResponse = client.authorise(paymentRequest);

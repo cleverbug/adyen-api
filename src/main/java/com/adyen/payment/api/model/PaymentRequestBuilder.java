@@ -16,9 +16,9 @@
  */
 package com.adyen.payment.api.model;
 
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -45,11 +45,11 @@ public class PaymentRequestBuilder {
 
 		IBuilder shopperIP(String ip);
 
-		IBuilder shopperRefference(String reference);
+		IBuilder shopperReference(String reference);
 
 		IBuilder shopperInteraction(ShopperInteraction interaction);
 
-		IBuilder shopper(String email, String ip, String reference,
+		IBuilder shopper(Name name, String email, String ip, String reference,
 				ShopperInteraction interaction);
 
 		IBuilder fraudOffset(int offset);
@@ -77,6 +77,8 @@ public class PaymentRequestBuilder {
 		IBuilder additionalAmount(Amount amount);
 
 		IBuilder installments(int value);
+
+		IBuilder shopperName(Name name);
 		
 		// shopperLocale, telephoneNumber, shopperName, firstName, lastName, dateOfBirth, shopperStatement, socialSecurityNumber
 		// deliveryDate
@@ -180,7 +182,7 @@ public class PaymentRequestBuilder {
 		 * shopperRefference(java.lang.String)
 		 */
 		@Override
-		public IBuilder shopperRefference(String reference) {
+		public IBuilder shopperReference(String reference) {
 			if (StringUtils.isNotBlank(reference)) {
 				request.setShopperReference(reference);
 			} else {
@@ -214,11 +216,12 @@ public class PaymentRequestBuilder {
 		 * com.adyen.payment.api.model.ShopperInteraction)
 		 */
 		@Override
-		public IBuilder shopper(String email, String ip, String reference,
+		public IBuilder shopper(Name name, String email, String ip, String reference,
 				ShopperInteraction interaction) {
+			shopperName(name);
 			shopperEmail(email);
 			shopperIP(ip);
-			shopperRefference(reference);
+			shopperReference(reference);
 			shopperInteraction(interaction);
 			return this;
 		}
@@ -462,7 +465,17 @@ public class PaymentRequestBuilder {
 			} else {
 				// warn
 			}
-			return null;
+			return this;
+		}
+
+		@Override
+		public IBuilder shopperName(Name name) {
+			if (name != null) {
+				request.setShopperName(name);
+			} else {
+				// warn
+			}
+			return this;
 		}
 	}
 }

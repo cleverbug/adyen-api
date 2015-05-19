@@ -16,13 +16,9 @@
  */
 package com.adyen.payment.api.test;
 
-import static com.adyen.payment.api.APUtil.TEST_SERVICES;
-//import static com.adyen.payment.api.APUtil.DEVLP_SERVICES;
-import static com.adyen.payment.api.APUtil.reference;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Currency;
-
+import com.adyen.payment.api.APUtil.ReferenceType;
+import com.adyen.payment.api.Client;
+import com.adyen.payment.api.model.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,14 +27,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.adyen.payment.api.APUtil.ReferenceType;
-import com.adyen.payment.api.Client;
-import com.adyen.payment.api.model.Amount;
-import com.adyen.payment.api.model.CardBuilder;
-import com.adyen.payment.api.model.PaymentRequest;
-import com.adyen.payment.api.model.PaymentRequestBuilder;
-import com.adyen.payment.api.model.PaymentResponse;
-import com.adyen.payment.api.model.ShopperInteraction;
+import java.util.Currency;
+
+import static com.adyen.payment.api.APUtil.DEVLP_SERVICES;
+import static com.adyen.payment.api.APUtil.reference;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -53,15 +46,17 @@ public class AuthorisationTest {
 	String username;
 	@Value("${aps.merchant.password}")
 	String password;
+	@Value("${aps.merchant.proxyuser}")
+	String proxyUser;
 
 	Client client;
 
 	@Before
 	public void setup() {
-//		client = Client.services(DEVLP_SERVICES)
-//				.credentials(username, password).build();
-		client = Client.services(TEST_SERVICES)
-			.credentials(username, password).build();
+		client = Client.services(DEVLP_SERVICES)
+				.credentials(username, password).proxyUser(proxyUser).build();
+//		client = Client.services(TEST_SERVICES)
+//			.credentials(username, password).build();
 	}
 
 	@After
@@ -72,26 +67,26 @@ public class AuthorisationTest {
 	@Test
 	public void testAuthorization() {
 		
-		PaymentRequest request = PaymentRequestBuilder
-				.merchantAccount(merchantAccount)
-				.amount(new Amount(Currency.getInstance("EUR"), 1000L))
-				.card(CardBuilder.number("4111111111111111").cvc("737")
-						.expiry(2016, 6).holder("Johnny Tester Visa").build())
-				.reference(reference(ReferenceType.UUID))
-				.shopper("willian.oki@gmail.com", "127.0.0.1",
-						"Test/DAPI/Authorisation/Willian Oki",
-						ShopperInteraction.Ecommerce).build();
-		 
 		//PaymentRequest request = PaymentRequestBuilder
 		//		.merchantAccount(merchantAccount)
-		//		.amount(new Amount(Currency.getInstance("COP"), 10000000L))
-				// .card(CardBuilder.number("4111111111111111").cvc("737").expiry(2016,
-				// 6).holder("Johnny Tester Visa").build())
+		//		.amount(new Amount(Currency.getInstance("EUR"), 1000L))
+		//		.card(CardBuilder.number("4111111111111111").cvc("737")
+		//				.expiry(2016, 6).holder("Johnny Tester Visa").build())
 		//		.reference(reference(ReferenceType.UUID))
 		//		.shopper("willian.oki@gmail.com", "127.0.0.1",
-		//				"Test/DAPI/Authorisation/PayULatam",
-		//				ShopperInteraction.Ecommerce).selectedBrand("baloto")
-		//		.build();
+		//				"Test/DAPI/Authorisation/Willian Oki",
+		//				ShopperInteraction.Ecommerce).build();
+
+		PaymentRequest request = PaymentRequestBuilder
+				.merchantAccount(merchantAccount)
+				.amount(new Amount(Currency.getInstance("COP"), 10000000L))
+						//.card(CardBuilder.number("4111111111111111").cvc("737").expiry(2016, 6).holder("Johnny Tester Visa").build())
+				.card(CardBuilder.number("4111111111111111").cvc("123").expiry(2018, 8).holder("PENDING").build())
+				.reference(reference(ReferenceType.UUID))
+				.shopper(NameBuilder.firstName("PENDING").lastName("").build(), "willian.oki@gmail.com", "127.0.0.1",
+						"Test/DAPI/Authorisation/PayULatam",
+						ShopperInteraction.Ecommerce)//.selectedBrand("baloto")
+				.build();
 		PaymentResponse response = client.authorise(request);
 		assertTrue(response != null);
 		System.out.println(response);
@@ -105,7 +100,7 @@ public class AuthorisationTest {
 				.card(CardBuilder.number("4111111111111111").cvc("737")
 						.expiry(2016, 6).holder("Johnny Tester Visa").build())
 				.reference(reference(ReferenceType.UUID))
-				.shopper("willian.oki@gmail.com", "127.0.0.1",
+				.shopper(NameBuilder.firstName("APPROVED").lastName("").build(), "willian.oki@gmail.com", "127.0.0.1",
 						"Test/DAPI/Authorisation/Willian Oki",
 						ShopperInteraction.Ecommerce).build();
 		PaymentResponse response = client.verifyBin(request);
