@@ -10,6 +10,10 @@ payment processing.
 
 **adyen-java-client** aims to be a cohesive and opinionated way for consuming APS' JSON messaging based services.
 
+## Codeship Status
+
+[ ![Codeship Status for woki/adyen-java-client](https://codeship.com/projects/f76a7030-4392-0133-b449-66d4e4aecb0e/status?branch=master)](https://codeship.com/projects/104122)
+
 ##Usage
 
 
