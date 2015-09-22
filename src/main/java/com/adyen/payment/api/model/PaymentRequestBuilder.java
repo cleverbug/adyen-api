@@ -108,6 +108,8 @@ public final class PaymentRequestBuilder {
 
         IBuilder shopperTelephoneNumber(String shopperTelephoneNumber);
 
+        IBuilder shopper(Name name, String email, String ip, String reference, ShopperInteraction interaction);
+
         IBuilder shopper(Name name, Date birth, String email, String ip, String reference, String ssn, String telephone, ShopperInteraction interaction, String locale, String statement);
 
         IBuilder md(String md);
@@ -338,6 +340,11 @@ public final class PaymentRequestBuilder {
         public IBuilder shopperTelephoneNumber(String shopperTelephoneNumber) {
             request.setTelephoneNumber(shopperTelephoneNumber);
             return this;
+        }
+
+        @Override
+        public IBuilder shopper(Name name, String email, String ip, String reference, ShopperInteraction interaction) {
+            return shopper(name, null, email, ip, reference, null, null, interaction, null, null);
         }
 
         @Override
