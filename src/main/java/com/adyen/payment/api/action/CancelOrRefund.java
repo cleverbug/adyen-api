@@ -35,11 +35,9 @@ import java.io.IOException;
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
 public class CancelOrRefund {
-    private static final Logger LOG = LoggerFactory
-            .getLogger(CancelOrRefund.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CancelOrRefund.class);
 
-    private static Request createRequest(final ClientConfig config,
-                                         final ModificationRequest request) {
+    private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
@@ -47,20 +45,16 @@ public class CancelOrRefund {
         String url;
         // create a Post
         try {
-            url = config.getServices().get(APService.CANCEL_OR_REFUND)
-                    .toString();
+            url = config.getServices().get(APService.CANCEL_OR_REFUND).toString();
         } catch (Exception e) {
             LOG.error("cancelOrRefund: missing parameter: url");
-            throw new APSConfigurationException(
-                    "cancelOrRefund: missing parameter: url");
+            throw new APSConfigurationException("cancelOrRefund: missing parameter: url");
         }
         if (StringUtils.isNotBlank(url)) {
-            retval = ActionUtil.createPost(url, config.getConnectionTimeout(),
-                    config.getSocketTimeout(), config.getProxyUser(), request);
+            retval = ActionUtil.createPost(url, config.getConnectionTimeout(), config.getSocketTimeout(), config.getProxyUser(), request);
         } else {
             LOG.error("cancelOrRefund: missing parameter: url");
-            throw new APSConfigurationException(
-                    "cancelOrRefund: missing parameter: url");
+            throw new APSConfigurationException("cancelOrRefund: missing parameter: url");
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("retval: {}", retval);
@@ -68,8 +62,7 @@ public class CancelOrRefund {
         return retval;
     }
 
-    public static ModificationResponse execute(final ClientConfig config,
-                                               final ModificationRequest request) {
+    public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
@@ -82,18 +75,15 @@ public class CancelOrRefund {
         exec.auth(config.getUsername(), config.getPassword());
         // execute and handle
         try {
-            retval = exec.execute(req).handleResponse(
-                    new ResponseHandler<ModificationResponse>() {
-                        public ModificationResponse handleResponse(
-                                HttpResponse response)
-                                throws IOException {
-                            ModificationResponse modres = ActionUtil.handleModificationResponse(response);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("modres: {}", modres);
-                            }
-                            return modres;
-                        }
-                    });
+            retval = exec.execute(req).handleResponse(new ResponseHandler<ModificationResponse>() {
+                public ModificationResponse handleResponse(HttpResponse response) throws IOException {
+                    ModificationResponse modres = ActionUtil.handleModificationResponse(response);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("modres: {}", modres);
+                    }
+                    return modres;
+                }
+            });
         } catch (Exception e) {
             LOG.error("cancelOrRefund", e);
             throw new APSAccessException("cancelOrRefund", e);

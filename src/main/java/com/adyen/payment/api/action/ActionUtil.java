@@ -70,15 +70,14 @@ public final class ActionUtil {
         PaymentResponse retval;
         HttpOutcome httpOutcome = handleHttpResponse(response);
         if (httpOutcome.content != null) {
-            retval = MAPPER.fromJson(httpOutcome.content,
-                    PaymentResponse.class);
+            retval = MAPPER.fromJson(httpOutcome.content, PaymentResponse.class);
         } else {
             retval = new PaymentResponse();
             retval.setStatus(httpOutcome.statusCode);
             retval.setMessage(httpOutcome.message);
         }
         if (httpOutcome.statusCode != HttpStatus.SC_OK) {
-            LOG.warn("unable to process request: {}", httpOutcome.statusCode);
+            LOG.warn("authorization failed: {} - {}", httpOutcome.statusCode, httpOutcome.message);
         }
         return retval;
     }
@@ -87,15 +86,14 @@ public final class ActionUtil {
         ModificationResponse retval;
         HttpOutcome httpOutcome = handleHttpResponse(response);
         if (httpOutcome.content != null) {
-            retval = MAPPER.fromJson(httpOutcome.content,
-                    ModificationResponse.class);
+            retval = MAPPER.fromJson(httpOutcome.content, ModificationResponse.class);
         } else {
             retval = new ModificationResponse();
             retval.setStatus(httpOutcome.statusCode);
             retval.setMessage(httpOutcome.message);
         }
         if (httpOutcome.statusCode != HttpStatus.SC_OK) {
-            LOG.warn("unable to process request: {}", httpOutcome.statusCode);
+            LOG.warn("modification failed: {} - {}", httpOutcome.statusCode, httpOutcome.message);
         }
         return retval;
     }
@@ -109,24 +107,34 @@ public final class ActionUtil {
             throw new ClientProtocolException("blank: response");
         }
         retval.statusCode = status.getStatusCode();
+        boolean readContent = false;
         switch (status.getStatusCode()) {
             case HttpStatus.SC_OK:
+                retval.message = "Request processed normally";
+                readContent = true;
+                break;
             case HttpStatus.SC_BAD_REQUEST:
+                retval.message = "Problem reading or understanding request";
+                readContent = true;
+                break;
             case HttpStatus.SC_UNPROCESSABLE_ENTITY:
-                retval.content = new InputStreamReader(
-                        entity.getContent());
+                retval.message = "Request validation error";
+                readContent = true;
                 break;
             case HttpStatus.SC_UNAUTHORIZED:
-                retval.message = "Unauthorized operation";
+                retval.message = "Authentication required";
                 break;
             case HttpStatus.SC_FORBIDDEN:
-                retval.message = "Forbidden operation";
+                retval.message = "Insufficient permission to process request";
                 break;
             case HttpStatus.SC_NOT_FOUND:
                 retval.message = "Service not found";
                 break;
             default:
                 retval.message = "Unexpected error";
+        }
+        if (readContent) {
+            retval.content = new InputStreamReader(entity.getContent());
         }
         return retval;
     }

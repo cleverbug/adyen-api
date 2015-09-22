@@ -17,14 +17,9 @@
 package com.adyen.payment.api.error;
 
 /**
- * Handy class for wrapping runtime {@code Exceptions} with a root cause.
- * <p/>
- * <p> This class is {@code abstract} to force the programmer to extend the class. {@code getMessage} will include nested exception information; {@code printStackTrace} and other like methods will
- * delegate to the wrapped exception, if any.
- * <p/>
- * <p> The similarity between this class and the NestedCheckedException class is unavoidable, as Java forces these two classes to have different superclasses (ah, the inflexibility of concrete
- * inheritance!).
- * <p/>
+ * Handy class for wrapping runtime {@code Exceptions} with a root cause. <p/> <p> This class is {@code abstract} to force the programmer to extend the class. {@code getMessage}
+ * will include nested exception information; {@code printStackTrace} and other like methods will delegate to the wrapped exception, if any. <p/> <p> The similarity between this
+ * class and the NestedCheckedException class is unavoidable, as Java forces these two classes to have different superclasses (ah, the inflexibility of concrete inheritance!). <p/>
  * <p> Note: 'direct inspiration' from Spring/Core. Used here to avoid dependecy on spring-core. </p>
  *
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -55,7 +50,6 @@ public abstract class NestedRuntimeException extends RuntimeException {
      */
     @Override
     public String getMessage() {
-        return NestedExceptionUtils
-                .buildMessage(super.getMessage(), getCause());
+        return NestedExceptionUtils.buildMessage(super.getMessage(), getCause());
     }
 }

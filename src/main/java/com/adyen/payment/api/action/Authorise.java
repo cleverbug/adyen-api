@@ -41,31 +41,24 @@ public final class Authorise {
 
     private static final Logger LOG = LoggerFactory.getLogger(Authorise.class);
 
-    private static Request createRequest(final ClientConfig config,
-                                         final PaymentRequest request, boolean secure) {
+    private static Request createRequest(final ClientConfig config, final PaymentRequest request, boolean secure) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("config: {}, request: {}, secure: {}", config, request,
-                    secure);
+            LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
         }
         Request retval;
         String url;
         // create a Post
         try {
-            url = secure ? config.getServices().get(APService.AUTHORISATION_3D)
-                    .toString() : config.getServices()
-                    .get(APService.AUTHORISATION).toString();
+            url = secure ? config.getServices().get(APService.AUTHORISATION_3D).toString() : config.getServices().get(APService.AUTHORISATION).toString();
         } catch (Exception e) {
             LOG.error("authorisation: missing parameter: url");
-            throw new APSConfigurationException(
-                    "authorisation: missing parameter: url");
+            throw new APSConfigurationException("authorisation: missing parameter: url");
         }
         if (StringUtils.isNotBlank(url)) {
-            retval = ActionUtil.createPost(url, config.getConnectionTimeout(),
-                    config.getSocketTimeout(), config.getProxyUser(), request);
+            retval = ActionUtil.createPost(url, config.getConnectionTimeout(), config.getSocketTimeout(), config.getProxyUser(), request);
         } else {
             LOG.error("authorisation: missing parameter: url");
-            throw new APSConfigurationException(
-                    "authorisation: missing parameter: url");
+            throw new APSConfigurationException("authorisation: missing parameter: url");
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("retval: {}", retval);
@@ -73,11 +66,9 @@ public final class Authorise {
         return retval;
     }
 
-    public static PaymentResponse execute(final ClientConfig config,
-                                          final PaymentRequest request, boolean secure) {
+    public static PaymentResponse execute(final ClientConfig config, final PaymentRequest request, boolean secure) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("config: {}, request: {}, secure: {}", config, request,
-                    secure);
+            LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
         }
         PaymentResponse retval;
         // create the request
@@ -88,18 +79,15 @@ public final class Authorise {
         exec.auth(config.getUsername(), config.getPassword());
         // execute and handle
         try {
-            retval = exec.execute(req).handleResponse(
-                    new ResponseHandler<PaymentResponse>() {
-                        public PaymentResponse handleResponse(
-                                HttpResponse response)
-                                throws IOException {
-                            PaymentResponse payres = ActionUtil.handlePaymentResponse(response);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("payres: {}", payres);
-                            }
-                            return payres;
-                        }
-                    });
+            retval = exec.execute(req).handleResponse(new ResponseHandler<PaymentResponse>() {
+                public PaymentResponse handleResponse(HttpResponse response) throws IOException {
+                    PaymentResponse payres = ActionUtil.handlePaymentResponse(response);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("payres: {}", payres);
+                    }
+                    return payres;
+                }
+            });
         } catch (Exception e) {
             LOG.error("authorisation", e);
             throw new APSAccessException("authorization", e);

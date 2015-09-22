@@ -18,8 +18,7 @@ package com.adyen.payment.api.error;
 
 /**
  * Helper class for implementing exception classes which are capable of holding nested exceptions. Necessary because we can't share a base class among different exception types.
- * <p/>
- * <p> Note: 'direct inspiration' from Spring/Core. Used here to avoid dependecy on spring-core. </p>
+ * <p/> <p> Note: 'direct inspiration' from Spring/Core. Used here to avoid dependecy on spring-core. </p>
  *
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */

@@ -17,7 +17,9 @@
 package com.adyen.payment.api.model;
 
 import static org.boon.Boon.toJson;
+import static org.boon.Maps.map;
 import java.io.Serializable;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,5 +131,27 @@ public class PaymentResponse extends Error implements Serializable {
     @Override
     public String toString() {
         return toJson(this);
+    }
+
+    public static void main(String[] args) {
+        PaymentResponse res = new PaymentResponse();
+        res.setAdditionalData(map("test-ad-k1", "test-ad-v1", "test-ad-k2", "test-ad-v2"));
+        res.setAuthCode("test-authcode");
+        res.setDccAmount(new Amount(Currency.getInstance("USD"), 1000L));
+        res.setDccSignature("test-dcc-signature");
+        FraudResult fr = new FraudResult();
+        fr.setAccountScore("test-fr-score");
+        res.setFraudResult(fr);
+        res.setIssuerUrl("test-issuer-url");
+        res.setMd("test-md");
+        res.setPaRequest("test-pa-request");
+        res.setPspReference("tst-psp-reference");
+        res.setRefusalReason("test-refusal-reason");
+        res.setResultCode(ResultCode.Authorised);
+        res.setErrorCode(100);
+        res.setErrorType("test-error");
+        res.setMessage("test-message");
+        res.setStatus(101);
+        System.out.println(res.toString());
     }
 }

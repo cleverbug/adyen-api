@@ -41,81 +41,43 @@ public final class PaymentRequestBuilder {
 
     public interface IBuilder {
         IBuilder additionalAmount(Amount amount);
-
         IBuilder additionalDataEntry(String key, String value);
-
         IBuilder additionalData(Map<String, String> fields);
-
         IBuilder bankAccount(BankAccount bankAccount);
-
         IBuilder billingAddress(BillingAddress address);
-
         IBuilder browserInfo(BrowserInfo info);
-
         IBuilder browserInfo(String userAgent, String acceptHeader);
-
         IBuilder captureDelayHours(int captureDelayHours);
-
         IBuilder card(Card card);
-
         IBuilder dccQuote(ForexQuote dccQuote);
-
         IBuilder deliveryAddress(String deliveryAddress);
-
         IBuilder deliveryDate(Date date);
-
         IBuilder deviceFingerprint(String deviceFingerprint);
-
         IBuilder fraudOffset(int fraudOffset);
-
         IBuilder installments(int value);
-
         IBuilder mcc(int mcc);
-
         IBuilder merchantOrderReference(String reference);
-
         IBuilder mpiData(ThreeDSecureData mpiData);
-
         IBuilder orderReference(String orderReference);
-
         IBuilder recurring(Recurring recurring);
-
         IBuilder reference(String reference);
-
         IBuilder selectedBrand(String brand);
-
         IBuilder selectedRecurringDetailReference(String selectedRecurringDetailReference);
-
         IBuilder sessionId(String sessionId);
-
         IBuilder shopperDateOfBirth(Date dateOfBirth);
-
         IBuilder shopperEmail(String email);
-
         IBuilder shopperIP(String ip);
-
         IBuilder shopperInteraction(ShopperInteraction interaction);
-
         IBuilder shopperLocale(String shopperLocale);
-
         IBuilder shopperReference(String shopperReference);
-
         IBuilder shopperName(Name name);
-
         IBuilder shopperStatement(String shopperStatement);
-
         IBuilder shopperSsn(String shopperSsn);
-
         IBuilder shopperTelephoneNumber(String shopperTelephoneNumber);
-
         IBuilder shopper(Name name, String email, String ip, String reference, ShopperInteraction interaction);
-
         IBuilder shopper(Name name, Date birth, String email, String ip, String reference, String ssn, String telephone, ShopperInteraction interaction, String locale, String statement);
-
         IBuilder md(String md);
-
         IBuilder paResponse(String paResponse);
-
         PaymentRequest build();
     }
 

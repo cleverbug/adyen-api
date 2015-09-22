@@ -316,8 +316,7 @@ public class PaymentRequest implements Serializable {
         return selectedRecurringDetailReference;
     }
 
-    public void setSelectedRecurringDetailReference(
-            String selectedRecurringDetailReference) {
+    public void setSelectedRecurringDetailReference(String selectedRecurringDetailReference) {
         this.selectedRecurringDetailReference = selectedRecurringDetailReference;
     }
 

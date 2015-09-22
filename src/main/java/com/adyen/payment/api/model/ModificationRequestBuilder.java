@@ -34,13 +34,9 @@ public final class ModificationRequestBuilder {
 
     public interface IBuilder {
         IBuilder additionalData(String key, String value);
-
         IBuilder authorisationCode(String code);
-
         IBuilder reference(String reference);
-
         IBuilder modificationAmount(Amount amount);
-
         ModificationRequest build();
     }
 

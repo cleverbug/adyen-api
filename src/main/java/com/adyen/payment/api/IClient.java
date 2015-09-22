@@ -37,7 +37,6 @@ public interface IClient {
      * @throws APSAccessException
      */
     PaymentResponse authorise(final PaymentRequest request);
-
     /**
      * @param request
      *
@@ -48,7 +47,6 @@ public interface IClient {
      * @throws APSAccessException
      */
     PaymentResponse authorise3ds(final PaymentRequest request);
-
     /**
      * @param request
      *
@@ -59,7 +57,6 @@ public interface IClient {
      * @throws APSAccessException
      */
     PaymentResponse verifyBin(final PaymentRequest request);
-
     /**
      * @param request
      *
@@ -70,7 +67,6 @@ public interface IClient {
      * @throws APSAccessException
      */
     ModificationResponse capture(ModificationRequest request);
-
     /**
      * @param request
      *
@@ -81,7 +77,6 @@ public interface IClient {
      * @throws APSAccessException
      */
     ModificationResponse cancel(ModificationRequest request);
-
     /**
      * @param request
      *
@@ -92,7 +87,6 @@ public interface IClient {
      * @throws APSAccessException
      */
     ModificationResponse refund(ModificationRequest request);
-
     /**
      * @param request
      *

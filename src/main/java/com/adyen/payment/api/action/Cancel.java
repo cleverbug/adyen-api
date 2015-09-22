@@ -41,8 +41,7 @@ public final class Cancel {
 
     private static final Logger LOG = LoggerFactory.getLogger(Cancel.class);
 
-    private static Request createRequest(final ClientConfig config,
-                                         final ModificationRequest request) {
+    private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
@@ -53,16 +52,13 @@ public final class Cancel {
             url = config.getServices().get(APService.CANCEL).toString();
         } catch (Exception e) {
             LOG.error("cancel: missing parameter: url");
-            throw new APSConfigurationException(
-                    "cancel: missing parameter: url");
+            throw new APSConfigurationException("cancel: missing parameter: url");
         }
         if (StringUtils.isNotBlank(url)) {
-            retval = ActionUtil.createPost(url, config.getConnectionTimeout(),
-                    config.getSocketTimeout(), config.getProxyUser(), request);
+            retval = ActionUtil.createPost(url, config.getConnectionTimeout(), config.getSocketTimeout(), config.getProxyUser(), request);
         } else {
             LOG.error("cancel: missing parameter: url");
-            throw new APSConfigurationException(
-                    "cancel: missing parameter: url");
+            throw new APSConfigurationException("cancel: missing parameter: url");
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("retval: {}", retval);
@@ -70,8 +66,7 @@ public final class Cancel {
         return retval;
     }
 
-    public static ModificationResponse execute(final ClientConfig config,
-                                               final ModificationRequest request) {
+    public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
@@ -84,18 +79,15 @@ public final class Cancel {
         exec.auth(config.getUsername(), config.getPassword());
         // execute and handle
         try {
-            retval = exec.execute(req).handleResponse(
-                    new ResponseHandler<ModificationResponse>() {
-                        public ModificationResponse handleResponse(
-                                HttpResponse response)
-                                throws IOException {
-                            ModificationResponse modres = ActionUtil.handleModificationResponse(response);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("modres: {}", modres);
-                            }
-                            return modres;
-                        }
-                    });
+            retval = exec.execute(req).handleResponse(new ResponseHandler<ModificationResponse>() {
+                public ModificationResponse handleResponse(HttpResponse response) throws IOException {
+                    ModificationResponse modres = ActionUtil.handleModificationResponse(response);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("modres: {}", modres);
+                    }
+                    return modres;
+                }
+            });
         } catch (Exception e) {
             LOG.error("cancel", e);
             throw new APSAccessException("cancel", e);

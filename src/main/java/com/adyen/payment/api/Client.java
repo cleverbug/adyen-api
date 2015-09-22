@@ -37,13 +37,9 @@ public final class Client implements IClient {
 
     public interface IBuilder {
         IBuilder timeout(long timeout);
-
         IBuilder connectionTimeout(long timeout);
-
         IBuilder socketTimeout(long timeout);
-
         IBuilder proxyUser(String user);
-
         Client build();
     }
 

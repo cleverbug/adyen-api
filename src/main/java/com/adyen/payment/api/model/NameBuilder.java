@@ -34,9 +34,7 @@ public final class NameBuilder {
 
     public interface IBuilder {
         IBuilder gender(GenderType gender);
-
         IBuilder infix(String infix);
-
         Name build();
     }
 
