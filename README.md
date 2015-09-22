@@ -70,5 +70,3 @@ payment processing.
        .build();
    ModificationResponse cancelOrRefundResponse = client.cancelOrRefund(cancelOrRefundRequest);
 ```
-
-###Other
