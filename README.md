@@ -12,13 +12,6 @@ payment processing.
 
 ##Usage
 
-In order to run the tests you just have to `mvn test`. Notice that you have to edit and save the **application.properties**
-according to your *Merchant account name* and *credentials*. For instance:
-```properties
-aps.merchant.account=Acme
-aps.merchant.username=foo
-aps.merchant.password=&$#bar))>
-```
 
 ###Client instantiation
 ```java
