@@ -16,58 +16,41 @@
  */
 package com.adyen.payment.api;
 
-import java.net.URL;
+import static org.boon.Maps.map;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-public class APUtil {
-    public static final Map<APService, URL> DEVLP_SERVICES;
-    public static final Map<APService, URL> TEST_SERVICES;
-    public static final Map<APService, URL> LIVE_SERVICES;
+public final class APUtil {
+    private APUtil() {
+        // utility
+    }
+
+    public static final Map<APService, String> TEST_SERVICES;
+    public static final Map<APService, String> LIVE_SERVICES;
 
     static {
-        DEVLP_SERVICES = new HashMap<>();
-        try {
-            DEVLP_SERVICES.put(APService.AUTHORISATION, new URL("http://localhost:8080/pal/servlet/Payment/v12/authorise"));
-            DEVLP_SERVICES.put(APService.AUTHORISATION_3D, new URL("http://localhost:8080/pal/servlet/Payment/v12/authorise3d"));
-            DEVLP_SERVICES.put(APService.CAPTURE, new URL("http://localhost:8080/pal/servlet/Payment/v12/capture"));
-            DEVLP_SERVICES.put(APService.REFUND, new URL("http://localhost:8080/pal/servlet/Payment/v12/refund"));
-            DEVLP_SERVICES.put(APService.CANCEL, new URL("http://localhost:8080/pal/servlet/Payment/v12/cancel"));
-            DEVLP_SERVICES.put(APService.CANCEL_OR_REFUND, new URL("http://localhost:8080/pal/servlet/Payment/v12/cancelorrefund"));
-        } catch (Exception e) {
-            ;
-        }
-        TEST_SERVICES = new HashMap<>();
-        try {
-            TEST_SERVICES.put(APService.AUTHORISATION, new URL("https://pal-test.adyen.com/pal/servlet/Payment/v12/authorise"));
-            TEST_SERVICES.put(APService.AUTHORISATION_3D, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise3d"));
-            TEST_SERVICES.put(APService.CAPTURE, new URL("https://pal-test.adyen.com/pal/servlet/Payment/v12/capture"));
-            TEST_SERVICES.put(APService.REFUND, new URL("https://pal-test.adyen.com/pal/servlet/Payment/v12/refund"));
-            TEST_SERVICES.put(APService.CANCEL, new URL("https://pal-test.adyen.com/pal/servlet/Payment/v12/cancel"));
-            TEST_SERVICES.put(APService.CANCEL_OR_REFUND, new URL("https://pal-test.adyen.com/pal/servlet/Payment/v12/cancelorrefund"));
-        } catch (Exception e) {
-            ;
-        }
-        LIVE_SERVICES = new HashMap<>();
-        try {
-            LIVE_SERVICES.put(APService.AUTHORISATION, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise"));
-            LIVE_SERVICES.put(APService.AUTHORISATION_3D, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise3d"));
-            LIVE_SERVICES.put(APService.CAPTURE, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/capture"));
-            LIVE_SERVICES.put(APService.REFUND, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/refund"));
-            LIVE_SERVICES.put(APService.CANCEL, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/cancel"));
-            LIVE_SERVICES.put(APService.CANCEL_OR_REFUND, new URL("https://pal-live.adyen.com/pal/servlet/Payment/v12/cancelorrefund"));
-        } catch (Exception e) {
-            ;
-        }
+        TEST_SERVICES = map(
+                APService.AUTHORISATION, "https://pal-test.adyen.com/pal/servlet/Payment/v12/authorise",
+                APService.AUTHORISATION_3D, "https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise3d",
+                APService.CAPTURE, "https://pal-test.adyen.com/pal/servlet/Payment/v12/capture",
+                APService.REFUND, "https://pal-test.adyen.com/pal/servlet/Payment/v12/refund",
+                APService.CANCEL, "https://pal-test.adyen.com/pal/servlet/Payment/v12/cancel",
+                APService.CANCEL_OR_REFUND, "https://pal-test.adyen.com/pal/servlet/Payment/v12/cancelorrefund");
+        LIVE_SERVICES = map(
+                APService.AUTHORISATION, "https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise",
+                APService.AUTHORISATION_3D, "https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise3d",
+                APService.CAPTURE, "https://pal-live.adyen.com/pal/servlet/Payment/v12/capture",
+                APService.REFUND, "https://pal-live.adyen.com/pal/servlet/Payment/v12/refund",
+                APService.CANCEL, "https://pal-live.adyen.com/pal/servlet/Payment/v12/cancel",
+                APService.CANCEL_OR_REFUND, "https://pal-live.adyen.com/pal/servlet/Payment/v12/cancelorrefund");
     }
 
     public enum ReferenceType {
-        DATE, TIMESTAMP, UUID;
+        DATE, TIMESTAMP, UUID
     }
 
     public static String reference(ReferenceType type) {
@@ -79,8 +62,9 @@ public class APUtil {
             case UUID:
                 retval = UUID.randomUUID().toString();
                 break;
-            default:
+            case DATE:
                 retval = new Date().toString();
+                break;
         }
         return retval;
     }

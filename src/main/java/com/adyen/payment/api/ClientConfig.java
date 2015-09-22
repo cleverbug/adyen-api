@@ -18,7 +18,6 @@ package com.adyen.payment.api;
 
 import static org.boon.Boon.toJson;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,16 +28,17 @@ import java.util.Map;
 public class ClientConfig implements Serializable {
     private int connectionTimeout;
     private int socketTimeout;
-    private Map<APService, URL> services = new HashMap<>();
+    private Map<APService, String> services = new HashMap<>();
     private String username, password, proxyUser;
 
     public ClientConfig() {
+        // noop ctor
     }
 
     /**
      * connectionTimeout (em milissegundos) refere-se ao parametro http.connection.timeout (httpclient). O valor 0 (default) siginifica que nao ha timeout (blocking).
      *
-     * @return
+     * @return the connection timeout
      */
     public int getConnectionTimeout() {
         return connectionTimeout;
@@ -49,9 +49,9 @@ public class ClientConfig implements Serializable {
     }
 
     /**
-     * socketTimeout (em milissegundos) refere-se ao parametro http.socket.timeout (httpcliet). O valor 0 (default) siginifica que nao ha timeout (blocking).
+     * readTimeout (em milissegundos) refere-se ao parametro http.socket.timeout (httpcliet). O valor 0 (default) siginifica que nao ha timeout (blocking).
      *
-     * @return
+     * @return the read timeout
      */
     public int getSocketTimeout() {
         return socketTimeout;
@@ -64,14 +64,14 @@ public class ClientConfig implements Serializable {
     /**
      * @return the services
      */
-    public Map<APService, URL> getServices() {
+    public Map<APService, String> getServices() {
         return services;
     }
 
     /**
      * @param services the services to set
      */
-    public void setServices(Map<APService, URL> services) {
+    public void setServices(Map<APService, String> services) {
         this.services = services;
     }
 

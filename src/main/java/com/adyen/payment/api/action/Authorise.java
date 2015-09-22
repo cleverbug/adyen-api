@@ -29,6 +29,7 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -41,7 +42,7 @@ public final class Authorise {
 
     private static final Logger LOG = LoggerFactory.getLogger(Authorise.class);
 
-    private static Request createRequest(final ClientConfig config, final PaymentRequest request, boolean secure) {
+    private static Request createRequest(ClientConfig config, PaymentRequest request, boolean secure) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
         }
@@ -49,7 +50,7 @@ public final class Authorise {
         String url;
         // create a Post
         try {
-            url = secure ? config.getServices().get(APService.AUTHORISATION_3D).toString() : config.getServices().get(APService.AUTHORISATION).toString();
+            url = secure ? config.getServices().get(APService.AUTHORISATION_3D) : config.getServices().get(APService.AUTHORISATION);
         } catch (Exception e) {
             LOG.error("authorisation: missing parameter: url");
             throw new APSConfigurationException("authorisation: missing parameter: url");
@@ -66,7 +67,7 @@ public final class Authorise {
         return retval;
     }
 
-    public static PaymentResponse execute(final ClientConfig config, final PaymentRequest request, boolean secure) {
+    public static PaymentResponse execute(@NotNull ClientConfig config, @NotNull PaymentRequest request, boolean secure) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
         }

@@ -29,6 +29,7 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -37,7 +38,7 @@ import java.io.IOException;
 public class CancelOrRefund {
     private static final Logger LOG = LoggerFactory.getLogger(CancelOrRefund.class);
 
-    private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
+    private static Request createRequest(ClientConfig config, ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
@@ -45,7 +46,7 @@ public class CancelOrRefund {
         String url;
         // create a Post
         try {
-            url = config.getServices().get(APService.CANCEL_OR_REFUND).toString();
+            url = config.getServices().get(APService.CANCEL_OR_REFUND);
         } catch (Exception e) {
             LOG.error("cancelOrRefund: missing parameter: url");
             throw new APSConfigurationException("cancelOrRefund: missing parameter: url");
@@ -62,7 +63,7 @@ public class CancelOrRefund {
         return retval;
     }
 
-    public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
+    public static ModificationResponse execute(@NotNull ClientConfig config, @NotNull ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }

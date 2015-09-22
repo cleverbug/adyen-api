@@ -22,7 +22,6 @@ import com.adyen.payment.api.model.ModificationResponse;
 import com.adyen.payment.api.model.PaymentRequest;
 import com.adyen.payment.api.model.PaymentResponse;
 import javax.validation.constraints.NotNull;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -36,19 +35,20 @@ public final class Client implements IClient {
     }
 
     public interface IBuilder {
-        IBuilder timeout(long timeout);
+        IBuilder timeout(long connectionTimeout, long readTimeout);
         IBuilder connectionTimeout(long timeout);
-        IBuilder socketTimeout(long timeout);
+        IBuilder readTimeout(long timeout);
         IBuilder proxyUser(String user);
         Client build();
     }
 
-    public static IAccount services(Map<APService, URL> services) {
+    public static IAccount services(Map<APService, String> services) {
         return new Builder(services);
     }
 
     public interface IAccount {
         IBuilder credentials(String username, String password);
+        IBuilder credentials(String username, String password, String proxyUser);
     }
 
     private final static class Builder implements IAccount, IBuilder {
@@ -58,15 +58,15 @@ public final class Client implements IClient {
             // disable default constructor
         }
 
-        Builder(Map<APService, URL> services) {
+        Builder(Map<APService, String> services) {
             instance.config = new ClientConfig();
             instance.config.setServices(services);
         }
 
         @Override
-        public IBuilder timeout(long timeout) {
-            instance.config.setConnectionTimeout((int) timeout);
-            instance.config.setSocketTimeout((int) timeout);
+        public IBuilder timeout(long connectionTimeout, long readTimeout) {
+            instance.config.setConnectionTimeout((int) connectionTimeout);
+            instance.config.setSocketTimeout((int) readTimeout);
             return this;
         }
 
@@ -77,7 +77,7 @@ public final class Client implements IClient {
         }
 
         @Override
-        public IBuilder socketTimeout(long timeout) {
+        public IBuilder readTimeout(long timeout) {
             instance.config.setSocketTimeout((int) timeout);
             return this;
         }
@@ -91,6 +91,14 @@ public final class Client implements IClient {
         public IBuilder credentials(String username, String password) {
             instance.config.setUsername(username);
             instance.config.setPassword(password);
+            return this;
+        }
+
+        @Override
+        public IBuilder credentials(String username, String password, String proxyUser) {
+            instance.config.setUsername(username);
+            instance.config.setPassword(password);
+            instance.config.setProxyUser(proxyUser);
             return this;
         }
 

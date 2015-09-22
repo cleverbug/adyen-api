@@ -29,6 +29,7 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -41,7 +42,7 @@ public final class Refund {
 
     private static final Logger LOG = LoggerFactory.getLogger(Refund.class);
 
-    private static Request createRequest(final ClientConfig config, final ModificationRequest request) {
+    private static Request createRequest(ClientConfig config, ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
@@ -49,7 +50,7 @@ public final class Refund {
         String url;
         // create a Post
         try {
-            url = config.getServices().get(APService.REFUND).toString();
+            url = config.getServices().get(APService.REFUND);
         } catch (Exception e) {
             LOG.error("refund: missing parameter: url");
             throw new APSConfigurationException("refund: missing parameter: url");
@@ -66,7 +67,7 @@ public final class Refund {
         return retval;
     }
 
-    public static ModificationResponse execute(final ClientConfig config, final ModificationRequest request) {
+    public static ModificationResponse execute(@NotNull ClientConfig config, @NotNull ModificationRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
