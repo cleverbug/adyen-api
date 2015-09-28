@@ -31,13 +31,13 @@ public class PaymentRequest implements Serializable {
     private Map<String, String> additionalData = new HashMap<>();
     private Amount amount;
     private BankAccount bankAccount;
-    private BillingAddress billingAddress;
+    private Address billingAddress;
     private BrowserInfo browserInfo;
     private int captureDelayHours;
     private Card card;
     private Date dateOfBirth;
     private ForexQuote dccQuote;
-    private String deliveryAddress;
+    private Address deliveryAddress;
     private String deliveryDate;
     private String deviceFingerprint;
     private int fraudOffset;
@@ -176,12 +176,12 @@ public class PaymentRequest implements Serializable {
         this.browserInfo = browserInfo;
     }
 
-    public BillingAddress getBillingAddress() {
+    public Address getBillingAddress() {
         return billingAddress;
     }
 
-    public void setBillingAddress(BillingAddress billingAddress) {
-        this.billingAddress = billingAddress;
+    public void setBillingAddress(Address address) {
+        this.billingAddress = address;
     }
 
     public Amount getAdditionalAmount() {
@@ -240,11 +240,11 @@ public class PaymentRequest implements Serializable {
         this.deliveryDate = deliveryDate;
     }
 
-    public String getDeliveryAddress() {
+    public Address getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
+    public void setDeliveryAddress(Address deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
     }
 

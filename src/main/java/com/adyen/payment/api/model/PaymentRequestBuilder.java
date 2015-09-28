@@ -44,13 +44,13 @@ public final class PaymentRequestBuilder {
         IBuilder additionalDataEntry(String key, String value);
         IBuilder additionalData(Map<String, String> fields);
         IBuilder bankAccount(BankAccount bankAccount);
-        IBuilder billingAddress(BillingAddress address);
+        IBuilder billingAddress(Address address);
         IBuilder browserInfo(BrowserInfo info);
         IBuilder browserInfo(String userAgent, String acceptHeader);
         IBuilder captureDelayHours(int captureDelayHours);
         IBuilder card(Card card);
         IBuilder dccQuote(ForexQuote dccQuote);
-        IBuilder deliveryAddress(String deliveryAddress);
+        IBuilder deliveryAddress(Address deliveryAddress);
         IBuilder deliveryDate(Date date);
         IBuilder deviceFingerprint(String deviceFingerprint);
         IBuilder fraudOffset(int fraudOffset);
@@ -108,7 +108,7 @@ public final class PaymentRequestBuilder {
         }
 
         @Override
-        public IBuilder deliveryAddress(String deliveryAddress) {
+        public IBuilder deliveryAddress(Address deliveryAddress) {
             request.setDeliveryAddress(deliveryAddress);
             return this;
         }
@@ -251,7 +251,7 @@ public final class PaymentRequestBuilder {
         }
 
         @Override
-        public IBuilder billingAddress(BillingAddress address) {
+        public IBuilder billingAddress(Address address) {
             request.setBillingAddress(address);
             return this;
         }

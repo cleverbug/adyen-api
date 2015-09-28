@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
 @SuppressWarnings("serial")
-public class BillingAddress implements Serializable {
+public class Address implements Serializable {
     private String street;
     private String houseNumberOrName;
     private String postalCode;

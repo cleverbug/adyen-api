@@ -89,9 +89,7 @@ public final class Client implements IClient {
 
         @Override
         public IBuilder credentials(String username, String password) {
-            instance.config.setUsername(username);
-            instance.config.setPassword(password);
-            return this;
+            return credentials(username, password, null);
         }
 
         @Override

@@ -21,8 +21,8 @@ import com.neovisionaries.i18n.CountryCode;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-public final class BillingAddressBuilder {
-    private BillingAddressBuilder() {
+public final class AddressBuilder {
+    private AddressBuilder() {
         // utility
     }
 
@@ -51,19 +51,19 @@ public final class BillingAddressBuilder {
     }
 
     public interface IBuilder {
-        BillingAddress build();
+        Address build();
     }
 
     private static final class Builder implements IBuilder, INumber, IPostalCode, ICity, IState, ICountry {
-        private BillingAddress address;
+        private Address address;
 
         Builder(String street) {
-            address = new BillingAddress();
+            address = new Address();
             address.setStreet(street);
         }
 
         @Override
-        public BillingAddress build() {
+        public Address build() {
             return address;
         }
 
