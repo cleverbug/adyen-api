@@ -3,7 +3,7 @@ package com.github.woki.payments.adyen.model;
 import java.io.Serializable;
 import java.util.Date;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class ForexQuote implements Serializable {
     private int basePoints;
     private Date validTill;

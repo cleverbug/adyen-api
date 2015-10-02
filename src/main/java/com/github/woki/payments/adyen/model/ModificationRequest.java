@@ -25,9 +25,9 @@ import java.util.Map;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class ModificationRequest implements Serializable {
-    private Map<String, String> additionalData = new HashMap<String, String>();
+    private Map<String, String> additionalData = new HashMap<>();
     private String authorisationCode;
     private String merchantAccount;
     private Amount modificationAmount;

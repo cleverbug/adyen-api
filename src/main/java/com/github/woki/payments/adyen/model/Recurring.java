@@ -4,7 +4,7 @@ import static org.boon.Boon.toJson;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class Recurring implements Serializable {
     private ContractType contract;
     private String recurringDetailName;

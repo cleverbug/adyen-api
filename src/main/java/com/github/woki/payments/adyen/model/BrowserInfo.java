@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class BrowserInfo implements Serializable {
     private String userAgent;
     private String acceptHeader;

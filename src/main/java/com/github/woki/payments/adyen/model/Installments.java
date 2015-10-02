@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class Installments implements Serializable {
     private int value;
 

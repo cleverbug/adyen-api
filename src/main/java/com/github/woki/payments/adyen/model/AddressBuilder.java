@@ -21,6 +21,7 @@ import com.neovisionaries.i18n.CountryCode;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
+@SuppressWarnings("unused")
 public final class AddressBuilder {
     private AddressBuilder() {
         // utility

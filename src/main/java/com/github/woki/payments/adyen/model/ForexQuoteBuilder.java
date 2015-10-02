@@ -21,6 +21,7 @@ import java.util.Date;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
+@SuppressWarnings("unused")
 public final class ForexQuoteBuilder {
     private ForexQuoteBuilder() {
         // builder

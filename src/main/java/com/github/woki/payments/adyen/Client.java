@@ -31,6 +31,7 @@ import com.github.woki.payments.adyen.model.PaymentResponse;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
+@SuppressWarnings("unused")
 public final class Client implements IClient {
     private ClientConfig config;
 

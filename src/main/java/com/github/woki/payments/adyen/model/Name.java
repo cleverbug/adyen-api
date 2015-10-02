@@ -4,7 +4,7 @@ import static org.boon.Boon.toJson;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class Name implements Serializable {
     private String firstName;
     private String lastName;

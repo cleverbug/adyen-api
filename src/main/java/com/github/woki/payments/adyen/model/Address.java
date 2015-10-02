@@ -24,7 +24,7 @@ import com.neovisionaries.i18n.CountryCode;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class Address implements Serializable {
     private String street;
     private String houseNumberOrName;

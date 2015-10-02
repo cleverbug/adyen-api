@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class Error implements Serializable {
     protected int status;
     protected int errorCode;

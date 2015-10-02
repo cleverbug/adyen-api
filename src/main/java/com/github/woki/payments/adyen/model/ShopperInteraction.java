@@ -19,6 +19,7 @@ package com.github.woki.payments.adyen.model;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
+@SuppressWarnings("unused")
 public enum ShopperInteraction {
     Ecommerce, ContAuth, POS, Moto
 }

@@ -25,7 +25,7 @@ import org.boon.json.annotations.JsonInclude;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class Amount implements Serializable {
     private Currency currency;
     @JsonInclude

@@ -24,6 +24,7 @@ import java.util.Map;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
+@SuppressWarnings("unused")
 public final class PaymentRequestBuilder {
     private static final DateFormat DELIVERY_DATE_FMTR = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00.000'Z'");
 

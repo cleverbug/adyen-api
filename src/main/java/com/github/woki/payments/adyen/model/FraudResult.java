@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class FraudResult implements Serializable {
     private String accountScore;
     private List<FraudResultItem> results = new ArrayList<>();

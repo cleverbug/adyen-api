@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class PaymentRequest implements Serializable {
     private Amount additionalAmount;
     private Map<String, String> additionalData = new HashMap<>();

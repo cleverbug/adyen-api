@@ -4,7 +4,7 @@ import static org.boon.Boon.toJson;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class BankAccount implements Serializable {
     private String bankAccountNumber;
     private String bankLocationId;

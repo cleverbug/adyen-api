@@ -25,6 +25,7 @@ import java.util.UUID;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
+@SuppressWarnings("unused")
 public final class APUtil {
     private APUtil() {
         // utility

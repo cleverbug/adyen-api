@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial, unused")
 public class FraudResultItem implements Serializable {
     private String accountScore;
     private String checkId;
