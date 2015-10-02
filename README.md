@@ -1,4 +1,4 @@
-#Java client for Adyen Payment System
+#Java integration for Adyen Payment System API
 
 [Adyen](http://www.adyen.com)
 > is the leading technology provider powering payments for global commerce in the 21st century.
@@ -8,7 +8,7 @@
 Adyen Payment System, **APS**, lies at the heart of its payment platform and it's the service a merchant integrates with for
 payment processing.
 
-**adyen-java-client** aims to be a cohesive and opinionated way for consuming APS' JSON messaging based services.
+**adyen-api** aims to be a cohesive and opinionated way for consuming APS' JSON messaging based services.
 
 
 ##Usage

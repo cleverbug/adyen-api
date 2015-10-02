@@ -3,4 +3,6 @@
 /.idea/
 /.classpath
 /.project
-/adyen-java-client.iml
+/adyen-api.iml
+
+
