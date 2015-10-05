@@ -33,8 +33,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     PaymentResponse authorise(final PaymentRequest request);
     /**
@@ -42,8 +42,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     PaymentResponse authorise3ds(final PaymentRequest request);
     /**
@@ -51,8 +51,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     PaymentResponse verifyBin(final PaymentRequest request);
     /**
@@ -60,8 +60,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     ModificationResponse capture(ModificationRequest request);
     /**
@@ -69,8 +69,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     ModificationResponse cancel(ModificationRequest request);
     /**
@@ -78,8 +78,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     ModificationResponse refund(ModificationRequest request);
     /**
@@ -87,8 +87,8 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException
-     * @throws APSAccessException
+     * @throws APSConfigurationException on configuration error
+     * @throws APSAccessException on communication error
      */
     ModificationResponse cancelOrRefund(ModificationRequest request);
 }
