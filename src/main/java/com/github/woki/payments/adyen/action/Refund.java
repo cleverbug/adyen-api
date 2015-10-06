@@ -21,10 +21,8 @@ import java.io.IOException;
 import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.error.APSAccessException;
-import com.github.woki.payments.adyen.error.APSConfigurationException;
 import com.github.woki.payments.adyen.model.ModificationRequest;
 import com.github.woki.payments.adyen.model.ModificationResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
@@ -46,21 +44,8 @@ public final class Refund {
         if (LOG.isDebugEnabled()) {
             LOG.debug("config: {}, request: {}", config, request);
         }
-        Request retval;
-        String url;
-        // create a Post
-        try {
-            url = config.getServices().get(APService.REFUND);
-        } catch (Exception e) {
-            LOG.error("refund: missing parameter: url");
-            throw new APSConfigurationException("refund: missing parameter: url");
-        }
-        if (StringUtils.isNotBlank(url)) {
-            retval = ActionUtil.createPost(url, config.getConnectionTimeout(), config.getSocketTimeout(), config.getProxyUser(), request);
-        } else {
-            LOG.error("refund: missing parameter: url");
-            throw new APSConfigurationException("refund: missing parameter: url");
-        }
+        Request retval = ActionUtil.createPost(APService.REFUND, config, request);
+        ;
         if (LOG.isDebugEnabled()) {
             LOG.debug("retval: {}", retval);
         }

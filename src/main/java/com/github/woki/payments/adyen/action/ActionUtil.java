@@ -20,9 +20,11 @@ import static org.apache.http.client.fluent.Request.Post;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
+import com.github.woki.payments.adyen.APService;
+import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.model.ModificationResponse;
 import com.github.woki.payments.adyen.model.PaymentResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -46,21 +48,17 @@ public final class ActionUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ActionUtil.class);
     private static final ObjectMapper MAPPER = JsonFactory.create();
 
-    public static Request createPost(String url, int connectTimeout, int socketTimeout, String proxyUser, final Object request) {
-        Request retval = Post(url);
+    public static Request createPost(APService service, ClientConfig config, Object request) {
+        Request retval = Post(config.getServices().get(service));
         // configure conn timeout
-        if (connectTimeout > 0) {
-            retval.connectTimeout(connectTimeout);
-        }
+        retval.connectTimeout(config.getConnectionTimeout());
         // configure socket timeout
-        if (socketTimeout > 0) {
-            retval.socketTimeout(socketTimeout);
-        }
+        retval.socketTimeout(config.getSocketTimeout());
         // add json
         retval.addHeader("Content-Type", "application/json");
         retval.addHeader("Accept", "application/json");
-        if (StringUtils.isNotBlank(proxyUser)) {
-            retval.addHeader("j_proxyuser", proxyUser);
+        for (Map.Entry<String, String> entry : config.getExtraParameters().entrySet()) {
+            retval.addHeader(entry.getKey(), entry.getValue());
         }
         // add content
         retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);

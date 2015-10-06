@@ -21,10 +21,8 @@ import java.io.IOException;
 import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.error.APSAccessException;
-import com.github.woki.payments.adyen.error.APSConfigurationException;
 import com.github.woki.payments.adyen.model.PaymentRequest;
 import com.github.woki.payments.adyen.model.PaymentResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Executor;
@@ -42,38 +40,25 @@ public final class Authorise {
 
     private static final Logger LOG = LoggerFactory.getLogger(Authorise.class);
 
-    private static Request createRequest(ClientConfig config, PaymentRequest request, boolean secure) {
+    private static Request createRequest(ClientConfig config, PaymentRequest request, boolean threeDs) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
+            LOG.debug("config: {}, request: {}, 3-ds: {}", config, request, threeDs);
         }
-        Request retval;
-        String url;
-        // create a Post
-        try {
-            url = secure ? config.getServices().get(APService.AUTHORISATION_3D) : config.getServices().get(APService.AUTHORISATION);
-        } catch (Exception e) {
-            LOG.error("authorisation: missing parameter: url");
-            throw new APSConfigurationException("authorisation: missing parameter: url");
-        }
-        if (StringUtils.isNotBlank(url)) {
-            retval = ActionUtil.createPost(url, config.getConnectionTimeout(), config.getSocketTimeout(), config.getProxyUser(), request);
-        } else {
-            LOG.error("authorisation: missing parameter: url");
-            throw new APSConfigurationException("authorisation: missing parameter: url");
-        }
+        APService service = threeDs ? APService.AUTHORISATION_3D : APService.AUTHORISATION;
+        Request retval = ActionUtil.createPost(service, config, request);
         if (LOG.isDebugEnabled()) {
             LOG.debug("retval: {}", retval);
         }
         return retval;
     }
 
-    public static PaymentResponse execute(@NotNull ClientConfig config, @NotNull PaymentRequest request, boolean secure) {
+    public static PaymentResponse execute(@NotNull ClientConfig config, @NotNull PaymentRequest request, boolean threeDs) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("config: {}, request: {}, secure: {}", config, request, secure);
+            LOG.debug("config: {}, request: {}, 3-ds: {}", config, request, threeDs);
         }
         PaymentResponse retval;
         // create the request
-        Request req = createRequest(config, request, secure);
+        Request req = createRequest(config, request, threeDs);
         // create an Executor
         Executor exec = Executor.newInstance();
         // add auth

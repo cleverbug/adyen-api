@@ -43,7 +43,8 @@ public final class Client implements IClient {
         IBuilder timeout(long connectionTimeout, long readTimeout);
         IBuilder connectionTimeout(long timeout);
         IBuilder readTimeout(long timeout);
-        IBuilder proxyUser(String user);
+        IBuilder extraParameters(Map<String, String> extraParameters);
+        IBuilder addExtraParameter(String key, String value);
         Client build();
     }
 
@@ -53,7 +54,6 @@ public final class Client implements IClient {
 
     public interface IAccount {
         IBuilder credentials(String username, String password);
-        IBuilder credentials(String username, String password, String proxyUser);
     }
 
     private final static class Builder implements IAccount, IBuilder {
@@ -88,26 +88,26 @@ public final class Client implements IClient {
         }
 
         @Override
+        public IBuilder extraParameters(Map<String, String> extraParameters) {
+            instance.config.setExtraParameters(extraParameters);
+            return this;
+        }
+
+        @Override
+        public IBuilder addExtraParameter(String key, String value) {
+            instance.config.addExtraParameter(key, value);
+            return this;
+        }
+
+        @Override
         public Client build() {
             return instance;
         }
 
         @Override
         public IBuilder credentials(String username, String password) {
-            return credentials(username, password, null);
-        }
-
-        @Override
-        public IBuilder credentials(String username, String password, String proxyUser) {
             instance.config.setUsername(username);
             instance.config.setPassword(password);
-            instance.config.setProxyUser(proxyUser);
-            return this;
-        }
-
-        @Override
-        public IBuilder proxyUser(String user) {
-            instance.config.setProxyUser(user);
             return this;
         }
     }

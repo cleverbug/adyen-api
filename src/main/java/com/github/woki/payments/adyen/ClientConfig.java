@@ -30,7 +30,8 @@ public class ClientConfig implements Serializable {
     private int connectionTimeout;
     private int socketTimeout;
     private Map<APService, String> services = new HashMap<>();
-    private String username, password, proxyUser;
+    private String username, password;
+    private Map<String, String> extraParameters = new HashMap<>();
 
     public ClientConfig() {
         // noop ctor
@@ -104,12 +105,26 @@ public class ClientConfig implements Serializable {
         this.password = password;
     }
 
-    public String getProxyUser() {
-        return proxyUser;
+    /**
+     * @return extra parameters map
+     */
+    public Map<String, String> getExtraParameters() {
+        return extraParameters;
     }
 
-    public void setProxyUser(String proxyUser) {
-        this.proxyUser = proxyUser;
+    /**
+     * @param extraParameters the extra parameters map to set
+     */
+    public void setExtraParameters(Map<String, String> extraParameters) {
+        this.extraParameters = extraParameters;
+    }
+
+    /**
+     * @param key the extra parameter key
+     * @param value the extra parameter value
+     */
+    public void addExtraParameter(String key, String value) {
+        extraParameters.put(key, value);
     }
 
     @Override

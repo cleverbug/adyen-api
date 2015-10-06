@@ -17,7 +17,6 @@
 package com.github.woki.payments.adyen;
 
 import com.github.woki.payments.adyen.error.APSAccessException;
-import com.github.woki.payments.adyen.error.APSConfigurationException;
 import com.github.woki.payments.adyen.model.ModificationRequest;
 import com.github.woki.payments.adyen.model.ModificationResponse;
 import com.github.woki.payments.adyen.model.PaymentRequest;
@@ -33,7 +32,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     PaymentResponse authorise(final PaymentRequest request);
@@ -42,7 +40,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     PaymentResponse authorise3ds(final PaymentRequest request);
@@ -51,7 +48,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     PaymentResponse verifyBin(final PaymentRequest request);
@@ -60,7 +56,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     ModificationResponse capture(ModificationRequest request);
@@ -69,7 +64,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     ModificationResponse cancel(ModificationRequest request);
@@ -78,7 +72,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     ModificationResponse refund(ModificationRequest request);
@@ -87,7 +80,6 @@ public interface IClient {
      *
      * @return the response
      *
-     * @throws APSConfigurationException on configuration error
      * @throws APSAccessException on communication error
      */
     ModificationResponse cancelOrRefund(ModificationRequest request);
