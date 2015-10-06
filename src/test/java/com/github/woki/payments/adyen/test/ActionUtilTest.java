@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.util.Currency;
+import com.github.woki.payments.adyen.APService;
+import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.action.ActionUtil;
 import com.github.woki.payments.adyen.model.Amount;
 import com.github.woki.payments.adyen.model.CardBuilder;
@@ -65,16 +67,16 @@ public class ActionUtilTest {
 
     @Test
     public void testCreatePost() throws Exception {
-        String url = "http://www.adyen.com", proxyUser = "proxy-user";
-        int connTimeout = 0, socketTimeout = 0;
-        Request request = ActionUtil.createPost(url, connTimeout, socketTimeout, proxyUser, null);
+        ClientConfig config = new ClientConfig();
+        config.addService(APService.AUTHORISATION, "http://www.adyen.com");
+        Request request = ActionUtil.createPost(APService.AUTHORISATION, config, null);
         assertNotNull(request);
-        request = ActionUtil.createPost(url, connTimeout, socketTimeout, proxyUser, "hello");
+        request = ActionUtil.createPost(APService.AUTHORISATION, config, "hello");
         assertNotNull(request);
         PaymentRequest pr = PaymentRequestBuilder.merchantAccount("testAccount").amount(new Amount(Currency.getInstance("USD"), 10000L)).card(CardBuilder.number
                 ("4111111111111111").cvc("123").expiry(2016, 6).holder("Johnny Tester").build()).reference("ref001").additionalDataEntry("returnUrl", "http://www.adyen.com")
                 .shopper(NameBuilder.first("Johnny").last("Tester").build(), "willian.oki@gmail.com", "127.0.0.1", "Test/DAPI/Authorisation/PayULatam", Ecommerce).build();
-        request = ActionUtil.createPost(url, connTimeout, socketTimeout, proxyUser, pr);
+        request = ActionUtil.createPost(APService.AUTHORISATION, config, pr);
         assertNotNull(request);
     }
 

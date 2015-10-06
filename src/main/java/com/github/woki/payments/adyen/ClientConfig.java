@@ -78,6 +78,14 @@ public class ClientConfig implements Serializable {
     }
 
     /**
+     * @param service the service to set
+     * @param url the url to set
+     */
+    public void addService(APService service, String url) {
+        services.put(service, url);
+    }
+
+    /**
      * @return the username
      */
     public String getUsername() {
