@@ -6,6 +6,27 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <name>${project.groupId}:${project.artifactId}</name>
+  <description>adyen-api is a cohesive and opinionated way for consuming APS' JSON messaging based services</description>
+  <url>https://github.com/woki/adyen-api</url>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Willian Oki</name>
+      <email>willian.oki@gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:woki/adyen-api.git</connection>
+    <developerConnection>scm:git:git@github.com:woki/adyen-api.git</developerConnection>
+    <url>git@github.com:woki/adyen-api.git</url>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
