@@ -25,6 +25,8 @@ import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.model.ModificationResponse;
 import com.github.woki.payments.adyen.model.PaymentResponse;
+import io.advantageous.boon.json.JsonFactory;
+import io.advantageous.boon.json.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -32,8 +34,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

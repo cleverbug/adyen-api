@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.woki</groupId>
   <artifactId>payments-adyen-api</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -31,17 +31,17 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.7</java.version>
-    <commons-lang3.version>3.3.2</commons-lang3.version>
+    <commons-lang3.version>3.4</commons-lang3.version>
     <commons-io.version>2.4</commons-io.version>
-    <httpcore.version>4.4.1</httpcore.version>
-    <httpclient.version>4.4.1</httpclient.version>
-    <fluent-hc.version>4.4.1</fluent-hc.version>
-    <boon.version>0.33</boon.version>
-    <nv-i18n.version>1.14</nv-i18n.version>
+    <httpcore.version>4.4.4</httpcore.version>
+    <httpclient.version>4.5.1</httpclient.version>
+    <fluent-hc.version>4.5.1</fluent-hc.version>
+    <boon.version>0.5.6.RELEASE</boon.version>
+    <nv-i18n.version>1.18</nv-i18n.version>
     <javax.validation.version>1.1.0.Final</javax.validation.version>
-    <slf4j.version>1.7.12</slf4j.version>
+    <slf4j.version>1.7.14</slf4j.version>
     <junit.version>4.12</junit.version>
-    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.5</maven-compiler-plugin.version>
     <maven-source-plugin.version>2.4</maven-source-plugin.version>
     <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
@@ -169,8 +169,8 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>io.fastjson</groupId>
-      <artifactId>boon</artifactId>
+      <groupId>io.advantageous.boon</groupId>
+      <artifactId>boon-json</artifactId>
       <version>${boon.version}</version>
     </dependency>
     <dependency>

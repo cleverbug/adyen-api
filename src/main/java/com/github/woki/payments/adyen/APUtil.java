@@ -16,7 +16,7 @@
  */
 package com.github.woki.payments.adyen;
 
-import static org.boon.Maps.map;
+import static io.advantageous.boon.core.Maps.map;
 
 import java.util.Date;
 import java.util.Map;

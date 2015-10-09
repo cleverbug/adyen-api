@@ -1,7 +1,7 @@
 package com.github.woki.payments.adyen.test;
 
 import static com.github.woki.payments.adyen.model.ShopperInteraction.Ecommerce;
-import static org.boon.Maps.map;
+import static io.advantageous.boon.core.Maps.map;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -29,9 +29,6 @@ import org.apache.http.message.BasicStatusLine;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by willian on 9/21/15.
- */
 public class ActionUtilTest {
     PaymentResponse paymentResponse;
     ModificationResponse modificationResponse;

@@ -16,7 +16,7 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static org.boon.Boon.toJson;
+import static io.advantageous.boon.json.JsonFactory.toJson;
 
 import java.io.Serializable;
 

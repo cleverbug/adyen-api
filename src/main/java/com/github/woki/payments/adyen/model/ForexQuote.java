@@ -1,5 +1,7 @@
 package com.github.woki.payments.adyen.model;
 
+import static io.advantageous.boon.json.JsonFactory.toJson;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -116,6 +118,6 @@ public class ForexQuote implements Serializable {
 
     @Override
     public String toString() {
-        return org.boon.Boon.toJson(this);
+        return toJson(this);
     }
 }

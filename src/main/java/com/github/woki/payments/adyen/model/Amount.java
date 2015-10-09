@@ -16,11 +16,11 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static org.boon.Boon.toJson;
+import static io.advantageous.boon.json.JsonFactory.toJson;
 
 import java.io.Serializable;
 import java.util.Currency;
-import org.boon.json.annotations.JsonInclude;
+import io.advantageous.boon.json.annotations.JsonInclude;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
