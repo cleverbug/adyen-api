@@ -10,9 +10,19 @@ payment processing.
 
 **adyen-api** aims to be a cohesive and opinionated way for consuming APS' JSON messaging based services.
 
+##Current version and Maven dependency
+
+```xml
+    <dependency>
+      <groupId>com.github.woki</groupId>
+      <artifactId>payments-adyen-api</artifactId>
+      <version>${payments-adyen-api.version}</version>
+    </dependency>
+```
+See also this [Sample Client](http://github.com/woki/adyen-client) sample built upon **ayden-api**.
+It takes an authorization or modification request in YAML format and communicates with APS.
 
 ##Usage
-
 
 ###Client instantiation
 ```java
