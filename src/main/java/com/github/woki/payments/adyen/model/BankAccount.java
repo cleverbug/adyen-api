@@ -18,6 +18,10 @@ public class BankAccount implements Serializable {
     private String ownerName;
 
     @PublicApi
+    public BankAccount() {
+    }
+
+    @PublicApi
     public String getBankAccountNumber() {
         return bankAccountNumber;
     }

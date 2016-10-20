@@ -15,6 +15,10 @@ public class Name implements Serializable {
     private String infix;
 
     @PublicApi
+    public Name() {
+    }
+
+    @PublicApi
     public String getFirstName() {
         return firstName;
     }

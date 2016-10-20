@@ -24,6 +24,10 @@ public class ForexQuote implements Serializable {
     private String type;
 
     @PublicApi
+    public ForexQuote() {
+    }
+
+    @PublicApi
     public int getBasePoints() {
         return basePoints;
     }

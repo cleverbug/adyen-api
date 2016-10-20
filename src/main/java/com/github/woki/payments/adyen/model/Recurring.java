@@ -12,6 +12,10 @@ public class Recurring implements Serializable {
     private ContractType contract;
     private String recurringDetailName;
 
+    @PublicApi
+    public Recurring() {
+    }
+
     public Recurring(ContractType contract, String recurringDetailName) {
         this.contract = contract;
         this.recurringDetailName = recurringDetailName;

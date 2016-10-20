@@ -37,6 +37,10 @@ public class ModificationRequest implements Serializable {
     private String reference;
 
     @PublicApi
+    public ModificationRequest() {
+    }
+
+    @PublicApi
     public String getMerchantAccount() {
         return merchantAccount;
     }

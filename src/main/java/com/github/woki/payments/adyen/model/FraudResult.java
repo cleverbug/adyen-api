@@ -34,6 +34,10 @@ public class FraudResult implements Serializable {
     private List<FraudResultItem> results = new ArrayList<>();
 
     @PublicApi
+    public FraudResult() {
+    }
+
+    @PublicApi
     public String getAccountScore() {
         return accountScore;
     }

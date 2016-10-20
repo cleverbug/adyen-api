@@ -32,6 +32,10 @@ public class FraudResultItem implements Serializable {
     private String checkId;
     private String name;
 
+    @PublicApi
+    public FraudResultItem() {
+    }
+
     public FraudResultItem(String name, String checkId, String accountScore) {
         this.accountScore = accountScore;
         this.checkId = checkId;

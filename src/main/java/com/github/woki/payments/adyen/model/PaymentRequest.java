@@ -69,6 +69,10 @@ public class PaymentRequest implements Serializable {
     private String telephoneNumber;
 
     @PublicApi
+    public PaymentRequest() {
+    }
+
+    @PublicApi
     public String getMerchantAccount() {
         return merchantAccount;
     }

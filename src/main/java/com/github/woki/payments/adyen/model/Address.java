@@ -37,6 +37,10 @@ public class Address implements Serializable {
     private CountryCode country;
 
     @PublicApi
+    public Address() {
+    }
+
+    @PublicApi
     public String getStreet() {
         return street;
     }

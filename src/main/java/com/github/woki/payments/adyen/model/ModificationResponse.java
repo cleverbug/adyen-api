@@ -35,6 +35,10 @@ public class ModificationResponse extends Error implements Serializable {
     private String response;
 
     @PublicApi
+    public ModificationResponse() {
+    }
+
+    @PublicApi
     public String getPspReference() {
         return pspReference;
     }

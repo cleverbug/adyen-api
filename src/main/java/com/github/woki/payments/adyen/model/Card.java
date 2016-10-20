@@ -37,6 +37,10 @@ public class Card implements Serializable {
     private String startYear;
 
     @PublicApi
+    public Card() {
+    }
+
+    @PublicApi
     public int getExpiryMonth() {
         return expiryMonth;
     }

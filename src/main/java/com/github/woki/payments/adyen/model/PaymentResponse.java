@@ -43,6 +43,10 @@ public class PaymentResponse extends Error implements Serializable {
     private ResultCode resultCode;
 
     @PublicApi
+    public PaymentResponse() {
+    }
+
+    @PublicApi
     public String getPspReference() {
         return pspReference;
     }

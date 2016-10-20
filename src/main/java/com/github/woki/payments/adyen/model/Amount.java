@@ -34,6 +34,9 @@ public class Amount implements Serializable {
     @JsonInclude
     private long value;
 
+    public Amount() {
+    }
+
     public Amount(Currency currency, long value) {
         this.currency = currency;
         this.value = value;

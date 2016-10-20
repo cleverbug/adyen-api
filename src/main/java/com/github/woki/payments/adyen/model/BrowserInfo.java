@@ -32,6 +32,10 @@ public class BrowserInfo implements Serializable {
     private String acceptHeader;
 
     @PublicApi
+    public BrowserInfo() {
+    }
+
+    @PublicApi
     public BrowserInfo(String userAgent, String acceptHeader) {
         this.userAgent = userAgent;
         this.acceptHeader = acceptHeader;

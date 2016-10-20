@@ -18,6 +18,10 @@ public class ThreeDSecureData implements Serializable {
     private String xid;
 
     @PublicApi
+    public ThreeDSecureData() {
+    }
+
+    @PublicApi
     public String getAuthenticationResponse() {
         return authenticationResponse;
     }

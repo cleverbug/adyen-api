@@ -31,6 +31,10 @@ public class Installments implements Serializable {
     private int value;
 
     @PublicApi
+    public Installments() {
+    }
+
+    @PublicApi
     public Installments(int value) {
         this.value = value;
     }

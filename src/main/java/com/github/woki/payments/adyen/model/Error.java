@@ -35,7 +35,6 @@ public class Error implements Serializable {
 
     @PublicApi
     public Error() {
-        // noop ctor
     }
 
     @PublicApi
