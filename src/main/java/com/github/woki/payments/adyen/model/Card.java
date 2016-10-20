@@ -122,14 +122,4 @@ public class Card implements Serializable {
                 .append("cardNumber", number).append("cvc", cvc).append("issueNumber", issueNumber).append("startMonth", startMonth)
                 .append("startYear", startYear).toString();
     }
-
-    public static void main(String[] args) {
-        Card card = new Card();
-        card.setCvc("123");
-        card.setExpiryMonth(12);
-        card.setExpiryYear(2018);
-        card.setHolderName("Holdur");
-        card.setNumber("4444444444444444");
-        System.out.println(card);
-    }
 }
