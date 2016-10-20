@@ -16,45 +16,29 @@
  */
 package com.github.woki.payments.adyen;
 
-import static io.advantageous.boon.core.Maps.map;
-
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class APUtil {
     private APUtil() {
         // utility
     }
 
-    public static final Map<APService, String> TEST_SERVICES;
-    public static final Map<APService, String> LIVE_SERVICES;
+    @PublicApi
+    public static final String TEST_ENDPOINT = "https://pal-test.adyen.com";
+    @PublicApi
+    public static final String LIVE_ENDPOINT = "https://pal-live.adyen.com";
 
-    static {
-        TEST_SERVICES = map(
-                APService.AUTHORISATION, "https://pal-test.adyen.com/pal/servlet/Payment/v12/authorise",
-                APService.AUTHORISATION_3D, "https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise3d",
-                APService.CAPTURE, "https://pal-test.adyen.com/pal/servlet/Payment/v12/capture",
-                APService.REFUND, "https://pal-test.adyen.com/pal/servlet/Payment/v12/refund",
-                APService.CANCEL, "https://pal-test.adyen.com/pal/servlet/Payment/v12/cancel",
-                APService.CANCEL_OR_REFUND, "https://pal-test.adyen.com/pal/servlet/Payment/v12/cancelorrefund");
-        LIVE_SERVICES = map(
-                APService.AUTHORISATION, "https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise",
-                APService.AUTHORISATION_3D, "https://pal-live.adyen.com/pal/servlet/Payment/v12/authorise3d",
-                APService.CAPTURE, "https://pal-live.adyen.com/pal/servlet/Payment/v12/capture",
-                APService.REFUND, "https://pal-live.adyen.com/pal/servlet/Payment/v12/refund",
-                APService.CANCEL, "https://pal-live.adyen.com/pal/servlet/Payment/v12/cancel",
-                APService.CANCEL_OR_REFUND, "https://pal-live.adyen.com/pal/servlet/Payment/v12/cancelorrefund");
-    }
-
+    @PublicApi
     public enum ReferenceType {
         DATE, TIMESTAMP, UUID
     }
 
+    @PublicApi
     public static String reference(ReferenceType type) {
         String retval = null;
         switch (type) {

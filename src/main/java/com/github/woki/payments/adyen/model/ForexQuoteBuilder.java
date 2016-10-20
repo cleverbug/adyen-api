@@ -16,41 +16,55 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 import java.util.Date;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class ForexQuoteBuilder {
     private ForexQuoteBuilder() {
         // builder
     }
 
+    @PublicApi
     public static IValidTill base(String type, String reference, int basePoints) {
         return new Builder(type, reference, basePoints);
     }
 
+    @PublicApi
     public interface IValidTill {
+        @PublicApi
         IAccount validTill(Date date);
     }
 
+    @PublicApi
     public interface IAccount {
+        @PublicApi
         IAmounts account(String account, String accountType);
     }
 
+    @PublicApi
     public interface IAmounts {
+        @PublicApi
         ISource amounts(Amount base, Amount interbank, Amount buy, Amount sell);
     }
 
+    @PublicApi
     public interface ISource {
+        @PublicApi
         ISignature source(String source);
     }
 
+    @PublicApi
     public interface ISignature {
+        @PublicApi
         IBuilder signature(String signature);
     }
 
+    @PublicApi
     public interface IBuilder {
         ForexQuote build();
     }

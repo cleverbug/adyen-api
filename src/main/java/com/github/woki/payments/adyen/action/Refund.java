@@ -16,19 +16,16 @@
  */
 package com.github.woki.payments.adyen.action;
 
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.error.APSAccessException;
 import com.github.woki.payments.adyen.model.ModificationRequest;
 import com.github.woki.payments.adyen.model.ModificationResponse;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -45,7 +42,6 @@ public final class Refund {
             LOG.debug("config: {}, request: {}", config, request);
         }
         Request retval = ActionUtil.createPost(APService.REFUND, config, request);
-        ;
         if (LOG.isDebugEnabled()) {
             LOG.debug("retval: {}", retval);
         }
@@ -57,23 +53,8 @@ public final class Refund {
             LOG.debug("config: {}, request: {}", config, request);
         }
         ModificationResponse retval;
-        // create the request
-        Request req = createRequest(config, request);
-        // create an Executor
-        Executor exec = Executor.newInstance();
-        // add auth
-        exec.auth(config.getUsername(), config.getPassword());
-        // execute and handle
         try {
-            retval = exec.execute(req).handleResponse(new ResponseHandler<ModificationResponse>() {
-                public ModificationResponse handleResponse(HttpResponse response) throws IOException {
-                    ModificationResponse modres = ActionUtil.handleModificationResponse(response);
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("modres: {}", modres);
-                    }
-                    return modres;
-                }
-            });
+            retval = ActionUtil.executeModification(createRequest(config, request), config);
         } catch (Exception e) {
             LOG.error("refund", e);
             throw new APSAccessException("refund", e);

@@ -16,27 +16,37 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class ModificationRequestBuilder {
     private ModificationRequestBuilder() {
         // utility
     }
 
+    @PublicApi
     public static IOriginalReference merchantAccount(String account) {
         return new Builder(account);
     }
 
+    @PublicApi
     public interface IOriginalReference {
+        @PublicApi
         IBuilder originalReference(String reference);
     }
 
+    @PublicApi
     public interface IBuilder {
+        @PublicApi
         IBuilder additionalData(String key, String value);
+        @PublicApi
         IBuilder authorisationCode(String code);
+        @PublicApi
         IBuilder reference(String reference);
+        @PublicApi
         IBuilder modificationAmount(Amount amount);
         ModificationRequest build();
     }

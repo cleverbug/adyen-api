@@ -16,10 +16,16 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public enum ResultCode {
-    Authorised, Refused, Error, Received, RedirectShopper
+    @PublicApi Authorised,
+    @PublicApi Refused,
+    @PublicApi Error,
+    @PublicApi Received,
+    @PublicApi RedirectShopper
 }

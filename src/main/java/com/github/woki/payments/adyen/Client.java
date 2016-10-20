@@ -16,22 +16,19 @@
  */
 package com.github.woki.payments.adyen;
 
-import javax.validation.constraints.NotNull;
-import java.util.Map;
-import com.github.woki.payments.adyen.action.Authorise;
-import com.github.woki.payments.adyen.action.Cancel;
-import com.github.woki.payments.adyen.action.CancelOrRefund;
-import com.github.woki.payments.adyen.action.Capture;
-import com.github.woki.payments.adyen.action.Refund;
+import com.github.woki.payments.adyen.action.*;
 import com.github.woki.payments.adyen.model.ModificationRequest;
 import com.github.woki.payments.adyen.model.ModificationResponse;
 import com.github.woki.payments.adyen.model.PaymentRequest;
 import com.github.woki.payments.adyen.model.PaymentResponse;
 
+import javax.validation.constraints.NotNull;
+import java.util.Map;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class Client implements IClient {
     private ClientConfig config;
 
@@ -39,33 +36,50 @@ public final class Client implements IClient {
         // disable default constructor
     }
 
+    @PublicApi
     public interface IBuilder {
+        @PublicApi
         IBuilder timeout(long connectionTimeout, long readTimeout);
+
+        @PublicApi
         IBuilder connectionTimeout(long timeout);
+
+        @PublicApi
         IBuilder readTimeout(long timeout);
+
+        @PublicApi
         IBuilder extraParameters(Map<String, String> extraParameters);
+
+        @PublicApi
+        IBuilder proxyConfig(String config);
+
+        @PublicApi
         IBuilder addExtraParameter(String key, String value);
+
         Client build();
     }
 
-    public static IAccount services(Map<APService, String> services) {
-        return new Builder(services);
+    @PublicApi
+    public static IAccount endpoint(String endpoint) {
+        return new Builder(endpoint);
     }
 
+    @PublicApi
     public interface IAccount {
+        @PublicApi
         IBuilder credentials(String username, String password);
     }
 
     private final static class Builder implements IAccount, IBuilder {
         private Client instance = new Client();
 
+        @PublicApi
         private Builder() {
             // disable default constructor
         }
 
-        Builder(Map<APService, String> services) {
-            instance.config = new ClientConfig();
-            instance.config.setServices(services);
+        Builder(String endpoint) {
+            instance.config = new ClientConfig(endpoint);
         }
 
         @Override
@@ -94,6 +108,12 @@ public final class Client implements IClient {
         }
 
         @Override
+        public IBuilder proxyConfig(String config) {
+            instance.config.setProxyConfig(config);
+            return this;
+        }
+
+        @Override
         public IBuilder addExtraParameter(String key, String value) {
             instance.config.addExtraParameter(key, value);
             return this;
@@ -110,6 +130,11 @@ public final class Client implements IClient {
             instance.config.setPassword(password);
             return this;
         }
+    }
+
+    @Override
+    public com.github.woki.payments.adyen.ClientConfig getClientConfig() {
+        return config;
     }
 
     @Override

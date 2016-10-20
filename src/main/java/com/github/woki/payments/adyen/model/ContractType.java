@@ -1,8 +1,10 @@
 package com.github.woki.payments.adyen.model;
 
-@SuppressWarnings("unused")
+import com.github.woki.payments.adyen.PublicApi;
+
+@PublicApi
 public enum ContractType {
-    ONECLICK,
-    RECURRING,
-    PAYOUT
+    @PublicApi ONECLICK,
+    @PublicApi RECURRING,
+    @PublicApi PAYOUT
 }

@@ -27,7 +27,7 @@ package com.github.woki.payments.adyen.error;
  * (ah, the inflexibility of concrete inheritance!).
  * </p>
  * <p>
- *     Note: 'direct inspiration' from Spring/Core. Used here to avoid dependecy on spring-core.
+ *     Note: 'direct inspiration' from Spring/Core. Used here to avoid dependency on spring-core.
  * </p>
  *
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;

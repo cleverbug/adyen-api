@@ -16,11 +16,6 @@
  */
 package com.github.woki.payments.adyen.action;
 
-import static org.apache.http.client.fluent.Request.Post;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Map;
 import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.model.ModificationResponse;
@@ -32,15 +27,23 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map;
+
+import static org.apache.http.client.fluent.Request.Post;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-public final class ActionUtil {
+final class ActionUtil {
     private ActionUtil() {
         // utility
     }
@@ -48,8 +51,8 @@ public final class ActionUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ActionUtil.class);
     private static final ObjectMapper MAPPER = JsonFactory.create();
 
-    public static Request createPost(APService service, ClientConfig config, Object request) {
-        Request retval = Post(config.getServices().get(service));
+    static Request createPost(APService service, ClientConfig config, Object request) {
+        Request retval = Post(config.getEndpointPort(service));
         // configure conn timeout
         retval.connectTimeout(config.getConnectionTimeout());
         // configure socket timeout
@@ -62,10 +65,34 @@ public final class ActionUtil {
         }
         // add content
         retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
+        if (config.hasProxy()) {
+            retval.viaProxy(config.getProxyHost());
+        }
         return retval;
     }
 
-    public static PaymentResponse handlePaymentResponse(final HttpResponse response) throws IOException {
+    static Executor createExecutor(ClientConfig config) {
+        Executor retval = Executor.newInstance();
+        retval.auth(config.getEndpointHost(), config.getUsername(), config.getPassword());
+        if (config.hasProxy() && config.isProxyAuthenticated()) {
+            retval.auth(config.getProxyHost(), config.getProxyUsername(), config.getProxyPassword());
+        }
+        return retval;
+    }
+
+    static ModificationResponse executeModification(Request request, ClientConfig config) throws IOException {
+        return createExecutor(config).execute(request).handleResponse(new ResponseHandler<ModificationResponse>() {
+            public ModificationResponse handleResponse(HttpResponse response) throws IOException {
+                ModificationResponse modres = ActionUtil.handleModificationResponse(response);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("modres: {}", modres);
+                }
+                return modres;
+            }
+        });
+    }
+
+    static PaymentResponse handlePaymentResponse(final HttpResponse response) throws IOException {
         PaymentResponse retval;
         HttpOutcome httpOutcome = handleHttpResponse(response);
         if (httpOutcome.content != null) {
@@ -81,7 +108,7 @@ public final class ActionUtil {
         return retval;
     }
 
-    public static ModificationResponse handleModificationResponse(final HttpResponse response) throws IOException {
+    static ModificationResponse handleModificationResponse(final HttpResponse response) throws IOException {
         ModificationResponse retval;
         HttpOutcome httpOutcome = handleHttpResponse(response);
         if (httpOutcome.content != null) {

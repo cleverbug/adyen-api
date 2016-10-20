@@ -16,29 +16,54 @@
  */
 package com.github.woki.payments.adyen;
 
-import static io.advantageous.boon.json.JsonFactory.toJson;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.http.HttpHost;
+import org.apache.http.client.utils.URIUtils;
 
-import java.io.Serializable;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial")
-public class ClientConfig implements Serializable {
+public class ClientConfig {
+    private HttpHost endpointHost;
     private int connectionTimeout;
     private int socketTimeout;
-    private Map<APService, String> services = new HashMap<>();
-    private String username, password;
+    private String proxyConfig;
+    private HttpHost proxyHost;
+    private String endpoint;
+    private String username;
+    private String password;
+    private String proxyUsername, proxyPassword;
     private Map<String, String> extraParameters = new HashMap<>();
 
-    public ClientConfig() {
-        // noop ctor
+    private final static Pattern PROXY_CONFIG_PATTERN = Pattern.compile("(.*):(.*)@(\\w+):(\\d+)|(\\w+):(\\d+)");
+
+    /**
+     * Constructor
+     *
+     * @param endpoint the endpoint; {@link APUtil#TEST_ENDPOINT} / {@link APUtil#LIVE_ENDPOINT}
+     *
+     * @throws IllegalArgumentException on invalid URI
+     */
+    public ClientConfig(String endpoint) {
+        if (StringUtils.isBlank(endpoint)) {
+            throw new IllegalArgumentException("Invalid endpoint: " + endpoint);
+        }
+        endpointHost = URIUtils.extractHost(URI.create(endpoint));
+        if (endpointHost == null) {
+            throw new IllegalArgumentException("Invalid endpoint: " + endpoint);
+        }
+        this.endpoint = endpoint;
     }
 
     /**
-     * connectionTimeout (em milissegundos) refere-se ao parametro http.connection.timeout (httpclient). O valor 0 (default) siginifica que nao ha timeout (blocking).
+     * connectionTimeout (millisecs) see http.connection.timeout (httpclient). 0 (default) means no timeout (blocking).
      *
      * @return the connection timeout
      */
@@ -46,12 +71,12 @@ public class ClientConfig implements Serializable {
         return connectionTimeout;
     }
 
-    public void setConnectionTimeout(int connectionTimeout) {
+    void setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
 
     /**
-     * readTimeout (em milissegundos) refere-se ao parametro http.socket.timeout (httpcliet). O valor 0 (default) siginifica que nao ha timeout (blocking).
+     * readTimeout (millisecs) see http.socket.timeout (httpclient). 0 (default) means no timeout (blocking).
      *
      * @return the read timeout
      */
@@ -59,30 +84,12 @@ public class ClientConfig implements Serializable {
         return socketTimeout;
     }
 
-    public void setSocketTimeout(int socketTimeout) {
+    void setSocketTimeout(int socketTimeout) {
         this.socketTimeout = socketTimeout;
     }
 
-    /**
-     * @return the services
-     */
-    public Map<APService, String> getServices() {
-        return services;
-    }
-
-    /**
-     * @param services the services to set
-     */
-    public void setServices(Map<APService, String> services) {
-        this.services = services;
-    }
-
-    /**
-     * @param service the service to set
-     * @param url the url to set
-     */
-    public void addService(APService service, String url) {
-        services.put(service, url);
+    public String getEndpointPort(APService service) {
+        return endpoint + service.getPath();
     }
 
     /**
@@ -95,7 +102,7 @@ public class ClientConfig implements Serializable {
     /**
      * @param username the username to set
      */
-    public void setUsername(String username) {
+    void setUsername(String username) {
         this.username = username;
     }
 
@@ -109,7 +116,7 @@ public class ClientConfig implements Serializable {
     /**
      * @param password the password to set
      */
-    public void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password;
     }
 
@@ -123,7 +130,7 @@ public class ClientConfig implements Serializable {
     /**
      * @param extraParameters the extra parameters map to set
      */
-    public void setExtraParameters(Map<String, String> extraParameters) {
+    void setExtraParameters(Map<String, String> extraParameters) {
         this.extraParameters = extraParameters;
     }
 
@@ -131,12 +138,64 @@ public class ClientConfig implements Serializable {
      * @param key the extra parameter key
      * @param value the extra parameter value
      */
-    public void addExtraParameter(String key, String value) {
+    void addExtraParameter(String key, String value) {
         extraParameters.put(key, value);
+    }
+
+    /**
+     * Proxy's Hostname/IP, port and credentials formatted as follow:
+     * <p>
+     *     [user:password@]host:port<br/>
+     *     E.g.: prxyusr:prxypass@proxy:8888, prxyusr:prxypass@127.0.0.1:8888, proxy:8888, ...
+     * </p>
+     *
+     * @param proxyConfig the specification
+     */
+    void setProxyConfig(String proxyConfig) {
+        this.proxyConfig = proxyConfig;
+    }
+
+    public HttpHost getEndpointHost() {
+        return endpointHost;
+    }
+
+    public boolean hasProxy() {
+        return getProxyHost() != null;
+    }
+
+    public HttpHost getProxyHost() {
+        if (proxyHost == null && proxyConfig != null) {
+            Matcher matcher = PROXY_CONFIG_PATTERN.matcher(proxyConfig);
+            if (matcher.matches() && matcher.groupCount() == 6) {
+                if (matcher.group(1) == null) {
+                    proxyHost = HttpHost.create(matcher.group(5) + ":" + matcher.group(6));
+                } else {
+                    proxyUsername = matcher.group(1);
+                    proxyPassword = matcher.group(2);
+                    proxyHost = HttpHost.create(matcher.group(3) + ":" + matcher.group(4));
+                }
+            }
+        }
+        return proxyHost;
+    }
+
+    public boolean isProxyAuthenticated() {
+        return proxyUsername != null;
+    }
+
+    public String getProxyUsername() {
+        return hasProxy() ? proxyUsername : null;
+    }
+
+    public String getProxyPassword() {
+        return hasProxy() ? proxyPassword : null;
     }
 
     @Override
     public String toString() {
-        return toJson(this);
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("endpointHost", endpointHost).append("connectionTimeout", connectionTimeout)
+                .append("socketTimeout", socketTimeout).append("proxyConfig", proxyConfig).append("proxyHost", proxyHost).append("endpoint", endpoint)
+                .append("username", username).append("password", password).append("proxyUsername", proxyUsername).append("proxyPassword", proxyPassword)
+                .append("extraParameters", extraParameters).toString();
     }
 }

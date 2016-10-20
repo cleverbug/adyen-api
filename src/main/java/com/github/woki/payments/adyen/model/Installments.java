@@ -16,35 +16,37 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static io.advantageous.boon.json.JsonFactory.toJson;
+import com.github.woki.payments.adyen.PublicApi;
+import com.github.woki.payments.adyen.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial, unused")
+@SuppressWarnings("serial")
+@PublicApi
 public class Installments implements Serializable {
     private int value;
 
-    public Installments() {
-        // noop ctor
-    }
-
+    @PublicApi
     public Installments(int value) {
         this.value = value;
     }
 
+    @PublicApi
     public int getValue() {
         return value;
     }
 
+    @PublicApi
     public void setValue(int value) {
         this.value = value;
     }
 
     @Override
     public String toString() {
-        return toJson(this);
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("value", value).toString();
     }
 }

@@ -16,25 +16,33 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class NameBuilder {
     private NameBuilder() {
         // utility
     }
 
+    @PublicApi
     public static ILastName first(String first) {
         return new Builder(first);
     }
 
+    @PublicApi
     public interface ILastName {
         IBuilder last(String last);
     }
 
+    @PublicApi
     public interface IBuilder {
+        @PublicApi
         IBuilder gender(GenderType gender);
+
+        @PublicApi
         IBuilder infix(String infix);
         Name build();
     }

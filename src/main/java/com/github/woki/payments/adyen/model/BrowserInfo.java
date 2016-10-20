@@ -16,45 +16,49 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static io.advantageous.boon.json.JsonFactory.toJson;
+import com.github.woki.payments.adyen.PublicApi;
+import com.github.woki.payments.adyen.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial, unused")
+@SuppressWarnings("serial")
+@PublicApi
 public class BrowserInfo implements Serializable {
     private String userAgent;
     private String acceptHeader;
 
-    public BrowserInfo() {
-        // noop ctor
-    }
-
+    @PublicApi
     public BrowserInfo(String userAgent, String acceptHeader) {
         this.userAgent = userAgent;
         this.acceptHeader = acceptHeader;
     }
 
+    @PublicApi
     public String getUserAgent() {
         return userAgent;
     }
 
+    @PublicApi
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 
+    @PublicApi
     public String getAcceptHeader() {
         return acceptHeader;
     }
 
+    @PublicApi
     public void setAcceptHeader(String acceptHeader) {
         this.acceptHeader = acceptHeader;
     }
 
     @Override
     public String toString() {
-        return toJson(this);
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("userAgent", userAgent).append("acceptHeader", acceptHeader).toString();
     }
 }

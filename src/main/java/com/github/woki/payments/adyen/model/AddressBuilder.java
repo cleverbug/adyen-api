@@ -16,41 +16,54 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
 import com.neovisionaries.i18n.CountryCode;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class AddressBuilder {
     private AddressBuilder() {
         // utility
     }
 
+    @PublicApi
     public static INumber street(String street) {
         return new Builder(street);
     }
 
+    @PublicApi
     public interface INumber {
+        @PublicApi
         IPostalCode numberOrName(String number);
     }
 
+    @PublicApi
     public interface IPostalCode {
+        @PublicApi
         ICity postalCode(String postalCode);
     }
 
+    @PublicApi
     public interface ICity {
+        @PublicApi
         IState city(String city);
     }
 
+    @PublicApi
     public interface IState {
+        @PublicApi
         ICountry state(String state);
     }
 
+    @PublicApi
     public interface ICountry {
+        @PublicApi
         IBuilder country(CountryCode country);
     }
 
+    @PublicApi
     public interface IBuilder {
         Address build();
     }

@@ -16,6 +16,8 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,7 +26,7 @@ import java.util.Map;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class PaymentRequestBuilder {
     private static final DateFormat DELIVERY_DATE_FMTR = new SimpleDateFormat("yyyy-MM-dd'T'00:00:00.000'Z'");
 
@@ -32,53 +34,132 @@ public final class PaymentRequestBuilder {
         // utility
     }
 
+    @PublicApi
     public static IAmount merchantAccount(String account) {
         return new Builder(account);
     }
 
+    @PublicApi
     public interface IAmount {
+        @PublicApi
         IBuilder amount(Amount amount);
     }
 
+    @PublicApi
     public interface IBuilder {
+        @PublicApi
         IBuilder additionalAmount(Amount amount);
+
+        @PublicApi
         IBuilder additionalDataEntry(String key, String value);
+
+        @PublicApi
         IBuilder additionalData(Map<String, String> fields);
+
+        @PublicApi
         IBuilder bankAccount(BankAccount bankAccount);
+
+        @PublicApi
         IBuilder billingAddress(Address address);
+
+        @PublicApi
         IBuilder browserInfo(BrowserInfo info);
+
+        @PublicApi
         IBuilder browserInfo(String userAgent, String acceptHeader);
+
+        @PublicApi
         IBuilder captureDelayHours(int captureDelayHours);
+
+        @PublicApi
         IBuilder card(Card card);
+
+        @PublicApi
         IBuilder dccQuote(ForexQuote dccQuote);
+
+        @PublicApi
         IBuilder deliveryAddress(Address deliveryAddress);
+
+        @PublicApi
         IBuilder deliveryDate(Date date);
+
+        @PublicApi
         IBuilder deviceFingerprint(String deviceFingerprint);
+
+        @PublicApi
         IBuilder fraudOffset(int fraudOffset);
+
+        @PublicApi
         IBuilder installments(int value);
+
+        @PublicApi
         IBuilder mcc(int mcc);
+
+        @PublicApi
         IBuilder merchantOrderReference(String reference);
+
+        @PublicApi
         IBuilder mpiData(ThreeDSecureData mpiData);
+
+        @PublicApi
         IBuilder orderReference(String orderReference);
+
+        @PublicApi
         IBuilder recurring(Recurring recurring);
+
+        @PublicApi
         IBuilder reference(String reference);
+
+        @PublicApi
         IBuilder selectedBrand(String brand);
+
+        @PublicApi
         IBuilder selectedRecurringDetailReference(String selectedRecurringDetailReference);
+
+        @PublicApi
         IBuilder sessionId(String sessionId);
+
+        @PublicApi
         IBuilder shopperDateOfBirth(Date dateOfBirth);
+
+        @PublicApi
         IBuilder shopperEmail(String email);
+
+        @PublicApi
         IBuilder shopperIP(String ip);
+
+        @PublicApi
         IBuilder shopperInteraction(ShopperInteraction interaction);
+
+        @PublicApi
         IBuilder shopperLocale(String shopperLocale);
+
+        @PublicApi
         IBuilder shopperReference(String shopperReference);
+
+        @PublicApi
         IBuilder shopperName(Name name);
+
+        @PublicApi
         IBuilder shopperStatement(String shopperStatement);
+
+        @PublicApi
         IBuilder shopperSsn(String shopperSsn);
+
+        @PublicApi
         IBuilder shopperTelephoneNumber(String shopperTelephoneNumber);
+
+        @PublicApi
         IBuilder shopper(Name name, String email, String ip, String reference, ShopperInteraction interaction);
+
+        @PublicApi
         IBuilder shopper(Name name, Date birth, String email, String ip, String reference, String ssn, String telephone, ShopperInteraction interaction, String locale, String
                 statement);
+
+        @PublicApi
         IBuilder md(String md);
+
+        @PublicApi
         IBuilder paResponse(String paResponse);
         PaymentRequest build();
     }

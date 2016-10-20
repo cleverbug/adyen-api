@@ -16,7 +16,9 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static io.advantageous.boon.json.JsonFactory.toJson;
+import com.github.woki.payments.adyen.PublicApi;
+import com.github.woki.payments.adyen.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,33 +27,34 @@ import java.util.List;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial, unused")
+@SuppressWarnings("serial")
+@PublicApi
 public class FraudResult implements Serializable {
     private String accountScore;
     private List<FraudResultItem> results = new ArrayList<>();
 
-    public FraudResult() {
-        // noop ctor
-    }
-
+    @PublicApi
     public String getAccountScore() {
         return accountScore;
     }
 
+    @PublicApi
     public void setAccountScore(String accountScore) {
         this.accountScore = accountScore;
     }
 
+    @PublicApi
     public List<FraudResultItem> getResults() {
         return results;
     }
 
+    @PublicApi
     public void setResults(List<FraudResultItem> results) {
         this.results = results;
     }
 
     @Override
     public String toString() {
-        return toJson(this);
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("accountScore", accountScore).append("results", results).toString();
     }
 }

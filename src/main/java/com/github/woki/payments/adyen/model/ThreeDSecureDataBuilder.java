@@ -16,35 +16,43 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("unused")
+@PublicApi
 public final class ThreeDSecureDataBuilder {
     private ThreeDSecureDataBuilder() {
         // builder
     }
 
+    @PublicApi
     public static ICavv authenticationResponse(String response) {
         return new Builder(response);
     }
 
+    @PublicApi
     public interface ICavv {
-        IDirResponse cavv(String cavv, String algorithm);
+        @PublicApi IDirResponse cavv(String cavv, String algorithm);
     }
 
+    @PublicApi
     public interface IDirResponse {
-        IEci directoryResponse(String response);
+        @PublicApi IEci directoryResponse(String response);
     }
 
+    @PublicApi
     public interface IEci {
-        IXid eci(String eci);
+        @PublicApi IXid eci(String eci);
     }
 
+    @PublicApi
     public interface IXid {
-        IBuilder xid(String xid);
+        @PublicApi IBuilder xid(String xid);
     }
 
+    @PublicApi
     public interface IBuilder {
         ThreeDSecureData build();
     }

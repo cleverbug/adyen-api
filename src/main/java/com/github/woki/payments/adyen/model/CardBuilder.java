@@ -16,6 +16,8 @@
  */
 package com.github.woki.payments.adyen.model;
 
+import com.github.woki.payments.adyen.PublicApi;
+
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
@@ -28,18 +30,22 @@ public final class CardBuilder {
         return new Builder(number);
     }
 
+    @PublicApi
     public interface ICvc {
         IExpiry cvc(String cvc);
     }
 
+    @PublicApi
     public interface IExpiry {
         IHolder expiry(int year, int month);
     }
 
+    @PublicApi
     public interface IHolder {
         IBuilder holder(String holder);
     }
 
+    @PublicApi
     public interface IBuilder {
         Card build();
     }

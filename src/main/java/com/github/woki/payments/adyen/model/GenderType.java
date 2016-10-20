@@ -1,8 +1,10 @@
 package com.github.woki.payments.adyen.model;
 
-@SuppressWarnings("unused")
+import com.github.woki.payments.adyen.PublicApi;
+
+@PublicApi
 public enum GenderType {
-    M,
-    F,
-    U
+    @PublicApi M,
+    @PublicApi F,
+    @PublicApi U
 }

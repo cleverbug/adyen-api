@@ -16,48 +16,51 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static io.advantageous.boon.json.JsonFactory.toJson;
+import com.github.woki.payments.adyen.PublicApi;
+import com.github.woki.payments.adyen.ToStringStyle;
+import io.advantageous.boon.json.annotations.JsonInclude;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Currency;
-import io.advantageous.boon.json.annotations.JsonInclude;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial, unused")
+@SuppressWarnings("serial")
+@PublicApi
 public class Amount implements Serializable {
     private Currency currency;
     @JsonInclude
     private long value;
-
-    public Amount() {
-        // noop ctor
-    }
 
     public Amount(Currency currency, long value) {
         this.currency = currency;
         this.value = value;
     }
 
+    @PublicApi
     public Currency getCurrency() {
         return currency;
     }
 
+    @PublicApi
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
+    @PublicApi
     public long getValue() {
         return value;
     }
 
+    @PublicApi
     public void setValue(long value) {
         this.value = value;
     }
 
     @Override
     public String toString() {
-        return toJson(this);
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("currency", currency).append("value", value).toString();
     }
 }

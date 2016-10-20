@@ -16,8 +16,6 @@
  */
 package com.github.woki.payments.adyen.action;
 
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
 import com.github.woki.payments.adyen.error.APSAccessException;
@@ -25,10 +23,12 @@ import com.github.woki.payments.adyen.model.PaymentRequest;
 import com.github.woki.payments.adyen.model.PaymentResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -57,15 +57,8 @@ public final class Authorise {
             LOG.debug("config: {}, request: {}, 3-ds: {}", config, request, threeDs);
         }
         PaymentResponse retval;
-        // create the request
-        Request req = createRequest(config, request, threeDs);
-        // create an Executor
-        Executor exec = Executor.newInstance();
-        // add auth
-        exec.auth(config.getUsername(), config.getPassword());
-        // execute and handle
         try {
-            retval = exec.execute(req).handleResponse(new ResponseHandler<PaymentResponse>() {
+            retval = ActionUtil.createExecutor(config).execute(createRequest(config, request, threeDs)).handleResponse(new ResponseHandler<PaymentResponse>() {
                 public PaymentResponse handleResponse(HttpResponse response) throws IOException {
                     PaymentResponse payres = ActionUtil.handlePaymentResponse(response);
                     if (LOG.isDebugEnabled()) {

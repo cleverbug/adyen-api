@@ -16,7 +16,9 @@
  */
 package com.github.woki.payments.adyen.model;
 
-import static io.advantageous.boon.json.JsonFactory.toJson;
+import com.github.woki.payments.adyen.PublicApi;
+import com.github.woki.payments.adyen.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -25,38 +27,46 @@ import java.util.Map;
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
-@SuppressWarnings("serial, unused")
+@SuppressWarnings("serial")
+@PublicApi
 public class ModificationResponse extends Error implements Serializable {
     private Map<String, String> additionalData = new HashMap<>();
     private String pspReference;
     private String response;
 
+    @PublicApi
     public String getPspReference() {
         return pspReference;
     }
 
+    @PublicApi
     public void setPspReference(String pspReference) {
         this.pspReference = pspReference;
     }
 
+    @PublicApi
     public String getResponse() {
         return response;
     }
 
+    @PublicApi
     public void setResponse(String response) {
         this.response = response;
     }
 
+    @PublicApi
     public Map<String, String> getAdditionalData() {
         return additionalData;
     }
 
+    @PublicApi
     public void setAdditionalData(Map<String, String> additionalData) {
         this.additionalData = additionalData;
     }
 
     @Override
     public String toString() {
-        return toJson(this);
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("additionalData", additionalData).append("pspReference", pspReference)
+                .append("response", response).toString();
     }
 }

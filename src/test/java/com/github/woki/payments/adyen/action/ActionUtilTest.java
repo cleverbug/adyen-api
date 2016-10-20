@@ -1,24 +1,9 @@
-package com.github.woki.payments.adyen.test;
+package com.github.woki.payments.adyen.action;
 
-import static com.github.woki.payments.adyen.model.ShopperInteraction.Ecommerce;
-import static io.advantageous.boon.core.Maps.map;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.util.Currency;
 import com.github.woki.payments.adyen.APService;
+import com.github.woki.payments.adyen.APUtil;
 import com.github.woki.payments.adyen.ClientConfig;
-import com.github.woki.payments.adyen.action.ActionUtil;
-import com.github.woki.payments.adyen.model.Amount;
-import com.github.woki.payments.adyen.model.CardBuilder;
-import com.github.woki.payments.adyen.model.FraudResult;
-import com.github.woki.payments.adyen.model.ModificationResponse;
-import com.github.woki.payments.adyen.model.NameBuilder;
-import com.github.woki.payments.adyen.model.PaymentRequest;
-import com.github.woki.payments.adyen.model.PaymentRequestBuilder;
-import com.github.woki.payments.adyen.model.PaymentResponse;
-import com.github.woki.payments.adyen.model.ResultCode;
+import com.github.woki.payments.adyen.model.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
@@ -29,9 +14,17 @@ import org.apache.http.message.BasicStatusLine;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.util.Currency;
+
+import static com.github.woki.payments.adyen.model.ShopperInteraction.Ecommerce;
+import static io.advantageous.boon.core.Maps.map;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 public class ActionUtilTest {
-    PaymentResponse paymentResponse;
-    ModificationResponse modificationResponse;
+    private PaymentResponse paymentResponse;
+    private ModificationResponse modificationResponse;
 
     @Before
     public void setUp() {
@@ -64,8 +57,7 @@ public class ActionUtilTest {
 
     @Test
     public void testCreatePost() throws Exception {
-        ClientConfig config = new ClientConfig();
-        config.addService(APService.AUTHORISATION, "http://www.adyen.com");
+        ClientConfig config = new ClientConfig(APUtil.TEST_ENDPOINT);
         Request request = ActionUtil.createPost(APService.AUTHORISATION, config, null);
         assertNotNull(request);
         request = ActionUtil.createPost(APService.AUTHORISATION, config, "hello");
