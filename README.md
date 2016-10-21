@@ -16,7 +16,7 @@ payment processing.
     <dependency>
       <groupId>com.github.woki</groupId>
       <artifactId>payments-adyen-api</artifactId>
-      <version>1.1.1</version>
+      <version>1.2.0</version>
     </dependency>
 ```
 See also this [Sample Client](http://github.com/woki/adyen-client) sample built upon **ayden-api**.
@@ -27,10 +27,23 @@ It takes an authorization or modification request in YAML format and communicate
 ###Client instantiation
 ```java
    Client client = Client
-      .services(TEST_SERVICES)
+      .endpoint("https://pal-test.adyen.com")
+      // .endpoint(APUtil.TEST_ENDPOINT)
+      // .endpoint("https://pal-live.adyen.com")
+      // .endpoint(APUtil.LIVE_ENDPOINT)
       .credentials(username, password)
       .build();
 ```
+In case you are behind a proxy just add .proxyConfig() to the composition, as follows
+```java
+   Client client = Client
+      .endpoint("https://pal-test.adyen.com")
+      .credentials(username, password)
+      .proxyConfig("prxyusr:prxypass@prxysrvr:8888")
+      .build();
+```
+Notice that authentication is optional. For the example above the proxy configuration descriptor would then be like
+this: prxysrvr:8888.
 
 ###Authorisation
 ```java
