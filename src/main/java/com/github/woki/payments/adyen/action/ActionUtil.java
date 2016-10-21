@@ -64,7 +64,7 @@ final class ActionUtil {
             retval.addHeader(entry.getKey(), entry.getValue());
         }
         // add content
-        retval.bodyString(MAPPER.toJson(request), ContentType.APPLICATION_JSON);
+        retval.bodyString(MAPPER.toJson(encrypt(config, request)), ContentType.APPLICATION_JSON);
         if (config.hasProxy()) {
             retval.viaProxy(config.getProxyHost());
         }
@@ -169,5 +169,9 @@ final class ActionUtil {
         private int statusCode;
         private String message;
         private InputStreamReader content;
+    }
+
+    private static Object encrypt(ClientConfig config, Object original) {
+        return original;
     }
 }

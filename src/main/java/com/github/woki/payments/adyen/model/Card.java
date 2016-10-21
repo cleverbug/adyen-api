@@ -21,20 +21,20 @@ import com.github.woki.payments.adyen.ToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
 @SuppressWarnings("serial")
+@PublicApi
 public class Card implements Serializable {
     private int expiryMonth;
     private int expiryYear;
     private String holderName;
     private String number;
     private String cvc;
-    private String issueNumber;
-    private String startMonth;
-    private String startYear;
+    private Date generationTime;
 
     @PublicApi
     public Card() {
@@ -91,39 +91,19 @@ public class Card implements Serializable {
     }
 
     @PublicApi
-    public String getIssueNumber() {
-        return issueNumber;
+    public Date getGenerationTime() {
+        return generationTime;
     }
 
     @PublicApi
-    public void setIssueNumber(String issueNumber) {
-        this.issueNumber = issueNumber;
-    }
-
-    @PublicApi
-    public String getStartMonth() {
-        return startMonth;
-    }
-
-    @PublicApi
-    public void setStartMonth(String startMonth) {
-        this.startMonth = startMonth;
-    }
-
-    @PublicApi
-    public String getStartYear() {
-        return startYear;
-    }
-
-    @PublicApi
-    public void setStartYear(String startYear) {
-        this.startYear = startYear;
+    public void setGenerationTime(Date generationTime) {
+        this.generationTime = generationTime;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("expiryMonth", expiryMonth).append("expiryYear", expiryYear).append("holderName", holderName)
-                .append("cardNumber", number).append("cvc", cvc).append("issueNumber", issueNumber).append("startMonth", startMonth)
-                .append("startYear", startYear).toString();
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+                .append("expiryMonth", expiryMonth).append("expiryYear", expiryYear).append("holderName", holderName)
+                .append("cardNumber", number).append("cvc", cvc).toString();
     }
 }

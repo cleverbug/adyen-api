@@ -25,6 +25,7 @@ import org.junit.Test;
  */
 public class ClientConfigTest {
     private static final String PROXY_CONFIG = "prxyusr:prxypass@prxyhost:8888";
+    private static final String PROXY_CONFIG_2 = "62.63.4.10:8888";
 
     @Test
     public void testClientConfigCreation() throws Exception {
@@ -65,6 +66,17 @@ public class ClientConfigTest {
         Assert.assertTrue(config.getProxyUsername().equals("prxyusr"));
         Assert.assertTrue(config.getProxyPassword().equals("prxypass"));
         Assert.assertTrue(config.getProxyHost().equals(HttpHost.create("prxyhost:8888")));
+    }
+
+    @Test
+    public void testClientConfigProxyStuff2() throws Exception {
+        ClientConfig config = new ClientConfig(APUtil.TEST_ENDPOINT);
+        config.setProxyConfig(PROXY_CONFIG_2);
+        Assert.assertTrue(config.hasProxy());
+        Assert.assertFalse(config.isProxyAuthenticated());
+        Assert.assertTrue(config.getProxyUsername() == null);
+        Assert.assertTrue(config.getProxyPassword() == null);
+        Assert.assertTrue(config.getProxyHost().equals(HttpHost.create(PROXY_CONFIG_2)));
     }
 
     @Test

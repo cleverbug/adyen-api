@@ -41,8 +41,9 @@ public class ClientConfig {
     private String password;
     private String proxyUsername, proxyPassword;
     private Map<String, String> extraParameters = new HashMap<>();
+    private String encryptionKey;
 
-    private final static Pattern PROXY_CONFIG_PATTERN = Pattern.compile("(.*):(.*)@(\\w+):(\\d+)|(\\w+):(\\d+)");
+    private final static Pattern PROXY_CONFIG_PATTERN = Pattern.compile("(.*):(.*)@([a-zA-Z0-9\\.:]+):(\\d+)|([a-zA-Z0-9\\.:]+):(\\d+)");
 
     /**
      * Constructor
@@ -189,6 +190,14 @@ public class ClientConfig {
 
     public String getProxyPassword() {
         return hasProxy() ? proxyPassword : null;
+    }
+
+    void setEncryptionKey(String encryptionKey) {
+        this.encryptionKey = encryptionKey;
+    }
+
+    public String getEncryptionKey() {
+        return encryptionKey;
     }
 
     @Override

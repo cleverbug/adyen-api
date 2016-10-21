@@ -54,6 +54,9 @@ public final class Client implements IClient {
         IBuilder proxyConfig(String config);
 
         @PublicApi
+        IBuilder encryptionKey(String encryptionKey);
+
+        @PublicApi
         IBuilder addExtraParameter(String key, String value);
 
         Client build();
@@ -114,6 +117,12 @@ public final class Client implements IClient {
         }
 
         @Override
+        public IBuilder encryptionKey(String encryptionKey) {
+            instance.config.setEncryptionKey(encryptionKey);
+            return this;
+        }
+
+        @Override
         public IBuilder addExtraParameter(String key, String value) {
             instance.config.addExtraParameter(key, value);
             return this;
@@ -133,7 +142,7 @@ public final class Client implements IClient {
     }
 
     @Override
-    public com.github.woki.payments.adyen.ClientConfig getClientConfig() {
+    public ClientConfig getClientConfig() {
         return config;
     }
 
