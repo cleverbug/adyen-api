@@ -10,6 +10,9 @@ payment processing.
 
 **adyen-api** aims to be a cohesive and opinionated way for consuming APS' JSON messaging based services.
 
+##Acknowledgements
+* [Chrischy](https://github.com/Golddragon152) - Proxy configuration and CSE
+
 ##Current version and Maven dependency
 
 ```xml
@@ -43,7 +46,7 @@ In case you are behind a proxy just add .proxyConfig() to the composition, as fo
       .build();
 ```
 Notice that authentication is optional. For the example above the proxy configuration descriptor would then be like
-this: prxysrvr:8888.
+this: prxysrvr:8888. Either names and IP addresses can be used as the host name.
 
 ###Authorisation
 ```java
