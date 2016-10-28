@@ -3,6 +3,6 @@
 /.idea/
 /.classpath
 /.project
-/adyen-api.iml
+/*.iml
 
 
