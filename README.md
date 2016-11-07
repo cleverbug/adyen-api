@@ -60,10 +60,10 @@ just instantiate the Client like this:
    Client client = Client
       .endpoint("https://pal-test.adyen.com")
       .credentials(username, password)
-      .encryptionKey("10001|FBF867B24626DE756F8E0EEEED3FCFB16B64723586DB9...") // key abbreviated for clarity sake
+      .encryptionKey("10001|FBF867B24626DE756...") // key abbreviated for clarity sake
       .build();
 ```
-The Client will encrypt sensitive card information according to CSE specifications in case there's am encryption key defined.
+The Client will encrypt sensitive card information according to CSE specifications in case there's an encryption key defined.
 
 ###Authorisation
 ```java
