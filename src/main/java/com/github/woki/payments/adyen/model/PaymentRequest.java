@@ -18,6 +18,7 @@ package com.github.woki.payments.adyen.model;
 
 import com.github.woki.payments.adyen.PublicApi;
 import com.github.woki.payments.adyen.ToStringStyle;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -200,6 +201,13 @@ public class PaymentRequest implements Serializable {
     @PublicApi
     public void setAdditionalData(Map<String, String> additionalData) {
         this.additionalData = additionalData;
+    }
+
+    @PublicApi
+    public void addAdditionalDataEntry(String key, String value) {
+        if (StringUtils.isNotBlank(key)) {
+            additionalData.put(key, value);
+        }
     }
 
     @PublicApi

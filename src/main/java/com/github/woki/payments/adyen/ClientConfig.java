@@ -16,11 +16,15 @@
  */
 package com.github.woki.payments.adyen;
 
+import com.github.woki.payments.adyen.action.CSEUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.crypto.Cipher;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +46,10 @@ public class ClientConfig {
     private String proxyUsername, proxyPassword;
     private Map<String, String> extraParameters = new HashMap<>();
     private String encryptionKey;
+    private Cipher aesCipher;
+    private Cipher rsaCipher;
 
+    private static final Logger LOG = LoggerFactory.getLogger(ClientConfig.class);
     private final static Pattern PROXY_CONFIG_PATTERN = Pattern.compile("(.*):(.*)@([a-zA-Z0-9\\.:]+):(\\d+)|([a-zA-Z0-9\\.:]+):(\\d+)");
 
     /**
@@ -196,8 +203,30 @@ public class ClientConfig {
         this.encryptionKey = encryptionKey;
     }
 
-    public String getEncryptionKey() {
-        return encryptionKey;
+    public boolean isCseEnabled() {
+        return getAesCipher() != null && getRsaCipher() != null;
+    }
+
+    public Cipher getAesCipher() {
+        if (StringUtils.isNotBlank(encryptionKey) && aesCipher == null) {
+            try {
+                aesCipher = CSEUtil.aesCipher();
+            } catch (Exception e) {
+                LOG.warn("Could not instantiate an AES Cipher", e);
+            }
+        }
+        return aesCipher;
+    }
+
+    public Cipher getRsaCipher() {
+        if (StringUtils.isNotBlank(encryptionKey) && rsaCipher == null) {
+            try {
+                rsaCipher = CSEUtil.rsaCipher(encryptionKey);
+            } catch (Exception e) {
+                LOG.warn("Could not instantiate an RSA Cipher. encryptionKey: {}", encryptionKey, e);
+            }
+        }
+        return rsaCipher;
     }
 
     @Override
@@ -205,6 +234,6 @@ public class ClientConfig {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append("endpointHost", endpointHost).append("connectionTimeout", connectionTimeout)
                 .append("socketTimeout", socketTimeout).append("proxyConfig", proxyConfig).append("proxyHost", proxyHost).append("endpoint", endpoint)
                 .append("username", username).append("password", password).append("proxyUsername", proxyUsername).append("proxyPassword", proxyPassword)
-                .append("extraParameters", extraParameters).toString();
+                .append("extraParameters", extraParameters).append("encryptionKey", encryptionKey).toString();
     }
 }

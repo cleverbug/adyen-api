@@ -13,13 +13,18 @@ payment processing.
 ##Acknowledgements
 * [Chrischy](https://github.com/Golddragon152) - Proxy configuration and CSE
 
+## Milestones
+* 1.0.0 - Initial
+* 1.2.1 - Added support for proxy configuration
+* 1.3.0 - Added support for CSE
+
 ##Current version and Maven dependency
 
 ```xml
     <dependency>
       <groupId>com.github.woki</groupId>
       <artifactId>payments-adyen-api</artifactId>
-      <version>1.2.1</version>
+      <version>1.3.0</version>
     </dependency>
 ```
 See also this [Sample Client](http://github.com/woki/adyen-client) sample built upon **ayden-api**.
@@ -47,6 +52,18 @@ In case you are behind a proxy just add .proxyConfig() to the composition, as fo
 ```
 Notice that authentication is optional. For the example above the proxy configuration descriptor would then be like
 this: prxysrvr:8888. Either names and IP addresses can be used as the host name.
+
+####CSE - Client Side Encryption
+For Adyen's CSE documentation and usage refer to [CSE Documentation](https://docs.adyen.com/developers/easy-encryption). Once you have generated a RSA public key
+just instantiate the Client like this:
+```java
+   Client client = Client
+      .endpoint("https://pal-test.adyen.com")
+      .credentials(username, password)
+      .encryptionKey("10001|FBF867B24626DE756F8E0EEEED3FCFB16B64723586DB9...") // key abbreviated for clarity sake
+      .build();
+```
+The Client will encrypt sensitive card information according to CSE specifications in case there's am encryption key defined.
 
 ###Authorisation
 ```java

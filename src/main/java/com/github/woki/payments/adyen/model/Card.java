@@ -21,7 +21,9 @@ import com.github.woki.payments.adyen.ToStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
@@ -34,7 +36,16 @@ public class Card implements Serializable {
     private String holderName;
     private String number;
     private String cvc;
-    private Date generationTime;
+    private String generationtime;
+
+    private static final SimpleDateFormat GENERATION_TIME_FORMAT;
+
+    static {
+        GENERATION_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        GENERATION_TIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    public static final String CARD_ENCRYPTED_ADDITIONAL_DATA_KEY_NAME = "card.encrypted.json";
 
     @PublicApi
     public Card() {
@@ -91,13 +102,15 @@ public class Card implements Serializable {
     }
 
     @PublicApi
-    public Date getGenerationTime() {
-        return generationTime;
+    public String getGenerationtime() {
+        return generationtime;
     }
 
     @PublicApi
-    public void setGenerationTime(Date generationTime) {
-        this.generationTime = generationTime;
+    public void setGenerationtime(Date generationtime) {
+        if (generationtime != null) {
+            this.generationtime = GENERATION_TIME_FORMAT.format(generationtime);
+        }
     }
 
     @Override

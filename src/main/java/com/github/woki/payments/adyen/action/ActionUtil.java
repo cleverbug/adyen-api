@@ -18,7 +18,9 @@ package com.github.woki.payments.adyen.action;
 
 import com.github.woki.payments.adyen.APService;
 import com.github.woki.payments.adyen.ClientConfig;
+import com.github.woki.payments.adyen.model.Card;
 import com.github.woki.payments.adyen.model.ModificationResponse;
+import com.github.woki.payments.adyen.model.PaymentRequest;
 import com.github.woki.payments.adyen.model.PaymentResponse;
 import io.advantageous.boon.json.JsonFactory;
 import io.advantageous.boon.json.ObjectMapper;
@@ -36,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.Map;
 
 import static org.apache.http.client.fluent.Request.Post;
@@ -172,6 +175,27 @@ final class ActionUtil {
     }
 
     private static Object encrypt(ClientConfig config, Object original) {
+        if (! (original instanceof PaymentRequest)) {
+            return original;
+        }
+        if (! config.isCseEnabled()) {
+            LOG.debug("CSE not enabled");
+            return original;
+        }
+        Card card = ((PaymentRequest) original).getCard();
+        if (card == null) {
+            LOG.debug("CSE cannot be used: no card to encrypt");
+            return original;
+        }
+        card.setGenerationtime(new Date());
+        String jsonCard = JsonFactory.toJson(card);
+        try {
+            String encryptedCard = CSEUtil.encrypt(config.getAesCipher(), config.getRsaCipher(), jsonCard);
+            ((PaymentRequest) original).setCard(null);
+            ((PaymentRequest) original).addAdditionalDataEntry(Card.CARD_ENCRYPTED_ADDITIONAL_DATA_KEY_NAME, encryptedCard);
+        } catch (Exception e) {
+            LOG.warn("CSE error: falling back to non-encrypted transaction", e);
+        }
         return original;
     }
 }

@@ -299,7 +299,7 @@ public final class PaymentRequestBuilder {
 
         @Override
         public IBuilder additionalDataEntry(String key, String value) {
-            request.getAdditionalData().put(key, value);
+            request.addAdditionalDataEntry(key, value);
             return this;
         }
 
