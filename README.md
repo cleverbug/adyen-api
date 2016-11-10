@@ -24,7 +24,7 @@ payment processing.
     <dependency>
       <groupId>com.github.woki</groupId>
       <artifactId>payments-adyen-api</artifactId>
-      <version>1.3.0</version>
+      <version>1.3.1</version>
     </dependency>
 ```
 See also this [Sample Client](http://github.com/woki/adyen-client) sample built upon **ayden-api**.
@@ -72,7 +72,8 @@ The Client will encrypt sensitive card information according to CSE specificatio
       .amount(new Amount(Currency.getInstance("EUR"), 1000L))
       .card(CardBuilder.number("4111111111111111").cvc("737").expiry(2016, 6).holder("Johnny Tester Visa").build())
       .reference(reference(ReferenceType.UUID))
-      .shopper("willian.oki@gmail.com", "127.0.0.1", "Test/DAPI/Authorisation/Willian Oki", ShopperInteraction.Ecommerce)
+      .shopper(NameBuilder.first("Willian").last("Oki").build(), "willian.oki@gmail.com", "127.0.0.1",
+          "Test/DAPI/Authorisation/Willian Oki", ShopperInteraction.Ecommerce)
       .build();
    PaymentResponse response = client.authorise(request);
 ```

@@ -47,14 +47,10 @@ public final class CSEUtil {
         // utility class
     }
 
-    private static SecretKey aesKey(int keySize) {
-        try {
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(keySize);
-            return kgen.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Unable to get AES algorithm", e);
-        }
+    private static SecretKey aesKey(int keySize) throws NoSuchAlgorithmException {
+        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+        kgen.init(keySize);
+        return kgen.generateKey();
     }
 
     private static synchronized byte[] iv(SecureRandom random, int ivSize) {
@@ -63,22 +59,12 @@ public final class CSEUtil {
         return iv;
     }
 
-    static String encrypt(Cipher aesCipher, Cipher rsaCipher, String plainText) {
+    static String encrypt(Cipher aesCipher, Cipher rsaCipher, String plainText) throws BadPaddingException, IllegalBlockSizeException,
+            NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException {
         SecretKey aesKey = aesKey(256);
         byte[] iv = iv(CSE_RANDOM, 12);
-        byte[] encrypted;
-        try {
-            aesCipher.init(Cipher.ENCRYPT_MODE, aesKey, new IvParameterSpec(iv));
-            encrypted = aesCipher.doFinal(plainText.getBytes());
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException("Incorrect AES Block Size", e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException("Incorrect AES Padding", e);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException("Invalid AES Key", e);
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new RuntimeException("Invalid AES Parameters", e);
-        }
+        aesCipher.init(Cipher.ENCRYPT_MODE, aesKey, new IvParameterSpec(iv));
+        byte[] encrypted = aesCipher.doFinal(plainText.getBytes());
 
         byte[] result = new byte[iv.length + encrypted.length];
         System.arraycopy(iv, 0, result, 0, iv.length);
@@ -87,57 +73,36 @@ public final class CSEUtil {
         byte[] encryptedAESKey;
         try {
             encryptedAESKey = rsaCipher.doFinal(aesKey.getEncoded());
-            return String.format("%s%s%s%s%s%s", CSE_PREFIX, CSE_VERSION, CSE_SEPARATOR, Base64.encodeBase64String(encryptedAESKey), CSE_SEPARATOR,
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InvalidKeyException(e.getMessage());
+        }
+        return String.format("%s%s%s%s%s%s", CSE_PREFIX, CSE_VERSION, CSE_SEPARATOR, Base64.encodeBase64String(encryptedAESKey), CSE_SEPARATOR,
                     Base64.encodeBase64String(result));
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException("Incorrect RSA Block Size", e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException("Incorrect RSA Padding", e);
-        }
     }
 
-    public static Cipher aesCipher() {
-        try {
-            return Cipher.getInstance("AES/CCM/NoPadding", "BC");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Problem instantiation AES Cipher Algorithm", e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException("Problem instantiation AES Cipher Padding", e);
-        } catch (NoSuchProviderException e) {
-            throw new RuntimeException("Problem instantiation AES Cipher using BC provider", e);
-        }
+    public static Cipher aesCipher() throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException {
+        return Cipher.getInstance("AES/CCM/NoPadding", "BC");
     }
 
-    public static Cipher rsaCipher(@NotNull String cseKeyText) {
+    public static Cipher rsaCipher(@NotNull String cseKeyText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
         String[] cseKeyParts = cseKeyText.split("\\|");
-        KeyFactory keyFactory;
-        PublicKey pubKey;
-        try {
-            keyFactory = KeyFactory.getInstance("RSA");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        if (cseKeyParts.length != 2) {
+            throw new InvalidKeyException("Invalid CSE Key: " + cseKeyText);
         }
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-        RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(new BigInteger(cseKeyParts[1].toLowerCase(Locale.getDefault()), 16),
-                new BigInteger(cseKeyParts[0].toLowerCase(Locale.getDefault()), 16));
+        BigInteger keyComponent1, keyComponent2;
         try {
-            pubKey = keyFactory.generatePublic(pubKeySpec);
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException("Problem reading public key: " + cseKeyText, e);
+            keyComponent1 = new BigInteger(cseKeyParts[1].toLowerCase(Locale.getDefault()), 16);
+            keyComponent2 = new BigInteger(cseKeyParts[0].toLowerCase(Locale.getDefault()), 16);
+        } catch (NumberFormatException e) {
+            throw new InvalidKeyException("Invalid CSE Key: " + cseKeyText);
         }
+        RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(keyComponent1, keyComponent2);
+        PublicKey pubKey = keyFactory.generatePublic(pubKeySpec);
 
-        Cipher result;
-        try {
-            result = Cipher.getInstance("RSA/None/PKCS1Padding");
-            result.init(Cipher.ENCRYPT_MODE, pubKey);
-
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Problem instantiation RSA Cipher Algorithm", e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException("Problem instantiation RSA Cipher Padding", e);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException("Invalid public key: " + cseKeyText, e);
-        }
+        Cipher result = Cipher.getInstance("RSA/None/PKCS1Padding");
+        result.init(Cipher.ENCRYPT_MODE, pubKey);
         return result;
     }
 }

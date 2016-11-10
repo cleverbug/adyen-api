@@ -24,6 +24,7 @@ import com.github.woki.payments.adyen.model.PaymentRequest;
 import com.github.woki.payments.adyen.model.PaymentResponse;
 import io.advantageous.boon.json.JsonFactory;
 import io.advantageous.boon.json.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -36,8 +37,13 @@ import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Map;
 
@@ -67,7 +73,13 @@ final class ActionUtil {
             retval.addHeader(entry.getKey(), entry.getValue());
         }
         // add content
-        retval.bodyString(MAPPER.toJson(encrypt(config, request)), ContentType.APPLICATION_JSON);
+        String bodyString;
+        try {
+            bodyString = MAPPER.toJson(encrypt(config, request));
+        } catch (Exception e) {
+            throw new RuntimeException("CSE/JSON serialization error", e);
+        }
+        retval.bodyString(bodyString, ContentType.APPLICATION_JSON);
         if (config.hasProxy()) {
             retval.viaProxy(config.getProxyHost());
         }
@@ -174,11 +186,12 @@ final class ActionUtil {
         private InputStreamReader content;
     }
 
-    private static Object encrypt(ClientConfig config, Object original) {
+    private static Object encrypt(ClientConfig config, Object original) throws BadPaddingException, NoSuchAlgorithmException,
+            IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {
         if (! (original instanceof PaymentRequest)) {
             return original;
         }
-        if (! config.isCseEnabled()) {
+        if (StringUtils.isBlank(config.getEncryptionKey())) {
             LOG.debug("CSE not enabled");
             return original;
         }
@@ -189,13 +202,9 @@ final class ActionUtil {
         }
         card.setGenerationtime(new Date());
         String jsonCard = JsonFactory.toJson(card);
-        try {
-            String encryptedCard = CSEUtil.encrypt(config.getAesCipher(), config.getRsaCipher(), jsonCard);
-            ((PaymentRequest) original).setCard(null);
-            ((PaymentRequest) original).addAdditionalDataEntry(Card.CARD_ENCRYPTED_ADDITIONAL_DATA_KEY_NAME, encryptedCard);
-        } catch (Exception e) {
-            LOG.warn("CSE error: falling back to non-encrypted transaction", e);
-        }
+        String encryptedCard = CSEUtil.encrypt(config.getAesCipher(), config.getRsaCipher(), jsonCard);
+        ((PaymentRequest) original).setCard(null);
+        ((PaymentRequest) original).addAdditionalDataEntry(Card.CARD_ENCRYPTED_ADDITIONAL_DATA_KEY_NAME, encryptedCard);
         return original;
     }
 }

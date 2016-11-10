@@ -199,12 +199,12 @@ public class ClientConfig {
         return hasProxy() ? proxyPassword : null;
     }
 
-    void setEncryptionKey(String encryptionKey) {
-        this.encryptionKey = encryptionKey;
+    public String getEncryptionKey() {
+        return encryptionKey;
     }
 
-    public boolean isCseEnabled() {
-        return getAesCipher() != null && getRsaCipher() != null;
+    void setEncryptionKey(String encryptionKey) {
+        this.encryptionKey = encryptionKey;
     }
 
     public Cipher getAesCipher() {
