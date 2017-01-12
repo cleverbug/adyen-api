@@ -20,12 +20,12 @@ package com.github.woki.payments.adyen;
  * @author Willian Oki &lt;willian.oki@gmail.com&gt;
  */
 public enum APService {
-    AUTHORISATION("/pal/servlet/Payment/v12/authorise"),
-    AUTHORISATION_3D("/pal/servlet/Payment/v12/authorise3d"),
-    CAPTURE("/pal/servlet/Payment/v12/capture"),
-    REFUND("/pal/servlet/Payment/v12/refund"),
-    CANCEL("/pal/servlet/Payment/v12/cancel"),
-    CANCEL_OR_REFUND("/pal/servlet/Payment/v12/cancelorrefund")
+    AUTHORISATION("/pal/servlet/Payment/v18/authorise"),
+    AUTHORISATION_3D("/pal/servlet/Payment/v18/authorise3d"),
+    CAPTURE("/pal/servlet/Payment/v18/capture"),
+    REFUND("/pal/servlet/Payment/v18/refund"),
+    CANCEL("/pal/servlet/Payment/v18/cancel"),
+    CANCEL_OR_REFUND("/pal/servlet/Payment/v18/cancelOrRefund")
     ;
 
     final String path;
